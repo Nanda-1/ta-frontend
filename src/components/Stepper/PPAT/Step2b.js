@@ -1,16 +1,13 @@
 import React, { useContext, useRef } from "react";
 import Webcam from "react-webcam";
 import { FormGroup } from "reactstrap";
-import cookies from "js-cookie";
 import { RegistContext } from "views/auth/RegistContext";
-import swal from "sweetalert";
 import ModalDokumen from "components/Modals/ModalDokumen";
 
 const Step2b = (props) => {
-  const { inputRegist, setInputRegist, refreshToken } =
+  const { inputRegist, setInputRegist, loading, ppatFile, b64toBlob } =
     useContext(RegistContext);
   const [capturing, setCapturing] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   const [imagess, setImagess] = React.useState(null);
 
   const webcamRef = useRef(null);
@@ -21,105 +18,21 @@ const Step2b = (props) => {
     facingMode: "user",
   };
 
-  function b64toBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || "";
-    sliceSize = sliceSize || 512;
-    var byteCharacters = atob(b64Data);
-    var byteArrays = [];
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      var slice = byteCharacters.slice(offset, offset + sliceSize);
-      var byteNumbers = new Array(slice.length);
-      for (var i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-      var byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-    var blob = new Blob(byteArrays, { type: contentType });
-    return blob;
-  }
-
-  const handleStartCaptureClick = React.useCallback(() => {
+  const handleStartCaptureClick = () => {
     setCapturing(true);
-    setLoading(true);
 
     //capture with base64
     const imageSrc = webcamRef.current.getScreenshot();
     setImagess(imageSrc);
 
     //convert base64 to image/jpg
-    let bpjs_photo = "bpjs_photo";
     const contentType = "image/jpg";
     var base64result = imageSrc.substring(imageSrc.indexOf(",") + 1);
     var str = Buffer.from(base64result);
     const blob = b64toBlob(str, contentType);
-    // const blobUrl = URL.createObjectURL(blob);
-    var blobs = new Blob([blob], {
-      type: "application/json",
-    });
-    let nama = cookies.get("nama");
-    var fileOfBlob = new File([blobs], "bpjs_" + nama + ".jpg");
-    // var URL = window.URL.createObjectURL(blob);
-    setInputRegist({ ...inputRegist, [bpjs_photo]: fileOfBlob });
-    console.log(fileOfBlob);
-    sending(fileOfBlob);
-  }, [inputRegist, setInputRegist]);
-
-  const sending = (fileOfBlob) => {
-    // setLoad(true);
-    // event.preventDefault();
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
-    // myHeaders.append("Content-Type", "multipart/form-data");
-
-    let formdata = new FormData();
-    formdata.append("uid", cookies.get("uid"));
-    formdata.append("bpjs_photo", fileOfBlob);
-    // formdata.append("bypass_ekyc", "true")
-
-    let requestOptions = {
-      method: "POST",
-      credentials: "same-origin",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/lengkapidiri/update",
-      requestOptions
-    )
-      // .then((res) => res.json())
-      .then((res) => {
-        if (res.status === 401) {
-          refreshToken();
-        } else {
-          return res.json();
-        }
-      })
-      .then((res) => {
-        setLoading(false);
-        let sukses = res.success;
-
-        if (sukses === false) {
-          swal({
-            title: "Gagal!",
-            text: res.error,
-            icon: "error",
-          });
-          // setLoad(false);
-        } else if (sukses === true) {
-          swal({
-            title: "Berhasil",
-            text: "Foto BPJS Tersimpan",
-            icon: "success",
-          });
-        }
-      })
-      .catch((error) => {
-        // setLoad(false);
-        console.log("error", error);
-      });
+    var blobs = new Blob([blob], { type: "image/png" });
+    setInputRegist({ ...inputRegist, bpjs_photo: blobs });
+    ppatFile("bpjs", blobs);
   };
 
   const handleStopCaptureClick = () => {

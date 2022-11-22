@@ -28,7 +28,7 @@ export default function LengkapiDiriCard() {
                   Silahkan melengkapi data diri Anda <br /> dengan baik dan benar untuk dapat menggunakan <br /> layanan yang kami sediakan.
                   </div>
                   <div className="text-center mb-3">
-                    <Link to='/tipe' className='cursor-pointer bg-blue px-12 text-white py-3 rounded-md'>
+                    <Link to='/lengkapiDiri/tipe' className='cursor-pointer bg-blue px-12 text-white py-3 rounded-md'>
                       Lanjutkan
                     </Link>
                   </div>

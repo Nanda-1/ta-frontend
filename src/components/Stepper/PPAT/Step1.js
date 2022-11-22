@@ -10,11 +10,16 @@ import { FormGroup } from "reactstrap";
 import ModalDokumen from "components/Modals/ModalDokumen";
 
 const Step1 = (props) => {
-  const { inputRegist, setInputRegist, refreshToken } =
-    useContext(RegistContext);
+  const {
+    inputRegist,
+    setInputRegist,
+    ppatFile,
+    loading,
+    setLoading,
+  } = useContext(RegistContext);
 
   //Preview PDF
-  const [loading, setLoading] = useState(false);
+
   const [file, setFile] = useState("");
   const [numPages, setNumPages] = useState(null);
 
@@ -37,7 +42,7 @@ const Step1 = (props) => {
           ...inputRegist,
           sk_pengangkatan: getFile,
         });
-        sendSK(getFile);
+        ppatFile("sk_pengangkatan", getFile);
       }
     }
   }
@@ -45,62 +50,6 @@ const Step1 = (props) => {
   function onDocumentLoadSuccess({ numPages: nextNumPages }) {
     setNumPages(nextNumPages);
   }
-
-  const sendSK = (getFile) => {
-    // setLoad(true);
-    // event.preventDefault();
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
-    // myHeaders.append("Content-Type", "multipart/form-data");
-
-    let formdata = new FormData();
-    formdata.append("uid", cookies.get("uid"));
-    formdata.append("sk_pengangkatan", getFile);
-    // formdata.append("bypass_ekyc", "true")
-
-    let requestOptions = {
-      method: "POST",
-      credentials: "same-origin",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/lengkapidiri/update",
-      requestOptions
-    )
-      // .then((res) => res.json())
-      .then((res) => {
-        if (res.status === 401) {
-          refreshToken();
-        } else {
-          return res.json();
-        }
-      })
-      .then((res) => {
-        setLoading(false);
-        let sukses = res.success;
-
-        if (sukses === false) {
-          swal({
-            title: "Gagal!",
-            text: res.error,
-            icon: "error",
-          });
-          // setLoad(false);
-        } else {
-          swal({
-            title: "Berhasil",
-            text: "SK Pengangkatan PPAT Tersimpan",
-            icon: "success",
-          });
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
 
   if (props.currentStep !== 1) {
     return null;
@@ -113,7 +62,7 @@ const Step1 = (props) => {
         <div className="relative flex-col break-words w-800-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
           <div className="rounded-t mb-0 px-6 py-6">
             <div className="text-center mb-2">
-              <h1 className="text-blue-500 text-xl font-bold">
+              <h1 className="text-blue text-xl font-bold">
                 Unggah <br />
                 SK Pengangkatan PPAT
               </h1>
@@ -137,19 +86,15 @@ const Step1 = (props) => {
                     <label htmlFor="upload-button" className="w-auto">
                       {file.length === 0 ? (
                         <div>
-                          <>
-                            <img
-                              className="mx-auto my-4 align-middle h-36 w-36 bg-fix"
-                              src={
-                                require("assets/img/skppat_icon.png").default
-                              }
-                              alt="no data"
-                            />
-                            <p className="text-center text-xs pt-1">
-                              Klik untuk upload scan SK Pengangkatan PPAT Asli
-                              di file.
-                            </p>
-                          </>
+                          <img
+                            className="mx-auto my-4 align-middle h-36 w-36 bg-fix"
+                            src={require("assets/img/skppat_icon.png").default}
+                            alt="no data"
+                          />
+                          <p className="text-center text-xs pt-1">
+                            Klik untuk upload scan SK Pengangkatan PPAT Asli di
+                            file.
+                          </p>
                         </div>
                       ) : (
                         <>

@@ -340,6 +340,10 @@ input[type="number"] {
   width: 30rem;
 }
 
+.w-900-d {
+  width: 40rem;
+}
+
 .space-y-4 {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));

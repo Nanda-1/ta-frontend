@@ -5,26 +5,6 @@ import { ProgressBar, Step } from "react-step-progress-bar";
 const MultiStepProgressBar = (props) => {
   var stepPercentage = 0;
 
-  // if (props.currentStep === 1) {
-  //   stepPercentage = 0;
-  // } else if (props.currentStep === 2) {
-  //   stepPercentage = 14;
-  // } else if (props.currentStep === 3) {
-  //   stepPercentage = 28;
-  // } else if (props.currentStep === 4) {
-  //   stepPercentage = 42;
-  // } else if (props.currentStep === 5) {
-  //   stepPercentage = 56;
-  // } else if (props.currentStep === 6) {
-  //   stepPercentage = 70;
-  // } else if (props.currentStep === 7) {
-  //   stepPercentage = 84;
-  // } else if (props.currentStep === 8) {
-  //   stepPercentage = 100;
-  // } else {
-  //   stepPercentage = 0;
-  // }
-
   if (props.currentStep === 1) {
     stepPercentage = 0;
   } else if (props.currentStep === 2) {
@@ -143,20 +123,6 @@ const MultiStepProgressBar = (props) => {
           </>
         )}
       </Step>
-      {/* <Step>
-        {({ accomplished, index }) => (
-          <>
-            <div
-              className={`indexedStep ${accomplished ? "accomplished" : null}`}
-            >
-              {index + 1}
-            </div>
-            <div className="absolute mt-10 text-sm w-48 text-center text-blue">
-              <small>Tandatangan</small>
-            </div>
-          </>
-        )}
-      </Step> */}
     </ProgressBar>
   );
 };

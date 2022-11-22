@@ -49,8 +49,9 @@ class MasterForm extends Component {
     super(props);
 
     // Set the intiial input values
+    this.num = cookies.get('step')
     this.state = {
-      currentStep: 1,
+      currentStep: this.num ? Number(this.num) : 1,
       email: "",
       username: "",
       password: "",
@@ -96,6 +97,7 @@ class MasterForm extends Component {
     if (currentStep === 6) {
       this.context.cekKTPPPAT();
     }
+    cookies.set('step', currentStep)
   }
 
   // The "next" and "previous" button functions
@@ -125,17 +127,14 @@ class MasterForm extends Component {
       return (
         <>
           <Button
-            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue-500 active:bg-indigo-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
+            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue active:bg-indigo-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
             onClick={this._next}
           >
             Lanjutkan
           </Button>
-          <hr className="pt-6 border-0" />
         </>
       );
     }
-    // ...else render nothing
-    return null;
   }
 
   // Trigger an alert on form submission
@@ -179,11 +178,10 @@ class MasterForm extends Component {
         <>
           <Button
             onClick={this.handleSubmit}
-            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue-500 active:bg-indigo-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
+            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue active:bg-indigo-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
           >
             Submit
           </Button>
-          <hr className="pt-6 border-0" />
         </>
         // </Link>
       );
@@ -207,7 +205,6 @@ class MasterForm extends Component {
           >
             Submit
           </Button>
-          <hr className="pt-6 border-0" />
         </>
         // </Link>
       );

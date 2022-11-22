@@ -200,7 +200,7 @@ export default function SyaratPPAT() {
 
             <div className="relative flex flex-wrap my-6 w-auto">
               <div className="w-1/2">
-                <Link to="/tipe">
+                <Link to="/lengkapiDiri/tipe">
                   <button className="get-started text-black px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-white active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150">
                     Kembali
                   </button>
