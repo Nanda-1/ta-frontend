@@ -1,0 +1,8 @@
+@tailwind base;
+@import "./nabil.css";
+@import "./addeen.css";
+
+
+@tailwind components;
+
+@tailwind utilities;

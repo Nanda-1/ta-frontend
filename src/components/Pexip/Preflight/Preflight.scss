@@ -1,0 +1,68 @@
+.preflightContainer {
+    border-radius: 15px;
+  
+    background-color: #fff;
+  
+    padding: 15px;
+  
+    .preflightTitle {
+      text-align: center;
+      font-weight: 600;
+    }
+  
+    .preflightContent {
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: auto auto;
+  
+      .preflightContentHead {
+        display: flex;
+        align-items: center;
+  
+        padding: 5px;
+        font-weight: 600;
+      }
+  
+      .preflightContentBody {
+        padding: 5px;
+  
+        input {
+          border-radius: 5px;
+          border: 1px solid #333;
+          padding: 10px;
+  
+          width: 94%;
+        }
+  
+        select {
+          border-radius: 5px;
+          border: 1px solid #333;
+          padding: 10px;
+  
+          width: 100%;
+  
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+  
+      .preflightContentButton {
+        margin-top: 5px;
+        width: 100%;
+  
+        text-align: center;
+        grid-column: 1 / span 2;
+  
+        button {
+          border-radius: 5px;
+          border: 1px solid #333;
+          padding: 10px;
+  
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }

@@ -1,0 +1,123 @@
+.callContainer {
+    // .callVideoContainer {
+    //   width: 15vw;
+  
+    //   video {
+    //     width: 100%;
+    //     height: 100%;
+    //   }
+    // }
+  
+    .callVideoControls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      position: absolute;
+  
+      bottom: 0;
+      left: 50%;
+  
+      transform: translateX(-50%);
+  
+      height: 80px;
+  
+      border-radius: 15px 15px 0 0;
+  
+      background-color: rgba(255, 255, 255, 0.8);
+  
+      .callVideoControl {
+        font-size: 20px;
+        min-width: 57px;
+  
+        text-align: center;
+  
+        padding: 5px 15px 5px 15px;
+  
+        &:hover {
+          cursor: pointer;
+          color: #333;
+        }
+      }
+  
+      .active {
+        color: #c00000;
+  
+        &:hover {
+          cursor: pointer;
+          color: #d9381e;
+        }
+      }
+    }
+  
+    .callPinRequestContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      position: fixed;
+  
+      left: 0;
+      top: 0;
+  
+      width: 100vw;
+      height: 100vh;
+  
+      background-color: rgba(0, 0, 0, 0.8);
+  
+      .callPinRequestWindow {
+        border-radius: 15px;
+  
+        background-color: #fff;
+  
+        padding: 15px;
+  
+        .callPinTitle {
+          text-align: center;
+          font-weight: 600;
+        }
+  
+        .callPinContent {
+          margin-top: 15px;
+          display: grid;
+          grid-template-columns: auto auto;
+  
+          .callPinContentHead {
+            display: flex;
+            align-items: center;
+  
+            padding: 5px;
+            font-weight: 600;
+          }
+  
+          .callPinContentBody {
+            padding: 5px;
+  
+            input {
+              border-radius: 5px;
+              border: 1px solid #333;
+              padding: 10px;
+            }
+          }
+        }
+  
+        .callPinContentButton {
+          margin-top: 5px;
+          width: 100%;
+  
+          text-align: center;
+          grid-column: 1 / span 2;
+  
+          button {
+            border-radius: 5px;
+            border: 1px solid #333;
+            padding: 10px;
+  
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
