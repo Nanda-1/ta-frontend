@@ -6,24 +6,19 @@ export const RegistContext = createContext();
 
 export const RegistProvider = (props) => {
   const history = useHistory();
-
   // simpan field to context
   const [regist, setRegist] = useState({
     email: "",
     password: "",
     repassword: "",
   });
-
   const [inputRegist, setInputRegist] = useState([]);
-
   const [dataRegist, setDataRegist] = useState([""]);
   const [tipe, setTipe] = useState([""]);
   const [skppat, setSkppat] = useState([""]);
-
   //url on env
   const apiRegist =
     process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/register";
-
   //get dropdown kota & provinsi
   const [dataProv, setDataProv] = useState([]);
   const [dataKota, setDataKota] = useState([]);
@@ -33,29 +28,35 @@ export const RegistProvider = (props) => {
   const [dataCityFilter, setdataCityFilter] = useState([]);
   const [dataDistrictFilter, setdataDistrictFilter] = useState([]);
   const [ttdImage, setTtdImage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
+  var auth = localStorage.getItem("authentication");
+  var token = JSON.parse(auth);
+
   const refreshToken = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/auth/refresh", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        refresh_token: cookies.get("refresh_token"),
+        refresh_token: token.refresh_token,
       }),
     })
       .then((response) => response.json())
       .then((result) => {
+        console.log(result);
         if (result.success === true) {
-          object.token = result.data.token;
-          localStorage.setItem("dataPPAT", JSON.stringify(object));
+          token.access_token = result.data.access_token;
+          localStorage.setItem("authentication", JSON.stringify(token));
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
           localStorage.removeItem("dataPPAT");
+          localStorage.removeItem("authentication");
           setTimeout(() => {
             history.push("/login");
           }, 1000);
@@ -64,10 +65,68 @@ export const RegistProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+  const b64toBlob = (b64Data, contentType, sliceSize) => {
+    contentType = contentType || "";
+    sliceSize = sliceSize || 512;
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    var blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+  };
+
+  const ppatFile = (type, dataFile) => {
+    setLoading(true);
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
+
+    let formdata = new FormData();
+    formdata.append("file_type", type);
+    formdata.append("file", dataFile);
+
+    let requestOptionsGet = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+      body: formdata,
+    };
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH + "api/update-profile/file",
+      requestOptionsGet
+    )
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => {
+        if (response.success) {
+          swal("Berhasil", response.data.message, "success");
+          setLoading(false);
+        } else {
+          setLoading(false);
+          swal("Gagal", response.error, "error");
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   const getDataProv = async () => {
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let requestOptionsGet = {
       method: "GET",
@@ -98,7 +157,7 @@ export const RegistProvider = (props) => {
   const getDataKota = async () => {
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let requestOptionsGet = {
       method: "GET",
@@ -129,7 +188,7 @@ export const RegistProvider = (props) => {
   const getDataKec = async () => {
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let requestOptionsGet = {
       method: "GET",
@@ -208,7 +267,7 @@ export const RegistProvider = (props) => {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let raw = JSON.stringify({
       email: cookies.get("email"),
@@ -245,11 +304,11 @@ export const RegistProvider = (props) => {
     // event.preventDefault();
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
     // myHeaders.append("Content-Type", "multipart/form-data");
 
     let formdata = new FormData();
-    formdata.append("uid", cookies.get("uid"));
+    formdata.append("uid", object.uid);
     formdata.append("nama", cookies.get("nama"));
     formdata.append("tempat_lahir", cookies.get("tempat_lahir"));
     formdata.append("tanggal_lahir", cookies.get("tgl_lahir"));
@@ -338,12 +397,10 @@ export const RegistProvider = (props) => {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let raw = JSON.stringify({
-      // phone: cookies.get("phone"),
-      // tipe_otp: "registrasi",
-      user_id: cookies.get('uid')
+      user_id: object.uid,
     });
 
     let requestOptionsGet = {
@@ -376,11 +433,11 @@ export const RegistProvider = (props) => {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let raw = JSON.stringify({
       // email: cookies.get("email"),
-      user_id: cookies.get("uid"),
+      user_id: object.uid,
       otp_code: otp,
     });
 
@@ -431,9 +488,9 @@ export const RegistProvider = (props) => {
     // event.preventDefault();
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
     // myHeaders.append("Content-Type", "multipart/form-data");
-    let uid = cookies.get("uid");
+    let uid = object.uid;
     let formdata = new FormData();
     formdata.append("uid", uid);
     formdata.append("nama", cookies.get("nama"));
@@ -505,9 +562,9 @@ export const RegistProvider = (props) => {
     // event.preventDefault();
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
     // myHeaders.append("Content-Type", "multipart/form-data");
-    let uid = cookies.get("uid");
+    let uid = object.uid;
     let formdata = new FormData();
     formdata.append("uid", uid);
     formdata.append("nama", cookies.get("nama"));
@@ -579,7 +636,7 @@ export const RegistProvider = (props) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_AUTH +
         "api/lengkapidiri/download/" +
-        cookies.get("uid") +
+        object.uid +
         "/specimen_tdtgn_file",
       {
         method: "GET",
@@ -665,6 +722,10 @@ export const RegistProvider = (props) => {
         refreshToken,
         ttdImage,
         setTtdImage,
+        ppatFile,
+        loading,
+        setLoading,
+        b64toBlob
       }}
     >
       {props.children}

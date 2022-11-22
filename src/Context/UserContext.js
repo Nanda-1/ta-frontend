@@ -77,6 +77,9 @@ export const UserProvider = (props) => {
       .then((result) => {
         setDataUser(result.data);
         localStorage.setItem("dataPPAT", JSON.stringify(result.data));
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000);
       })
       .catch((error) => console.log("error", error.message));
   };
@@ -191,16 +194,16 @@ export const UserProvider = (props) => {
           swal("Error", res.error, "error");
           setLoading(false);
         } else {
-          fetchDataUser(res.data.user.user_id);
           localStorage.setItem(
             "authentication",
             JSON.stringify(res.data.token)
-          );
-          swal("Berhasil", "Kode OTP berhasil diverifikasi", "success");
-          setTimeout(() => {
-            window.location.reload();
-            setLoading(false);
-          }, 3000);
+            );
+            swal("Berhasil", "Kode OTP berhasil diverifikasi", "success");
+            fetchDataUser(res.data.user.user_id);
+          // setTimeout(() => {
+          //   window.location.reload();
+          //   setLoading(false);
+          // }, 5000);
         }
       })
       .catch((error) => console.log("error", error));

@@ -9,13 +9,13 @@ import "assets/styles/tailwind.css";
 
 import Admin from "layouts/Admin.js";
 import Auth from "layouts/Auth.js";
-import NotFound from "layouts/NotFound";
+// import NotFound from "layouts/NotFound";
 
 import { UserProvider } from "Context/UserContext";
 import swal from "sweetalert";
+import lengkapiDiri from "layouts/LengkapiDiri";
 
 var val = localStorage.getItem("dataPPAT");
-var object = JSON.parse(val);
 
 const PrivateRoute = ({ ...props }) => {
   if (val) {
@@ -37,8 +37,8 @@ ReactDOM.render(
     <UserProvider>
       <Switch>
         <PrivateRoute path="/admin" component={Admin} />
+        <PrivateRoute path="/lengkapiDiri" component={lengkapiDiri} />
         <Route path="/" component={Auth} />
-        {/* <Route path="/*" component={NotFound} /> */}
       </Switch>
     </UserProvider>
   </BrowserRouter>,
