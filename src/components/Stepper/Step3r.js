@@ -90,7 +90,7 @@ const Step3r = (provs) => {
         <div className="relative flex-col break-words w-800-d mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">
           <div className="rounded-t mt-8 px-6 py-6">
             <div className="text-center mb-2">
-              <h1 className="text-blue-500 text-xl font-bold">
+              <h1 className="text-blue text-xl font-bold">
                 Lengkapi Form Data Diri
               </h1>
             </div>

@@ -221,8 +221,8 @@ class Modal2 extends Component {
                 mengirimkan ulang kode OTP yang baru.
                 <br />
                 <button
-                  className="bg-white text-blue-500 text-xs active:bg-blue-600
-                    text-sm px-3 py-1 mr-1 my-2 mb-4 rounded-xl shadow
+                  className="bg-white text-blue text-xs active:bg-blue-600
+                    px-3 py-1 mr-1 my-2 mb-4 rounded-xl shadow
                     hover:shadow-lg outline-none focus:outline-none ease-linear
                     transition-all duration-150"
                   onClick={this.Resend}

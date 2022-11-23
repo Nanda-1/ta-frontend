@@ -10,25 +10,11 @@ import { FormGroup } from "reactstrap";
 
 const Step1 = (props) => {
   const { inputRegist, setInputRegist } = useContext(RegistContext);
-  // const regist = useContext(RegistContext);
-
-  console.log(inputRegist);
 
   //Preview PDF
   const [show, setShow] = useState(true);
   const [file, setFile] = useState("");
   const [numPages, setNumPages] = useState(null);
-
-  // if (e.currentTarget.files.length) {
-  //   let name = "nik_photo";
-  //   let getKTP = e.target.files[0].name;
-  //   setKTP({
-  //     previewKTP: URL.createObjectURL(e.currentTarget.files[0]),
-  //     rawKTP: e.currentTarget.files[0],
-  //   });
-  //   setInputRegist({ ...inputRegist, [name]: getKTP });
-  //   console.log(inputRegist);
-  // }
 
   function onFileChange(event) {
     if (event.target.files.length) {
@@ -47,10 +33,7 @@ const Step1 = (props) => {
         [getRole]: role,
       });
       cookies.set(name, isian);
-      // regist.setSk_pengangkatan(isian);
-      // console.log(inputRegist);
       setShow(false);
-      // Cookies.set(...inputRegist);
     }
   }
 
@@ -87,7 +70,7 @@ const Step1 = (props) => {
               <ul id="gallery" className="flex flex-1 flex-wrap mt-px">
                 <li
                   id="empty"
-                  className="h-full w-full text-center flex flex-col items-center justify-center items-center"
+                  className="h-full w-full text-center flex flex-col justify-center items-center"
                 >
                   <div className="mx-auto my-auto h-auto w-auto">
                     <label htmlFor="upload-button" className="w-auto">

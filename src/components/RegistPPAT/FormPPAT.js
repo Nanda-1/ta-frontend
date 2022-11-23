@@ -1,6 +1,4 @@
 import React from "react";
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import Cookies from "js-cookie";
 
 const FormPPAT = ({
   changeHandle,
@@ -9,12 +7,12 @@ const FormPPAT = ({
   dataKota,
   dataProv,
   filter,
+  object,
 }) => {
-
   return (
     <div className="rounded-t mb-0 px-6 py-6">
       <div className="text-center mb-2">
-        <h1 className="text-blue-500 text-xl font-bold">
+        <h1 className="text-blue text-xl font-bold">
           Lengkapi Form Data Diri <br /> Pejabat Pembuat Akta Tanah
         </h1>
       </div>
@@ -33,7 +31,7 @@ const FormPPAT = ({
           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           placeholder="Nama Pejabat Pembuat Akta Tanah"
           onChange={changeHandle}
-          value={inputRegist.ppat_name || Cookies.get("ppat_name") || ""}
+          value={inputRegist.ppat_name || object ? object.ppat_name : ""}
           // required
         />
       </div>
@@ -42,16 +40,18 @@ const FormPPAT = ({
           Provinsi
         </label>
         <select
-          value={Cookies.get("ppat_prov")}
+          value={object ? object.ppat_prov : ""}
           onChange={changeHandle}
           name="ppat_prov"
           className="bg-white rounded text-sm shadow w-full"
         >
-          <option value="">Pilih Provinsi</option>
+          <option value="" disabled selected>
+            Pilih Provinsi
+          </option>
           {dataProv.map((item) => {
             return (
-              <option value={item.id_provinsi} key={item.id_provinsi}>
-                {item.nama_provinsi}
+              <option value={item.province_id} key={item.province_id}>
+                {item.name}
               </option>
             );
           })}
@@ -59,21 +59,23 @@ const FormPPAT = ({
       </div>
       <div className="relative flex flex-wrap my-6 w-full">
         <label className="block text-blueGray-600 text-xs font-bold mb-2">
-          Kabupaten/Kota
+          Kota
         </label>
         <select
-          value={Cookies.get("ppat_kotkab")}
+          value={object ? object.ppat_kotkab : ""}
           onChange={changeHandle}
           name="ppat_kotkab"
-          className="bg-white rounded text-sm shadow w-full"
+          className="bg-white rounded text-black text-sm shadow w-full"
         >
-          <option value="">Pilih Kota</option>
+          <option value="" disabled selected>
+            Pilih Kota
+          </option>
           {dataKota
-            .filter((el) => el.id_provinsi === Number(filter.ppat_prov))
+            .filter((el) => el.province_id === Number(filter.ppat_prov))
             .map((item) => {
               return (
-                <option value={item.id_kota} key={item.id_kota}>
-                  {item.nama_kota}
+                <option value={item.city_id} key={item.city_id}>
+                  {item.name}
                 </option>
               );
             })}
@@ -84,18 +86,20 @@ const FormPPAT = ({
           Kecamatan
         </label>
         <select
-          value={Cookies.get("ppat_kecamatan")}
+          value={object ? object.ppat_kecamatan : ""}
           onChange={changeHandle}
           name="ppat_kecamatan"
           className="bg-white rounded text-sm shadow w-full"
         >
-          <option value="">Pilih Kecamatan</option>
+          <option value="" disabled selected>
+            Pilih Kecamatan
+          </option>
           {dataKec
-            .filter((el) => el.id_kota === Number(filter.ppat_kotkab))
+            .filter((el) => el.city_id === Number(filter.ppat_kotkab))
             .map((item) => {
               return (
-                <option value={item.id_kecamatan} key={item.id_kecamatan}>
-                  {item.nama_kecamatan}
+                <option value={item.district_id} key={item.district_id}>
+                  {item.name}
                 </option>
               );
             })}
@@ -111,7 +115,7 @@ const FormPPAT = ({
           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           placeholder="Alamat Kantor PPAT"
           onChange={changeHandle}
-          value={inputRegist.ppat_alamat || Cookies.get("ppat_alamat") || ""}
+          value={inputRegist.ppat_alamat || object ? object.ppat_alamat : ""}
           // required
         />
       </div>
@@ -128,9 +132,9 @@ const FormPPAT = ({
               placeholder="No.SK Pengangkatan PPAT"
               onChange={changeHandle}
               value={
-                inputRegist.no_sk_pengangkatan ||
-                Cookies.get("no_sk_pengangkatan") ||
-                ""
+                inputRegist.no_sk_pengangkatan || object
+                  ? object.no_sk_pengangkatan
+                  : ""
               }
               // required
             />
@@ -147,7 +151,7 @@ const FormPPAT = ({
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               placeholder="Tanggal SK"
               onChange={changeHandle}
-              value={inputRegist.tgl_sk || Cookies.get("tgl_sk") || ""}
+              value={inputRegist.tgl_sk || object ? object.tgl_sk : ""}
               // required
             />
           </div>

@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import { FormGroup } from "reactstrap";
 import { RegistContext } from "views/auth/RegistContext";
 import ModalDokumen from "components/Modals/ModalDokumen";
+import KeteranganPhoto from "components/RegistPPAT/KeteranganPhoto";
 
 const Step2a = (props) => {
   const { inputRegist, setInputRegist, ppatFile, loading, b64toBlob } =
@@ -53,9 +54,7 @@ const Step2a = (props) => {
         <div className="relative flex-col break-words w-800-d mx-auto shadow-lg mt-12 rounded-lg bg-white border-0">
           <div className="rounded-t mt-8 px-6 py-6">
             <div className="text-center mb-2">
-              <h1 className="text-blue-500 text-xl font-bold">
-                Unggah NPWP Anda
-              </h1>
+              <h1 className="text-blue text-xl font-bold">Unggah NPWP Anda</h1>
             </div>
             <div className="text-coolGray-900 text-center">
               <small>
@@ -83,34 +82,17 @@ const Step2a = (props) => {
             </span>
           </div>
           <div className="text-center w-auto ml-12 mr-12 mt-4 mx-auto">
-            {capturing ? (
-              <button
-                type="button"
-                className="bg-blue-500 text-white active:bg-sky-500 text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                onClick={handleStopCaptureClick}
-              >
-                Ganti
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="bg-blue-500 text-white active:bg-sky-500 text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                onClick={handleStartCaptureClick}
-              >
-                Ambil Foto
-              </button>
-            )}
+            <button
+              type="button"
+              className="bg-blue text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+              onClick={
+                capturing ? handleStopCaptureClick : handleStartCaptureClick
+              }
+            >
+              {capturing ? "Ganti" : "Ambil Foto"}
+            </button>
           </div>
-          <div className="text-coolGray-900 mx-auto pl-12 pt-2 pb-4 text-left w-auto">
-            <small>
-              Perhatian: <br />
-              1. Gambar identitas harus terbaca jelas <br />
-              2. Foto identitas adalah dokumen asli, bukan dokumen fotokopi.{" "}
-              <br />
-              3. Identitas yang terdaftar adalah data yang masih berlaku
-            </small>
-          </div>
-          <hr className="mt-6 border-0 mb-4" />
+          <KeteranganPhoto />
         </div>
       </FormGroup>
     </>

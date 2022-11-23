@@ -36,8 +36,6 @@ export default function Register() {
     setRegist,
     setStatus,
     apiRegist,
-    inputRegist,
-    setInputRegist,
   } = useContext(RegistContext);
 
   const changeHandle = (e) => {
@@ -424,7 +422,7 @@ export default function Register() {
               </div>
               <span className="ml-2 text-xs font-semibold text-blueGray-600 text-center mb-4">
                 Sudah mendaftar?{" "}
-                <a href="/login" className="text-blue-500 mb-4 text-xs">
+                <a href="/login" className="text-blue mb-4 text-xs">
                   Login
                 </a>
               </span>

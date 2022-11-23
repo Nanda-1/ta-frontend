@@ -1,31 +1,21 @@
 import React, { useState, useContext } from "react";
 import { RegistContext } from "views/auth/RegistContext";
-import cookies from "js-cookie";
 import swal from "sweetalert";
 
 //react-pdf
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { FormGroup } from "reactstrap";
 import ModalDokumen from "components/Modals/ModalDokumen";
+import PreviewFile from "components/RegistPPAT/PreviewFile";
 
 const Step1 = (props) => {
-  const {
-    inputRegist,
-    setInputRegist,
-    ppatFile,
-    loading,
-    setLoading,
-  } = useContext(RegistContext);
+  const { inputRegist, setInputRegist, ppatFile, loading, setLoading } =
+    useContext(RegistContext);
 
   //Preview PDF
-
   const [file, setFile] = useState("");
-  const [numPages, setNumPages] = useState(null);
 
   function onFileChange(event) {
     event.preventDefault();
-    setLoading(true);
     if (event.target.files.length) {
       setFile(event.currentTarget.files[0]);
       let getFile = event.currentTarget.files[0];
@@ -38,6 +28,7 @@ const Step1 = (props) => {
           icon: "warning",
         });
       } else {
+        setLoading(true);
         setInputRegist({
           ...inputRegist,
           sk_pengangkatan: getFile,
@@ -45,10 +36,6 @@ const Step1 = (props) => {
         ppatFile("sk_pengangkatan", getFile);
       }
     }
-  }
-
-  function onDocumentLoadSuccess({ numPages: nextNumPages }) {
-    setNumPages(nextNumPages);
   }
 
   if (props.currentStep !== 1) {
@@ -101,21 +88,7 @@ const Step1 = (props) => {
                           <div className="py-4 my-auto pb-0">
                             <div className="Example__container">
                               <div className="Example__container__document overflow-y-auto-d h-pdf">
-                                <Document
-                                  className="react-pdf__Page__canvas"
-                                  file={file}
-                                  onLoadSuccess={onDocumentLoadSuccess}
-                                >
-                                  {Array.from(
-                                    new Array(numPages),
-                                    (el, index) => (
-                                      <Page
-                                        key={`page_${index + 1}`}
-                                        pageNumber={index + 1}
-                                      />
-                                    )
-                                  )}
-                                </Document>
+                                <PreviewFile file={file} />
                               </div>
                             </div>
                           </div>
@@ -137,7 +110,7 @@ const Step1 = (props) => {
               </ul>
             </span>
           </div>
-          <div className="text-coolGray-900 pl-12 pt-2 text-left w-auto">
+          <div className="text-coolGray-900 pl-12 pt-2 text-left w-auto pb-6">
             <small>
               Perhatian: <br />
               1. File SK Pengangkatan PPAT harus terbaca jelas <br />
@@ -146,7 +119,6 @@ const Step1 = (props) => {
               4. File yang di unggah harus berformat .pdf
             </small>
           </div>
-          <hr className="mt-6 border-0 mb-4" />
         </div>
       </FormGroup>
     </>

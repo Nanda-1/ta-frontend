@@ -123,97 +123,49 @@ export const RegistProvider = (props) => {
       });
   };
 
-  const getDataProv = async () => {
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + token.access_token);
-
-    let requestOptionsGet = {
+  const getDataProv = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/loc/provinces", {
       method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    try {
-      fetch(
-        process.env.REACT_APP_BACKEND_HOST_AUTH + "api/region/province",
-        requestOptionsGet
-      )
-        // .then((res) => res.json())
-        .then((res) => {
-          if (res.status === 401) {
-            refreshToken();
-          } else {
-            return res.json();
-          }
-        })
-        .then((response) => setDataProv(response.data))
-        .catch((error) => console.log("error", error));
-    } catch (err) {
-      // error handling code
-    }
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => setDataProv(response.data))
+      .catch((error) => console.log("error", error));
   };
 
-  const getDataKota = async () => {
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + token.access_token);
-
-    let requestOptionsGet = {
+  const getDataKota = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/loc/cities", {
       method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    try {
-      fetch(
-        process.env.REACT_APP_BACKEND_HOST_AUTH + "api/region/city",
-        requestOptionsGet
-      )
-        // .then((res) => res.json())
-        .then((res) => {
-          if (res.status === 401) {
-            refreshToken();
-          } else {
-            return res.json();
-          }
-        })
-        .then((response) => setDataKota(response.data))
-        .catch((error) => console.log("error", error));
-    } catch (err) {
-      // error handling code
-    }
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => setDataKota(response.data))
+      .catch((error) => console.log("error", error));
   };
 
-  const getDataKec = async () => {
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + token.access_token);
-
-    let requestOptionsGet = {
+  const getDataKec = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/loc/districts", {
       method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    try {
-      fetch(
-        process.env.REACT_APP_BACKEND_HOST_AUTH + "api/region/district",
-        requestOptionsGet
-      )
-        // .then((res) => res.json())
-        .then((res) => {
-          if (res.status === 401) {
-            refreshToken();
-          } else {
-            return res.json();
-          }
-        })
-        .then((response) => setDataKec(response.data))
-        .catch((error) => console.log("error", error));
-    } catch (err) {
-      // error handling code
-    }
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => setDataKec(response.data))
+      .catch((error) => console.log("error", error));
   };
 
   const getCityFilter1 = (id_prov) => {
@@ -725,7 +677,7 @@ export const RegistProvider = (props) => {
         ppatFile,
         loading,
         setLoading,
-        b64toBlob
+        b64toBlob,
       }}
     >
       {props.children}

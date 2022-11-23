@@ -5,14 +5,8 @@ import FormDataDiri from "components/RegistPPAT/FormDataDiri";
 import FormPPAT from "components/RegistPPAT/FormPPAT";
 
 const Step3r = (provs) => {
-  const {
-    inputRegist,
-    setInputRegist,
-    dataProv,
-    dataKota,
-    dataKec,
-    all,
-  } = useContext(RegistContext);
+  const { inputRegist, setInputRegist, dataProv, dataKota, dataKec, all } =
+    useContext(RegistContext);
 
   const { getDataProv, getDataKota, getDataKec } = all;
 
@@ -65,7 +59,7 @@ const Step3r = (provs) => {
   return (
     <>
       <FormGroup>
-        <div className="relative flex-col break-words w-800-d mb-6 mx-auto shadow-lg mt-12 rounded-lg bg-white border-0">
+        <div className="relative flex-col break-words w-960-d mb-6 mx-auto shadow-lg mt-12 rounded-lg bg-white border-0">
           <FormDataDiri
             changeHandle={changeHandle}
             inputRegist={inputRegist}
@@ -73,10 +67,11 @@ const Step3r = (provs) => {
             dataKota={dataKota}
             dataProv={dataProv}
             filter={filter}
+            object={object}
           />
           <hr className="mt-6 border-b-0 border-blueGray-300" />
         </div>
-        <div className="relative flex-col break-words w-960 mb-6 mx-auto shadow-lg rounded-lg  bg-yellow-d border-0">
+        <div className="relative flex-col break-words w-960-d mb-6 mx-auto shadow-lg rounded-lg  bg-yellow-d border-0">
           <div className="rounded-t mb-0 px-6 py-6">
             <div className="text-center mb-2">
               <p className="text-black text-xs">
@@ -91,7 +86,7 @@ const Step3r = (provs) => {
             </div>
           </div>
         </div>
-        <div className="relative flex-col break-words w-960 mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">
+        <div className="relative flex-col break-words w-960-d mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">
           <FormPPAT
             changeHandle={changeHandle}
             inputRegist={inputRegist}
@@ -99,8 +94,9 @@ const Step3r = (provs) => {
             dataKota={dataKota}
             dataProv={dataProv}
             filter={filter}
+            object={object}
           />
-        </div>{" "}
+        </div>
       </FormGroup>
     </>
   );

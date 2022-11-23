@@ -281,7 +281,7 @@ input[type="number"]::-webkit-outer-spin-button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid rgb(71, 59, 241);
+  /* border: 1px solid rgb(71, 59, 241); */
   background-color: #c2c4c7;
   /* flex-direction: "row"; */
   /* margin: 10px 0;
