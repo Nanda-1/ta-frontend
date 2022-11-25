@@ -80,7 +80,7 @@ export default function CreditCard() {
   };
 
   if (listPayment.length !== 0) {
-    topUpPay(checkout.id, token);
+    topUpPay(checkout.top_up_transaction_id, token);
   }
 
 

@@ -24,7 +24,7 @@ export default function BankTransfer() {
     }
 
     if (listPayment.length !== 0) {
-      topUpPay(checkout.id, listPayment);
+      topUpPay(checkout.top_up_transaction_id, listPayment);
     }
   };
 

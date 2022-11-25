@@ -35,7 +35,7 @@ export default function PaymentList() {
   };
 
   if (listPayment.length !== 0) {
-    topUpPay(checkout.id, '');
+    topUpPay(checkout.top_up_transaction_id, '');
   }
   return (
     <>
