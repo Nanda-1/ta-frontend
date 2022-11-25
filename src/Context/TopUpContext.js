@@ -14,9 +14,9 @@ export const TopUpProvider = (props) => {
   const [token, setToken] = useState("");
   const [historiList, setHistoriList] = useState();
   const [count, setCount] = useState({
-    blangko: 0,
+    eform: 0,
     ttd: 0,
-    meterai: 0,
+    emeterai: 0,
     paket1: 0,
     paket2: 0,
     paket3: 0,
@@ -42,28 +42,33 @@ export const TopUpProvider = (props) => {
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
+  var auth = localStorage.getItem("authentication");
+  var getToken = JSON.parse(auth);
+
   const refreshToken = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/auth/refresh", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        refresh_token: object.refresh_token,
+        refresh_token: getToken.refresh_token,
       }),
     })
       .then((response) => response.json())
       .then((result) => {
+        console.log(result);
         if (result.success === true) {
-          object.token = result.data.token;
-          localStorage.setItem("dataPPAT", JSON.stringify(object));
+          getToken.access_token = result.data.access_token;
+          localStorage.setItem("authentication", JSON.stringify(getToken));
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
-          localStorage.removeItem("dataPPAT");
-          setTimeout(() => {
-            history.push("/login");
-          }, 1000);
+          // localStorage.removeItem("dataPPAT");
+          // localStorage.removeItem("authentication");
+          // setTimeout(() => {
+          //   history.push("/login");
+          // }, 1000);
         }
       })
       .catch((error) => console.log("error", error));
@@ -76,7 +81,7 @@ export const TopUpProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + object.token },
+        headers: { Authorization: "Bearer " + getToken.access_token },
       }
     )
       .then((response) => {
@@ -99,7 +104,7 @@ export const TopUpProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + object.token },
+        headers: { Authorization: "Bearer " + getToken.access_token },
       }
     )
       .then((response) => {
@@ -121,7 +126,7 @@ export const TopUpProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + object.token },
+        headers: { Authorization: "Bearer " + getToken.access_token },
       }
     )
       .then((response) => {
@@ -144,7 +149,7 @@ export const TopUpProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + object.token },
+        headers: { Authorization: "Bearer " + getToken.access_token },
       }
     )
       .then((response) => {
@@ -167,7 +172,7 @@ export const TopUpProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + object.token },
+        headers: { Authorization: "Bearer " + getToken.access_token },
       }
     )
       .then((response) => {
@@ -190,7 +195,7 @@ export const TopUpProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + object.token },
+        headers: { Authorization: "Bearer " + getToken.access_token },
       }
     )
       .then((response) => {
@@ -207,10 +212,14 @@ export const TopUpProvider = (props) => {
   };
 
   const paketKuota = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/packages", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/top-up/packages", {
       method: "GET",
       redirect: "follow",
-      headers: { Authorization: "Bearer " + object.token },
+      headers: {
+        Authorization: "Bearer " + getToken.access_token,
+        "Kunci-Masuk":
+          "EqRkdrkckcHKyJZI3PNsEhD4PeqmKZqqO8pv8jI5lilxuU72wnkueE42iReEMItBPbATcfGCsGC",
+      },
     })
       .then((response) => {
         if (response.status === 401) {
@@ -226,10 +235,14 @@ export const TopUpProvider = (props) => {
   };
 
   const produk = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/websetting/pricelist", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/top-up/price-list", {
       method: "GET",
       redirect: "follow",
-      headers: { Authorization: "Bearer " + object.token },
+      headers: {
+        Authorization: "Bearer " + getToken.access_token,
+        "Kunci-Masuk":
+          "EqRkdrkckcHKyJZI3PNsEhD4PeqmKZqqO8pv8jI5lilxuU72wnkueE42iReEMItBPbATcfGCsGC",
+      },
     })
       .then((response) => {
         if (response.status === 401) {
@@ -244,17 +257,16 @@ export const TopUpProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const histori = () => {
-    let id = Number(object.uid);
-
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/topup/history?user_id=" + id,
-      {
-        method: "GET",
-        redirect: "follow",
-        headers: { Authorization: "Bearer " + object.token },
-      }
-    )
+  const historiTopUp = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/top-up/history", {
+      method: "GET",
+      redirect: "follow",
+      headers: {
+        Authorization: "Bearer " + getToken.access_token,
+        "Kunci-Masuk":
+          "EqRkdrkckcHKyJZI3PNsEhD4PeqmKZqqO8pv8jI5lilxuU72wnkueE42iReEMItBPbATcfGCsGC",
+      },
+    })
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -269,18 +281,15 @@ export const TopUpProvider = (props) => {
   };
 
   const topUp = (itemList) => {
-    let id = Number(object.uid);
-
-    // fetch(process.env.REACT_APP_BACKEND_HOST + "api/topup", {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/topup", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/top-up/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + object.token,
+        Authorization: "Bearer " + getToken.access_token,
+        "Kunci-Masuk":
+          "EqRkdrkckcHKyJZI3PNsEhD4PeqmKZqqO8pv8jI5lilxuU72wnkueE42iReEMItBPbATcfGCsGC",
       },
-      // credentials: "same-origin",
       body: JSON.stringify({
-        user_id: id,
         list_order: itemList,
       }),
     })
@@ -297,7 +306,9 @@ export const TopUpProvider = (props) => {
           setLoadingFile(false);
         } else {
           setTimeout(() => {
-            history.push("/admin/checkout=" + result.data.id);
+            history.push(
+              "/admin/checkout=" + result.data.top_up_transaction_id
+            );
             setLoadingFile(false);
           }, 2000);
         }
@@ -306,27 +317,28 @@ export const TopUpProvider = (props) => {
   };
 
   const topUpPay = (id, token) => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/topup/pay", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/top-up/pay", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + object.token,
+        Authorization: "Bearer " + getToken.access_token,
+        "Kunci-Masuk":
+          "EqRkdrkckcHKyJZI3PNsEhD4PeqmKZqqO8pv8jI5lilxuU72wnkueE42iReEMItBPbATcfGCsGC",
       },
-      // credentials: "same-origin",
       body: JSON.stringify({
         top_up_id: id,
         // listPayment
         payment_type: listPayment.payment_type,
-        bank: listPayment.bank,
-        cstore: {
-          store: listPayment.store,
-        },
-        gopay: {
-          callback_url: "https://infinids.id",
-        },
-        credit_card: {
-          token_id: token,
-        },
+        // bank: listPayment.bank,
+        // cstore: {
+        //   store: listPayment.store,
+        // },
+        // gopay: {
+        //   callback_url: "https://demo.infinids.id",
+        // },
+        // credit_card: {
+        //   token_id: token,
+        // },
       }),
     })
       .then((response) => {
@@ -349,9 +361,13 @@ export const TopUpProvider = (props) => {
   };
 
   const topUpDetail = (id) => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/topup/" + id, {
+    fetch(process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/top-up/" + id, {
       method: "GET",
-      headers: { Authorization: "Bearer " + object.token },
+      headers: {
+        Authorization: "Bearer " + getToken.access_token,
+        "Kunci-Masuk":
+          "EqRkdrkckcHKyJZI3PNsEhD4PeqmKZqqO8pv8jI5lilxuU72wnkueE42iReEMItBPbATcfGCsGC",
+      },
     })
       .then((response) => {
         if (response.status === 401) {
@@ -364,14 +380,13 @@ export const TopUpProvider = (props) => {
         setMidtrans(result.data.midtrans);
         setCheckout(result.data.top_up);
         setListItem(result.data.top_up.top_up_details);
-        setStatusPayment(result.data.top_up.payment_status);
       })
       .catch((error) => console.log("error", error));
   };
 
   const functions = {
     topUp,
-    histori,
+    historiTopUp,
     topUpDetail,
     topUpPay,
   };

@@ -1,11 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { TopUpContext } from "Context/TopUpContext";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import { useHistory } from "react-router-dom";
 import ListProduk from "components/TopUp/ListProduk";
 
 export default function TopUp() {
-  const { historiList, loadingFile } = useContext(TopUpContext);
+  const { historiList, loadingFile, functions } = useContext(TopUpContext);
+  const { historiTopUp } = functions;
 
   let history = useHistory();
 
@@ -15,6 +16,10 @@ export default function TopUp() {
     return "Rp " + parts.join(",");
   };
 
+  useEffect(() => {
+    historiTopUp();
+  }, []);
+
   const formatter = new Intl.DateTimeFormat("id-GB", {
     year: "numeric",
     month: "long",
@@ -23,11 +28,7 @@ export default function TopUp() {
 
   return (
     <>
-      {loadingFile ? (
-        <>
-          <ModalDokumen />
-        </>
-      ) : null}
+      {loadingFile ? <ModalDokumen /> : null}
       <ListProduk />
       <div className="mt-12 text-2xl font-bold">Histori Top Up</div>
       <div className="">
@@ -58,77 +59,66 @@ export default function TopUp() {
             {!historiList ? (
               <tr>
                 <td
-                  className="px-6 text-center border-l-0 border-r-0 text-xs p-6 bg-gray"
-                  colSpan={4}
+                  className="px-6 text-center border-l-0 text-gray-500 border-r-0 text-xs p-6 bg-gray"
+                  colSpan={6}
                 >
-                  Tidak Ada Dokumen
+                  Tidak Ada Transaksi
                 </td>
               </tr>
             ) : (
               <>
-                {historiList.map(
-                  (
-                    {
-                      id,
-                      transaction_date,
-                      total_price,
-                      tax,
-                      payment_status,
-                      top_up_details,
-                    },
-                    index
-                  ) => {
-                    return (
-                      <tr key={id}>
-                        <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
-                          {index + 1}
-                        </td>
-                        <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
-                          {formatter.format(Date.parse(transaction_date))}
-                        </td>
-                        <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
-                          {top_up_details.map((item, index) => {
-                            return (
-                              <span key={index}>
-                                {item.package_name}
-                                <br />
-                              </span>
-                            );
-                          })}
-                        </td>
-                        <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
-                          {formatHarga(total_price + tax)}
-                        </td>
-                        <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
-                          {payment_status === "success" ? (
-                            <div className="text-green pl-2">Berhasil</div>
-                          ) : payment_status === "unpaid" ? (
-                            <div className="text-red-500 pl-2">
-                              Belum dibayar
-                            </div>
-                          ) : payment_status === "pending" ? (
-                            <div className="text-orange-500 pl-2">
-                              Menunggu Pembayaran
-                            </div>
-                          ) : (
-                            <div className="text-red-500 pl-2">Gagal</div>
-                          )}
-                        </td>
-                        <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
-                          <button
-                            className="bg-blue text-white text-md px-2 py-1 rounded-sm"
-                            onClick={() =>
-                              history.push("/admin/detail_pesanan=" + id)
-                            }
-                          >
-                            Detail
-                          </button>
-                          {/* {tokenByList(json_data)} */}
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
+                {historiList.map((el, index) => {
+                  return (
+                    <tr key={el.top_up_transaction_id}>
+                      <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
+                        {formatter.format(Date.parse(el.created_at))}
+                      </td>
+                      <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
+                        {el.top_up_details.map((item, index) => {
+                          return (
+                            <span key={index}>
+                              {item.package_name}
+                              <br />
+                            </span>
+                          );
+                        })}
+                      </td>
+                      <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
+                        {formatHarga(el.sub_total_fee + el.tax_fee)}
+                      </td>
+                      <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
+                        {el.payment_status === "success" ? (
+                          <div className="text-green pl-2">Berhasil</div>
+                        ) : el.payment_status === "unpaid" ? (
+                          <div className="text-red-500 pl-2">Belum dibayar</div>
+                        ) : el.payment_status === "pending" ? (
+                          <div className="text-orange-500 pl-2">
+                            Menunggu Pembayaran
+                          </div>
+                        ) : (
+                          <div className="text-red-500 pl-2">Gagal</div>
+                        )}
+                      </td>
+                      <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
+                        <button
+                          className="bg-blue text-white text-md px-2 py-1 rounded-sm"
+                          onClick={() =>
+                            history.push(
+                              "/admin/detail_pesanan=" +
+                                el.top_up_transaction_id
+                            )
+                          }
+                        >
+                          Detail
+                        </button>
+                        {/* {tokenByList(json_data)} */}
+                      </td>
+                    </tr>
+                  );
+                })}
               </>
             )}
           </tbody>

@@ -65,7 +65,7 @@ export const UserProvider = (props) => {
     await fetch(process.env.REACT_APP_BACKEND_HOST + "api/users/" + id, {
       method: "GET",
       redirect: "follow",
-      headers: { Authorization: "Bearer " + auth.token },
+      headers: { Authorization: "Bearer " + auth.access_token },
     })
       .then((response) => {
         if (response.status === 401) {
