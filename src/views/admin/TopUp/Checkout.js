@@ -18,8 +18,8 @@ export default function Checkout() {
 
   let { id } = useParams();
 
-  let pajak = checkout.tax;
-  let total = checkout.total_price;
+  let pajak = checkout.tax_fee;
+  let total = checkout.sub_total_fee;
 
   useEffect(() => {
     topUpDetail(id);
@@ -49,46 +49,49 @@ export default function Checkout() {
           <div className="font-bold text-3xl text-center">Detail Pesanan</div>
           <div className="mt-6 text-grey font-semibold text-md flex flex-row text-md">
             Status Pesanan :
-            {statusPayment === "success" ? (
-              <div className="text-green pl-2">Berhasil</div>
-            ) : statusPayment === "unpaid" ? (
-              <div className="text-red-500 pl-2">Belum dibayar</div>
-            ) : statusPayment === "pending" ? (
-              <div className="text-red-500 pl-2">Menunggu Pembayaran</div>
-            ) : (
-              <div className="text-red-500 pl-2">Gagal</div>
-            )}
+            <div
+              className={`${
+                checkout.payment_status === "success"
+                  ? "text-green"
+                  : "text-red-500"
+              } pl-2`}
+            >
+              {checkout.payment_status === "success"
+                ? "Berhasil"
+                : checkout.payment_status === "unpaid"
+                ? " Belum dibayar"
+                : checkout.payment_status === "pending"
+                ? "Menunggu Pembayaran"
+                : checkout.payment_status === "failure"
+                ? "Gagal"
+                : "Belum memilih pembayaran"}
+            </div>
           </div>
           <div className="grid grid-cols-4 mt-2 text-grey w-full">
             <div className="col-span-3">
               <p className="font-bold text-black text-md mt-4 mb-2">
                 Rincian Pembelian
               </p>
-              {listItem.map(
-                (
-                  { eform_quota, ematerai_quota, package_name, ttd_quota },
-                  index
-                ) => {
-                  return (
-                    <div
-                      className="checkout-box py-2 px-4 text-sm mb-2 mr-4"
-                      key={index}
-                    >
-                      <div className="w-full font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-black py-2">
-                        {package_name}
-                      </div>
-                      <div
-                        className="text-black py-2 font-medium"
-                        key={package_name}
-                      >
-                        Blangko : {eform_quota} <br />
-                        Meterai : {ematerai_quota} <br />
-                        Tanda Tangan : {ttd_quota} <br />
-                      </div>
+              {listItem.map((el, index) => {
+                return (
+                  <div
+                    className="checkout-box py-2 px-4 text-sm mb-2 mr-4"
+                    key={index}
+                  >
+                    <div className="w-full font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-black py-2">
+                      {el.package_name}
                     </div>
-                  );
-                }
-              )}
+                    <div
+                      className="text-black py-2 font-medium"
+                      key={el.package_name}
+                    >
+                      Blangko : {el.eform_quota} <br />
+                      Meterai : {el.emeterai_quota} <br />
+                      Tanda Tangan : {el.ttd_quota} <br />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
             <div>
               <p className="font-bold text-black text-md mt-4 mb-2">
