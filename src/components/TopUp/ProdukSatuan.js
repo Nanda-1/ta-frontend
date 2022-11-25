@@ -9,55 +9,22 @@ export default function ProdukSatuan() {
     setCount,
     total,
     setTotal,
-    blankoTax,
-    ttdTax,
-    meteraiTax,
-    taxBlangko,
-    taxMeterai,
-    taxTtd,
-    priceBlangko,
-    priceMeterai,
-    priceTtd,
-    blangkoPrice,
-    ttdPrice,
-    meteraiPrice,
-    functions,
     item,
     setItem,
   } = useContext(TopUpContext);
 
-  const { histori } = functions;
-
   useEffect(() => {
     produk();
-    blankoTax();
-    ttdTax();
-    meteraiTax();
-    blangkoPrice();
-    ttdPrice();
-    meteraiPrice();
-    histori();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(item);
-
   const addForm = (nilai, type) => {
-    let produk =
-      type === "eform.price"
-        ? "blangko"
-        : type === "ttd.price"
-        ? "ttd"
-        : "meterai";
     if (nilai > 0) {
-      const arr = item.filter((item) => item.quota_name !== produk);
+      const arr = item.filter((item) => item.quota_name !== type);
       setItem(arr);
-      setItem((item) => [
-        ...item,
-        { quota_name: produk, quota_quantity: nilai },
-      ]);
+      setItem((item) => [...item, { quota_name: type, quota_quantity: nilai }]);
     } else {
-      const arr = item.filter((item) => item.quota_name !== produk);
+      const arr = item.filter((item) => item.quota_name !== type);
       setItem(arr);
     }
   };
@@ -68,79 +35,35 @@ export default function ProdukSatuan() {
     return "Rp " + parts.join(",");
   };
 
-  const tambahNilai = (type) => {
+  const tambahNilai = (type, harga, pajak) => {
     let data =
-      type === "eform.price"
-        ? count.blangko + 1
-        : type === "ttd.price"
+      type === "eform"
+        ? count.eform + 1
+        : type === "ttd"
         ? count.ttd + 1
-        : count.meterai + 1;
+        : count.emeterai + 1;
 
-    let name =
-      type === "eform.price"
-        ? "blangko"
-        : type === "ttd.price"
-        ? "ttd"
-        : "meterai";
+    setCount({ ...count, [type]: data });
 
-    setCount({ ...count, [name]: data });
-    let tax =
-      type === "eform.price"
-        ? taxBlangko
-        : type === "ttd.price"
-        ? taxTtd
-        : taxMeterai;
-
-    let price =
-      type === "eform.price"
-        ? priceBlangko
-        : type === "ttd.price"
-        ? priceTtd
-        : priceMeterai;
-    let nilai = 1 * tax;
-    let nilai2 = 1 * price;
-    let hasil = total.pajak + nilai;
-    let totalHarga = total.harga + nilai2;
+    let hasil = total.pajak + Number(pajak);
+    let totalHarga = total.harga + Number(harga);
     setTotal({ ...total, pajak: hasil, harga: totalHarga });
 
     addForm(data, type);
   };
 
-  const kurangNilai = (type) => {
+  const kurangNilai = (type, harga, pajak) => {
     let data =
-      type === "eform.price"
-        ? count.blangko - 1
-        : type === "ttd.price"
+      type === "eform"
+        ? count.eform - 1
+        : type === "ttd"
         ? count.ttd - 1
-        : count.meterai - 1;
+        : count.emeterai - 1;
 
-    let name =
-      type === "eform.price"
-        ? "blangko"
-        : type === "ttd.price"
-        ? "ttd"
-        : "meterai";
+    setCount({ ...count, [type]: data });
 
-    setCount({ ...count, [name]: data });
-
-    let tax =
-      type === "eform.price"
-        ? taxBlangko
-        : type === "ttd.price"
-        ? taxTtd
-        : taxMeterai;
-
-    let price =
-      type === "eform.price"
-        ? priceBlangko
-        : type === "ttd.price"
-        ? priceTtd
-        : priceMeterai;
-
-    let nilai = 1 * tax;
-    let nilai2 = 1 * price;
-    let hasil = total.pajak - nilai;
-    let totalHarga = total.harga - nilai2;
+    let hasil = total.pajak - Number(pajak);
+    let totalHarga = total.harga - Number(harga);
     setTotal({ ...total, pajak: hasil, harga: totalHarga });
 
     addForm(data, type);
@@ -150,69 +73,63 @@ export default function ProdukSatuan() {
     <>
       <label className="font-bold text-xl">Produk Satuan</label>
       <div className="grid grid-cols-3 mt-2 text-grey w-full">
-        {produkSatuan
-          .filter(
-            (el) =>
-              el.name === "eform.price" ||
-              el.name === "ttd.price" ||
-              el.name === "ematerai.price"
-          )
-          .map(({ name, value, id }) => {
-            return (
-              <div className="doc-box p-4 mx-4" key={id}>
-                <div className="font-bold text-xl" key={id}>
-                  {name === "eform.price"
-                    ? "Blangko"
-                    : name === "ttd.price"
-                    ? "Tanda tangan"
-                    : name === "ematerai.price"
-                    ? "e-Meterai"
-                    : null}
-                </div>
-                <div className="font-semibold mt-2 ml-4">
-                  {formatHarga(Number(value))}
-                </div>
-                <div className="font-semibold mt-2 ml-4 text-xs">
-                  Pajak{" "}
-                  {name === "eform.price"
-                    ? formatHarga(taxBlangko)
-                    : name === "ttd.price"
-                    ? formatHarga(taxTtd)
-                    : name === "ematerai.price"
-                    ? formatHarga(taxMeterai)
-                    : ""}
-                </div>
-                <div className="mt-4 mx-auto w-full text-center">
-                  <button
-                    className="focus:outline-none mr-4"
-                    onClick={() => kurangNilai(name)}
-                    disabled={
-                      count.blangko > 0 || count.ttd > 0 || count.meterai > 0
-                        ? false
-                        : true
-                    }
-                  >
-                    <i className="fa fa-minus bg-blue py-1 px-2 rounded-full text-white text-xxs"></i>
-                  </button>
-                  {name === "eform.price" ? (
-                    <>{count.blangko}</>
-                  ) : name === "ttd.price" ? (
-                    <>{count.ttd}</>
-                  ) : name === "ematerai.price" ? (
-                    <>{count.meterai}</>
-                  ) : (
-                    ""
-                  )}
-                  <button
-                    className="focus:outline-none ml-4"
-                    onClick={() => tambahNilai(name)}
-                  >
-                    <i className="fa fa-plus bg-blue py-1 px-2 rounded-full text-white text-xxs"></i>
-                  </button>
-                </div>
+        {produkSatuan.map((el, index) => {
+          return (
+            <div className="doc-box p-4 mx-4" key={index}>
+              <div className="font-bold text-xl" key={index}>
+                {el.product_name === "eform"
+                  ? "Blangko"
+                  : el.product_name === "ttd"
+                  ? "Tanda tangan"
+                  : "e-Meterai"}
               </div>
-            );
-          })}
+              <div className="font-semibold mt-2 ml-4">
+                {formatHarga(Number(el.product_price))}
+              </div>
+              <div className="font-semibold mt-2 ml-4 text-xs">
+                Pajak {formatHarga(Number(el.product_tax))}
+              </div>
+              <div className="mt-4 mx-auto w-full text-center">
+                <button
+                  className="focus:outline-none mr-4"
+                  onClick={() =>
+                    kurangNilai(
+                      el.product_name,
+                      el.product_price,
+                      el.product_tax
+                    )
+                  }
+                  disabled={
+                    count.eform > 0 || count.ttd > 0 || count.emeterai > 0
+                      ? false
+                      : true
+                  }
+                >
+                  <i className="fa fa-minus bg-blue py-1 px-2 rounded-full text-white text-xxs"></i>
+                </button>
+                {el.product_name === "eform" ? (
+                  <>{count.eform}</>
+                ) : el.product_name === "ttd" ? (
+                  <>{count.ttd}</>
+                ) : (
+                  <>{count.emeterai}</>
+                )}
+                <button
+                  className="focus:outline-none ml-4"
+                  onClick={() =>
+                    tambahNilai(
+                      el.product_name,
+                      el.product_price,
+                      el.product_tax
+                    )
+                  }
+                >
+                  <i className="fa fa-plus bg-blue py-1 px-2 rounded-full text-white text-xxs"></i>
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </>
   );
