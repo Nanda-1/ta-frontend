@@ -54,9 +54,9 @@ export default function PaymentMethod() {
     }
   };
 
-  if (midtrans.redirect_url) {
-    window.open(midtrans.redirect_url, "NewWindow");
-  }
+  // if (midtrans.redirect_url) {
+  //   window.open(midtrans.redirect_url, "NewWindow");
+  // }
 
   return (
     <>

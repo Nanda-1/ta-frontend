@@ -22,9 +22,9 @@ export default function MiniMarket() {
     }
   };
 
-  if (listPayment.length !== 0) {
-    topUpPay(checkout.top_up_transaction_id, "");
-  }
+  // if (listPayment.length !== 0) {
+  //   topUpPay(checkout.top_up_transaction_id, "");
+  // }
   return (
     <>
       <button
