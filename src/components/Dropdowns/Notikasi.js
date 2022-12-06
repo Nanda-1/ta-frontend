@@ -7,7 +7,7 @@ const Notifikasi = () => {
   const { getNotifikasi } = functions;
 
   useEffect(() => {
-    getNotifikasi();
+    // getNotifikasi();
     // eslint-disable-next-line no-unused-vars
   }, []);
 

@@ -6,18 +6,12 @@ import cookies from "js-cookie";
 // Context
 import { UserContext } from "../../Context/UserContext";
 import Call from "components/Pexip/Call/Call.js";
+import AgoraVideoCall from "components/Agora/AgoraVideoCall";
 
 export default function SidebarLive() {
-  const { setLoginStatus, sidebar, dataUser, functions } =
-    useContext(UserContext);
+  const { setLoginStatus } = useContext(UserContext);
 
   let history = useHistory();
-
-  const { fetchDataUser } = functions;
-
-  useEffect(() => {
-    fetchDataUser(cookies.get('uid'));
-  }, []);
 
   const out = () => {
     setLoginStatus(false);
@@ -27,15 +21,15 @@ export default function SidebarLive() {
     history.push("/login");
   };
 
+  let channel = cookies.get("channelName");
+
   return (
     <>
-      {sidebar ? (
-        <nav className="fixed md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden sidebar-bg flex flex-wrap items-center justify-between md:w-45 z-40 p-2 font-roboto sidebar-open">
-          <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
-            <Call />
-          </div>
-        </nav>
-      ) : null}
+      <nav className="fixed md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden sidebar-bg flex flex-wrap items-center justify-between md:w-50 z-40 p-2 font-roboto sidebar-open">
+        <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
+          {channel?.length > 1 ? <AgoraVideoCall /> : "null"}
+        </div>
+      </nav>
     </>
   );
 }

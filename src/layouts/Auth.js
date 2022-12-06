@@ -52,7 +52,7 @@ export default function Auth() {
               <UserProvider>
                 <LoginRoute path="/" exact component={Login} />
                 <LoginRoute path="/login" exact component={Login} />
-                <LoginRoute path="/login_otp" exact component={ModalOtp} />
+                <Route path="/login_otp" exact component={ModalOtp} />
               </UserProvider>
               <Route path="/forgotpwd" exact component={Forgotpwd} />
               <Route path="/resetpwd" exact component={Resetpwd} />

@@ -39,7 +39,7 @@ export default function HistoryCard({dataUser}) {
   };
 
   useEffect(() => {
-    transactionList(dataUser.uid);
+    // transactionList(dataUser.uid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

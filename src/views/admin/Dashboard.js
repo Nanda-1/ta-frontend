@@ -8,6 +8,7 @@ import HistoryCard from "components/Cards/HistoryCard.js";
 import { UserContext } from "Context/UserContext";
 import cookies from "js-cookie";
 import ModalDokumen from "components/Modals/ModalDokumen";
+import RiwayatPemohon from "components/Cards/RiwayatPemohon";
 
 export default function Dashboard() {
   const { setLengkapidiri, loading } = useContext(UserContext);
@@ -33,8 +34,8 @@ export default function Dashboard() {
         <div className="w-full xl:w-12/12 mb-8 xl:mb-2 px-1">
           <UserInfo dataUser={object} />
         </div>
-        <div className="w-full xl:w-12/12 mb-12 xl:mb-2 px-1">
-          <HistoryCard dataUser={object} />
+        <div className="w-full xl:w-12/12 mb-8 xl:mb-2 px-1">
+          <RiwayatPemohon dataUser={object} />
         </div>
       </div>
     </>

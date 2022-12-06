@@ -17,15 +17,13 @@ export default function KuotaCard() {
     formQuota,
   } = useContext(UserContext);
 
-  const { quotaMeterai, quotaTtd, quotaForm } = functions;
+  const { quotaMeterai, cekQuota, quotaForm } = functions;
 
   useEffect(() => {
-      dokumenSelesai(dataUser.uid);
-      dokumenPending(dataUser.uid);
-      dokumenDraft(dataUser.uid);
-      quotaForm(dataUser.uid);
-      quotaMeterai(dataUser.uid);
-      quotaTtd(dataUser.uid);
+      // dokumenSelesai(dataUser.uid);
+      // dokumenPending(dataUser.uid);
+      // dokumenDraft(dataUser.uid);
+      cekQuota('eform');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

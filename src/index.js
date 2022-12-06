@@ -14,6 +14,9 @@ import Auth from "layouts/Auth.js";
 import { UserProvider } from "Context/UserContext";
 import swal from "sweetalert";
 import lengkapiDiri from "layouts/LengkapiDiri";
+import { TopUpProvider } from "Context/TopUpContext";
+import TopUp from "views/admin/TopUp/TopUp";
+import Payment from "components/Modals/Payment";
 
 var val = localStorage.getItem("dataPPAT");
 
@@ -38,7 +41,11 @@ ReactDOM.render(
       <Switch>
         <PrivateRoute path="/admin" component={Admin} />
         <PrivateRoute path="/lengkapiDiri" component={lengkapiDiri} />
-        <Route path="/" component={Auth} />
+        <TopUpProvider>
+          {/* <Payment /> */}
+          <PrivateRoute path="/topup" component={TopUp} />
+        </TopUpProvider>
+          <Route path="/" component={Auth} />
       </Switch>
     </UserProvider>
   </BrowserRouter>,

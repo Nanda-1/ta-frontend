@@ -6,43 +6,36 @@ import "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";
 import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
 import swal from "sweetalert";
-
-// import ReactPlayer from "react-player";
-// import { Link } from "react-router-dom";
-// import {
-//   loadTinyFaceDetectorModel,
-//   detectSingleFace,
-//   TinyFaceDetectorOptions,
-//   resizeResults,
-//   matchDimensions,
-//   draw,
-//   loadFaceLandmarkTinyModel,
-// } from "face-api.js";
-
-// import * as cocoSsd from "@tensorflow-models/coco-ssd";
-// import "@tensorflow/tfjs";
+import ModalDokumen from "components/Modals/ModalDokumen";
 
 //swavideo
 const Step4 = (props) => {
-  const { inputRegist, setInputRegist } = useContext(RegistContext);
+  const { inputRegist, setInputRegist, ppatFile, setLoading, loading } =
+    useContext(RegistContext);
 
-  const [load, setLoad] = useState(false);
+  // const [load, setLoad] = useState(false);
 
-  const [capturing, setCapturing] = useState(false);
-
-  // const [done, setDone] = useState(false);
+  const [capturing, setCapturing] = React.useState(false);
 
   const handleStopCaptureClick = React.useCallback(() => {
+    // setCapturing(false);
     // sendVideo();
     cookies.set("statues", true);
-    // setLoad(true);
+    // swal({
+    //   title: "Berhasil",
+    //   text: "Rekam Wajah Berhasil",
+    //   icon: "success",
+    // });
+    // setLoading(true);
     // setTimeout(function () {
     //   sendVideo();
     // }, 5000);
-    // setDone(true);
   }, []);
 
-  const handleStartCaptureClick = () => {
+  var val = localStorage.getItem("dataPPAT");
+  var object = JSON.parse(val);
+
+  const handleStartCaptureClick = async () => {
     navigator.getUserMedia =
       navigator.getUserMedia ||
       navigator.webkitGetUserMedia ||
@@ -63,36 +56,25 @@ const Step4 = (props) => {
         mediaRecorder.start();
 
         function handleDataAvailable(event) {
-          console.log("original: ", event.data);
-          // downloadData(event.data, "video.original.webm");
-          let self_video = "self_video";
-          var transcodedMp4 = new Blob([event.data], { type: "video/mp4" });
-          // var blobs = new Blob([blob], {
-          //   type: "application/json",
-          // });
-          let name = cookies.get("nama");
-          var fileOfBlob = new File([transcodedMp4], "video_" + name + ".mp4");
+          var transcodedMp4 = new Blob([event.data], { type: "video/webm" });
+          let uid = object.uid;
+          var fileOfBlob = new File([transcodedMp4], "video_" + uid + ".webm");
 
-          setInputRegist({ ...inputRegist, [self_video]: fileOfBlob });
+          setInputRegist({ ...inputRegist, self_video: transcodedMp4 });
 
-          downloadData(
-            transcodedMp4,
-            "rekamwajah_" + cookies.get("nama") + ".mp4"
-          );
-          setLoad(true);
+          downloadData(transcodedMp4, "rekamwajah_" + object.nama + ".mp4");
+          setLoading(true);
+          // console.log(event)
+          setInputRegist({ ...inputRegist, self_video: fileOfBlob });
           setTimeout(() => {
-            sendVideo(fileOfBlob);
+            ppatFile("self_video", transcodedMp4);
             // console.log(fileOfBlob);
-          }, 3000);
-
-          cookies.set(self_video, fileOfBlob);
-          console.log(fileOfBlob);
+          }, 2000);
         }
 
         setTimeout(function () {
           mediaRecorder.stop();
-        }, 10000);
-        setCapturing(true);
+        }, 15000);
       })
       .catch(function (err) {
         console.log("Ada kesalahan! " + err);
@@ -122,8 +104,8 @@ const Step4 = (props) => {
   // const TRIANGULATE_MESH = false;
 
   const go = async () => {
-    setLoad(true);
-    setCapturing(true);
+    setLoading(true);
+    // setCapturing(true);
     console.clear();
 
     let model = null;
@@ -154,7 +136,7 @@ const Step4 = (props) => {
       await triggerPermissionsPrompt();
 
       const availableDevices = await navigator.mediaDevices.enumerateDevices();
-      // setLoad(false);
+      // setLoading(false);
       // handleStartCaptureClick();
       return availableDevices.filter((device) => device.kind === "videoinput");
     };
@@ -168,6 +150,7 @@ const Step4 = (props) => {
         });
       }
 
+      // No deviceId given: fall back to the first one
       if (!deviceId) {
         return availableVideoDevices[0];
       }
@@ -176,6 +159,7 @@ const Step4 = (props) => {
         (availableVideoDevice) => availableVideoDevice.deviceId === deviceId
       );
 
+      // Wrong deviceId given: fall back to the first one
       if (!filteredVideoDevices.length) {
         return availableVideoDevices[0];
       }
@@ -287,12 +271,14 @@ const Step4 = (props) => {
     // MAIN CODE
     try {
       availableVideoDevices = await getVideoDevices();
+      // updateVideoDevicesInUI(availableVideoDevices, ddm);
       selectedVideoDevice = setSelectecedVideoDevice(
         availableVideoDevices,
         null
       );
-      setLoad(false);
+      setLoading(false);
       handleStartCaptureClick();
+      setCapturing(true);
     } catch (e) {
       console.error(e);
       return;
@@ -301,6 +287,7 @@ const Step4 = (props) => {
     // Set up Video Element
     let videoEL = document.querySelector("video");
     if (!videoEL) {
+      // let videoEl = document.getElementsByTagName("video");
       document.body.appendChild(videoEL);
     }
     videoEL.setAttribute("autoplay", "1");
@@ -348,83 +335,7 @@ const Step4 = (props) => {
       animationFrame = requestAnimationFrame(detectAndPaint);
     });
   };
-  /** sampe sini tensorflow2 **/
-
-  const sendVideo = async (fileOfBlob) => {
-    setLoad(true);
-    // event.preventDefault();
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
-    // myHeaders.append("Content-Type", "multipart/form-data");
-
-    let formdata = new FormData();
-    formdata.append("uid", cookies.get("uid"));
-    formdata.append("self_video", fileOfBlob);
-    // formdata.append("bypass_ekyc", "true");
-
-    console.log(fileOfBlob);
-
-    let requestOptions = {
-      method: "POST",
-      credentials: "same-origin",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    try {
-      setLoad(true);
-
-      await fetch(
-        process.env.REACT_APP_BACKEND_HOST + "api/lengkapidiri/update",
-        requestOptions
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          let data = res.data;
-          let sukses = res.success;
-
-          if (data === null && sukses === false) {
-            if (res.error === "user not found") {
-              swal({
-                title: "Gagal!",
-                text: "User tidak ditemukan",
-                icon: "warning",
-              });
-              setLoad(false);
-            } else {
-              swal({
-                title: "Gagal!",
-                text: res.error,
-                icon: "error",
-              });
-              setLoad(false);
-            }
-            // console.log(res);
-            // console.log(formdata);
-            // console.log(false);
-          } else if (sukses === true) {
-            console.log(res);
-            swal({
-              title: "Lengkapi Diri Selesai",
-              text: "Pengisian data diri Anda berhasil. Silahkan lanjutkan Submit untuk menunggu proses verifikasi Certificates of Authentication (CA)",
-              icon: "success",
-            });
-            setLoad(false);
-            // console.log(formdata);
-            // console.log(true);
-            // setShowModal(true);
-          }
-        })
-        .catch((error) => {
-          setLoad(false);
-          console.log("error", error);
-        });
-    } catch (err) {
-      // error handling code
-    }
-  };
+  /** sampe sini tensorflow**/
 
   if (props.currentStep !== 6) {
     return null;
@@ -433,18 +344,12 @@ const Step4 = (props) => {
   return (
     <>
       <p className="pt-10"></p>
-      {load === true ? (
-        <>
-          <div className="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-25-d flex flex-col items-center justify-center">
-            <div className="loader ease-linear rounded-full border-4 border-t-4 h-36 w-36 mb-4"></div>
-          </div>
-        </>
-      ) : null}
+      {loading ? <ModalDokumen /> : null}
       <FormGroup>
         <div className="relative flex-col break-words w-800-d mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">
           <div className="rounded-t mt-8 px-6 py-6">
             <div className="text-center mb-2">
-              <h1 className="text-blue-500 text-xl font-bold">Rekam Wajah</h1>
+              <h1 className="text-blue text-xl font-bold">Rekam Wajah</h1>
             </div>
             <div className="text-coolGray-900 text-center">
               <small>
@@ -460,7 +365,7 @@ const Step4 = (props) => {
               <ul id="gallery" className="flex flex-1 flex-wrap mt-px">
                 <li
                   id="empty"
-                  className="h-full w-full text-center flex flex-col items-center justify-center items-center"
+                  className="h-full w-full text-center flex flex-col justify-center items-center"
                 ></li>
               </ul>
               <div className="canvases">
@@ -477,7 +382,7 @@ const Step4 = (props) => {
                 <>
                   <button
                     type="button"
-                    className="bg-blue-500 text-white active:bg-sky-500 text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                    className="bg-blue text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                     onClick={handleStopCaptureClick}
                   >
                     Selesai
@@ -489,21 +394,12 @@ const Step4 = (props) => {
               ) : (
                 <button
                   type="button"
-                  className="bg-blue-500 text-white active:bg-sky-500 text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                  className="bg-blue text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   onClick={go}
                 >
                   Aktifkan kamera dan Rekam Wajah Anda
                 </button>
               )}
-              {/* {/* {done && ( */}
-              {/* <button
-                  type="button"
-                  className="bg-blue-500 text-white active:bg-sky-500 text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                  // onClick={handleStopCaptureClick}
-                >
-                  Selesai
-                </button> */}
-              {/* )} */}
             </div>
           </div>
           <hr className="mt-8 border-0 mb-8" />

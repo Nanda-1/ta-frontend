@@ -12,26 +12,20 @@ import LogoIppat from "assets/img/logoippat.png";
 import LogoBpn from "assets/img/logo_bpn.png";
 import NewDoc from "assets/img/icon/ic_baru.png";
 import Beranda from "assets/img/icon/ic_home.png";
-import DataPpat from "assets/img/icon/ic_data.png";
-import Dok from "assets/img/icon/ic_dokumen.png";
-import Karyawan from "assets/img/icon/ic_klien.png";
-import Histori from "assets/img/icon/ic_history.png";
-import Logout from "assets/img/icon/ic_logout.png";
+import DataPpat from "assets/img/sidebar/folder.png";
+import Dok from "assets/img/sidebar/document.png";
+import Karyawan from "assets/img/sidebar/businessman.png";
+import Histori from "assets/img/sidebar/history.png";
+import Logout from "assets/img/sidebar/logout.png";
 
 // Context
 import { UserContext } from "../../Context/UserContext";
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
-  const { setLoginStatus, sidebar, functions } = useContext(UserContext);
+  const { setLoginStatus, sidebar } = useContext(UserContext);
 
   let history = useHistory();
-
-  const { fetchDataUser } = functions;
-
-  useEffect(() => {
-    fetchDataUser(cookies.get("uid"));
-  }, []);
 
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
@@ -58,11 +52,7 @@ export default function Sidebar() {
               <i className="fas fa-bars"></i>
             </button>
             {/* Brand */}
-            {window.location.pathname === "/admin/dashboardBpn" ||
-            window.location.pathname ===
-              `/admin/detailBpn/transaction_id=${cookies.get(
-                "id_transaksi"
-              )}` ? (
+            {window.location.pathname.includes("Bpn") ? (
               <div className=" text-center md:pb-2 text-blueGray-600 ">
                 <img
                   src={LogoBpn}

@@ -1,45 +1,46 @@
 import React, { useState, useContext } from "react";
 import { RegistContext } from "views/auth/RegistContext";
-import cookies from "js-cookie";
 
 //react-pdf
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { FormGroup } from "reactstrap";
 // import Cookies from "js-cookie";
 
 const Step1 = (props) => {
-  const { inputRegist, setInputRegist } = useContext(RegistContext);
+  const { inputRegist, setInputRegist, ppatFile, loading, b64toBlob } =
+    useContext(RegistContext);
 
-  //Preview PDF
-  const [show, setShow] = useState(true);
-  const [file, setFile] = useState("");
-  const [numPages, setNumPages] = useState(null);
+  const [capturing, setCapturing] = useState(false);
+  const [imagess, setImagess] = useState(null);
+  const webcamRef = useRef(null);
 
-  function onFileChange(event) {
-    if (event.target.files.length) {
-      setFile(event.currentTarget.files[0]);
-      let name = event.currentTarget.name;
-      let isian = event.currentTarget.files[0].name;
-      let getuid = "uid";
-      let uid = cookies.get("uid");
-      let getRole = "roles";
-      let role = cookies.get("roles");
-      // console.log(isian);
-      setInputRegist({
-        ...inputRegist,
-        [name]: isian,
-        [getuid]: uid,
-        [getRole]: role,
-      });
-      cookies.set(name, isian);
-      setShow(false);
-    }
-  }
+  const videoConstraints = {
+    width: 1500,
+    height: 720,
+    facingMode: "user",
+  };
 
-  function onDocumentLoadSuccess({ numPages: nextNumPages }) {
-    setNumPages(nextNumPages);
-  }
+  const handleStartCaptureClick = () => {
+    setCapturing(true);
+
+    //capture with base64
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImagess(imageSrc);
+
+    //convert base64 to image/jpg
+    const contentType = "image/jpg";
+    var base64result = imageSrc.substring(imageSrc.indexOf(",") + 1);
+    var str = Buffer.from(base64result);
+    const blob = b64toBlob(str, contentType);
+    var blobs = new Blob([blob], { type: "image/png" });
+    setInputRegist({ ...inputRegist, nik_photo: blobs });
+    ppatFile("ktp", blobs);
+  };
+
+  const handleStopCaptureClick = () => {
+    setCapturing(false);
+    setImagess(null);
+  };
 
   if (props.currentStep !== 1) {
     return null;
@@ -47,148 +48,52 @@ const Step1 = (props) => {
 
   return (
     <>
-      <p className="pt-10"></p>
+      {loading ? <ModalDokumen /> : null}
       <FormGroup>
-        <div className="relative flex-col break-words w-800-d mx-auto shadow-lg rounded-lg bg-white border-0">
-          <div className="rounded-t mb-0 px-6 py-6">
+        <div className="relative flex-col break-words w-800-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
+          <div className="rounded-t mt-8 mb-0 px-6 py-6">
             <div className="text-center mb-2">
-              <h1 className="text-blue-500 text-xl font-bold">
-                Unggah <br />
-                SK Pengangkatan PPAT
-              </h1>
+              <h1 className="text-blue text-xl font-bold">Unggah KTP Anda</h1>
             </div>
             <div className="text-coolGray-900 text-center">
               <small>
                 Dokumen ini diperlukan untuk memverifikasi identitas Anda.
                 <br />
-                Gunakan <b> SK Pengangkatan PPAT asli</b>
+                Gunakan KTP asli atau Surat Keterangan Kependudukan
               </small>
             </div>
           </div>
           <div className="space-y-4">
-            <span className="flex h-full w-auto ml-12 mr-12 mx-auto border-2 border-blue-400 pt-2 border-dashed rounded px-4">
-              <ul id="gallery" className="flex flex-1 flex-wrap mt-px">
-                <li
-                  id="empty"
-                  className="h-full w-full text-center flex flex-col justify-center items-center"
-                >
-                  <div className="mx-auto my-auto h-auto w-auto">
-                    <label htmlFor="upload-button" className="w-auto">
-                      {show ? (
-                        <div>
-                          <>
-                            <img
-                              className="mx-auto my-4 align-middle h-36 w-36 bg-fix"
-                              src={
-                                require("assets/img/skppat_icon.png").default
-                              }
-                              alt="no data"
-                            />
-                            <p className="text-center text-xs pt-1">
-                              Klik untuk upload scan SK Pengangkatan PPAT Asli
-                              di file.
-                            </p>
-                          </>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="py-4 my-auto pb-0">
-                            <div className="Example__container">
-                              <div className="Example__container__document overflow-y-auto-d h-pdf">
-                                <Document
-                                  className="react-pdf__Page__canvas"
-                                  file={file}
-                                  onLoadSuccess={onDocumentLoadSuccess}
-                                >
-                                  {Array.from(
-                                    new Array(numPages),
-                                    (el, index) => (
-                                      <Page
-                                        key={`page_${index + 1}`}
-                                        pageNumber={index + 1}
-                                      />
-                                    )
-                                  )}
-                                </Document>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    </label>
-                    <input
-                      type="file"
-                      id="upload-button"
-                      name="sk_pengangkatan"
-                      style={{ display: "none" }}
-                      onChange={onFileChange}
-                      // value={inputRegist.sk_pengangkatan}
-                      required
-                    />
-                    <br />
-                    <button hidden>Upload</button>
-                  </div>
-                </li>
-              </ul>
+            <span className="flex h-custom-d w-customs-d mx-auto border-2 border-blue-400 pt-2 border-dashed rounded">
+              {imagess ? (
+                <img src={imagess} alt="" className="mb-2 ml-2" />
+              ) : (
+                <Webcam
+                  ref={webcamRef}
+                  screenshotFormat="image/jpg"
+                  videoConstraints={videoConstraints}
+                  // width={1280}
+                  name="Webcam"
+                  id="Webcam"
+                  className="mb-2 ml-0-d"
+                  // style={{width: '100% !important'}}
+                />
+              )}
             </span>
           </div>
-          <div className="text-coolGray-900 pl-12 pt-2 text-left w-auto">
-            <small>
-              Perhatian: <br />
-              1. File SK Pengangkatan PPAT harus terbaca jelas <br />
-              2. File adalah dokumen asli, bukan dokumen fotokopi <br />
-              3. File yang terdaftar adalah data yang masih berlaku <br />
-              4. File yang di unggah harus berformat .pdf
-            </small>
+          <div className="text-center w-auto ml-12 mr-12 mt-4 mx-auto">
+            <button
+              type="button"
+              className="bg-blue text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+              onClick={
+                capturing ? handleStopCaptureClick : handleStartCaptureClick
+              }
+            >
+              {capturing ? "Ganti" : "Ambil Foto"}
+            </button>
           </div>
-          <hr className="mt-6 border-0 mb-4" />
+          <KeteranganPhoto />
         </div>
-
-        {/* <div className="rounded-t mb-12 px-6 py-6">
-          <button onClick={startDraw}>Pencil</button>
-          <button onClick={startErase}>Eraser</button>
-          <button onClick={clearCanvas}>Clean</button>
-          <button onClick={saveCanvas}>Save</button>
-          <button onClick={loadCanvas}>Load</button>
-          <canvas
-            id="a"
-            name="a"
-            width="50"
-            height="50"
-            className="border-2"
-          ></canvas>
-        </div> */}
-
-        {/* <div className="relative flex flex-wrap my-6 w-auto">
-          <div className="w-1/2">
-            <Link to="/syarat">
-              <button className="get-started text-black px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-white active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150">
-                Kembali
-              </button>
-            </Link>
-          </div>
-          <div className="w-1/2 text-right">
-            {file === "" ? (
-              // <Link to="/syarat2">
-              <button
-                disabled
-                className="get-started opacity-50 text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-              >
-                Lanjutkan
-              </button>
-            ) : (
-              // </Link>
-              // <Link to="/syarat1">
-              <button
-                // type="submit"
-                className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-              >
-                Simpan
-              </button>
-              // </Link>
-            )}
-          </div>
-        </div> */}
       </FormGroup>
     </>
   );

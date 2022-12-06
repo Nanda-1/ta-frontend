@@ -33,6 +33,7 @@ import MultiStepProgressBar from "./MultiStepProgressBar";
 
 //get data from context
 import { RegistContext } from "views/auth/RegistContext";
+import Cookies from "js-cookie";
 
 class MasterForm extends Component {
   static contextType = RegistContext;
@@ -41,11 +42,9 @@ class MasterForm extends Component {
     super(props);
 
     // Set the intiial input values
+    this.num = Cookies.get("step");
     this.state = {
-      currentStep: 1,
-      email: "",
-      username: "",
-      password: "",
+      currentStep: this.num ? this.num : 1,
     };
 
     // Bind the submission to handleChange()
@@ -83,14 +82,14 @@ class MasterForm extends Component {
     this.setState({
       currentStep: currentStep,
     });
-    // if (currentStep === 6) {
-    //   this.context.testFaceAPI();
-    // }
+
+    Cookies.set("step", this.state.currentStep);
 
     //sbentar
-    if (currentStep === 5) {
-      this.context.cekKTP();
-    }
+    // if (currentStep === 6) {
+    //   // this.context.cekKTP();
+    //   this.context.sendLengkapiDiriUmum();
+    // }
   }
 
   // The "next" and "previous" button functions
@@ -101,7 +100,7 @@ class MasterForm extends Component {
     if (currentStep !== 1) {
       return (
         <Button
-          className="get-started shadow text-black font-bold px-6 py-3 mb-4 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-white active:bg-sky-600 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+          className="get-started shadow text-black font-bold px-6 py-3 mb-4 rounded-lg outline-none focus:outline-none mr-1 bg-white active:bg-sky-600 text-sm hover:shadow-lg ease-linear transition-all duration-150"
           onClick={this._prev}
         >
           Kembali
@@ -120,7 +119,7 @@ class MasterForm extends Component {
       return (
         <>
           <Button
-            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue-500 active:bg-indigo-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
+            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue active:bg-indigo-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
             onClick={this._next}
           >
             Lanjutkan
@@ -136,32 +135,36 @@ class MasterForm extends Component {
   // Trigger an alert on form submission
   handleSubmit = (event) => {
     event.preventDefault();
-    swal("Apakah anda telah memiliki tanda tangan elektronik sebelumnya ??", {
-      buttons: {
-        cancel: "Batal",
-        catchSign: {
-          text: "Belum",
-          value: "catchSign",
-        },
-        catchCA: {
-          text: "Sudah",
-          value: "catchCA",
-        },
-      },
-    }).then((value) => {
-      switch (value) {
-        case "catchSign":
-          this.context.toSign();
-          break;
+    this.context.setLoading(true);
+    // this.context.getUserFile('selfie_photo');
+    this.context.sendLengkapiDiriUmum();
 
-        case "catchCA":
-          this.context.toCA();
-          break;
+    // swal("Apakah anda telah memiliki tanda tangan elektronik sebelumnya ??", {
+    //   buttons: {
+    //     cancel: "Batal",
+    //     catchSign: {
+    //       text: "Belum",
+    //       value: "catchSign",
+    //     },
+    //     catchCA: {
+    //       text: "Sudah",
+    //       value: "catchCA",
+    //     },
+    //   },
+    // }).then((value) => {
+    //   switch (value) {
+    //     case "catchSign":
+    //       this.context.toSign();
+    //       break;
 
-        default:
-          swal("Submit dibatalkan");
-      }
-    });
+    //     case "catchCA":
+    //       this.context.toCA();
+    //       break;
+
+    //     default:
+    //       swal("Submit dibatalkan");
+    //   }
+    // });
   };
 
   get submitButton() {
@@ -173,7 +176,7 @@ class MasterForm extends Component {
         <>
           <Button
             onClick={this.handleSubmit}
-            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue-500 active:bg-indigo-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
+            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue active:bg-indigo-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
           >
             Submit
           </Button>

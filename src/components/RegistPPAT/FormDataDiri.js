@@ -76,7 +76,7 @@ const FormDataDiri = ({
               placeholder="Tanggal Lahir"
               onChange={changeHandle}
               value={
-                inputRegist.tanggal_lahir || object ? object.tempat_lahir : ""
+                inputRegist.tanggal_lahir || object ? object.tanggal_lahir : ""
               }
               // required
             />
@@ -150,7 +150,7 @@ const FormDataDiri = ({
               Provinsi
             </label>
             <select
-              value={inputRegist.id_prov}
+              value={object ? object.id_prov : ""}
               onChange={changeHandle}
               name="id_prov"
               className="bg-white rounded text-sm shadow w-full"
@@ -174,16 +174,20 @@ const FormDataDiri = ({
               Kota
             </label>
             <select
-              value={object ? object.id_kota : null}
+              value={object ? object.id_kota : ""}
               onChange={changeHandle}
               name="id_kota"
               className="bg-white rounded text-black text-sm shadow w-full"
             >
-             <option value="" disabled selected>
+              <option value="" disabled selected>
                 Pilih Kota
               </option>
               {dataKota
-                .filter((el) => el.province_id === Number(filter.id_prov))
+                .filter(
+                  (el) =>
+                    el.province_id ===
+                    Number(object ? object.id_prov : filter.id_prov)
+                )
                 .map((item) => {
                   return (
                     <option value={item.city_id} key={item.city_id}>
@@ -202,16 +206,16 @@ const FormDataDiri = ({
               Kecamatan
             </label>
             <select
-              value={object ? object.id_camat : null}
+              value={object ? object.id_camat : ""}
               onChange={changeHandle}
               name="id_camat"
               className="bg-white rounded text-sm shadow w-full"
             >
-             <option value="" disabled selected>
+              <option value="" disabled selected>
                 Pilih Kecamatan
               </option>
               {dataKec
-                .filter((el) => el.city_id === Number(filter.id_kota))
+                .filter((el) => el.city_id ===  Number(object ? object.id_kota : filter.id_kota))
                 .map((item) => {
                   return (
                     <option value={item.district_id} key={item.district_id}>

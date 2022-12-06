@@ -109,7 +109,7 @@ export default function Login() {
         <div className="flex content-center items-center justify-center h-screen">
           <div className="w-full lg:w-4/12 px-1">
             <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded-lg border-0">
-              <div className="rounded-t mb-0 px-6 py-6 ">
+              <div className="rounded-t mb-0 px-6 py-6 bg-white">
                 <div className="text-center text-3xl font-bold text-blue pt-6">
                   Log In
                 </div>

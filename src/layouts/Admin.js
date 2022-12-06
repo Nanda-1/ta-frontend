@@ -10,21 +10,17 @@ import { AjbProvider } from "../Context/AjbContext";
 import { AphtProvider } from "Context/AphtContext";
 import { DokumenProvider } from "Context/DokumenContext";
 import { TopUpProvider } from "Context/TopUpContext";
-import { NotifikasiProvider } from "Context/NotifikasiContext";
 import { PexipProvider } from "Context/PexipContect";
 
 // components
 
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
 import SidebarLive from "components/Sidebar/SidebarLive";
-import HeaderStats from "components/Headers/HeaderStats.js";
 
 // views
 
 import Dashboard from "views/admin/Dashboard.js";
 import DashboardBpn from "views/admin/DashboardBpn";
-import RecordView from "views/admin/Tables.js";
+// import RecordView from "views/admin/Tables.js";
 import OtpModal from "components/Modals/OTP";
 import OtpModalConfirm from "components/Modals/OtpConfirm";
 import OtpModalApht from "components/Modals/Apht/OTP";
@@ -44,8 +40,6 @@ import stepperIndexApht from "views/admin/APHT";
 import PreviewDokumen from "views/admin/AktaJualBeli/PreviewDokumen";
 
 import { UserContext } from "../Context/UserContext";
-// import NotFound from "./NotFound";
-// import swal from "sweetalert";
 
 // Pexip
 import Preflight from "components/Pexip/Preflight/Preflight";
@@ -53,6 +47,19 @@ import Call from "components/Pexip/Call/Call";
 import Maps from "views/admin/WebRTC/Maps";
 import MeteraiConfirm from "components/Modals/MeteraiConfirm";
 import Cookies from "js-cookie";
+import AgoraRtc from "components/Agora/AgoraRtc";
+import { AgoraProvider } from "Context/AgoraContext";
+import Sidebar_v2 from "components/Sidebar/Sidebar_v2";
+import { SuratKuasaProvider } from "Context/SuratKuasaContext";
+import UploadAjb from "views/admin/PTSL/UploadAjb";
+import UploadPbb from "views/admin/PTSL/UploadPbb";
+import UploadBphtb from "views/admin/PTSL/UploadBphtb";
+import UploadPh from "views/admin/PTSL/UploadPph";
+import DokumenPtsl from "views/admin/PTSL/DokumenPtsl";
+import Stamping from "views/admin/PTSL/Stamping";
+import UploadSertipikat from "views/admin/SuratKuasa/UploadSertipikat";
+import DokumenSuratKuasa from "views/admin/SuratKuasa/DokumenSuratKuasa";
+import StampingSuratKuasa from "views/admin/SuratKuasa/StampingSuratKuasa";
 
 export default function Admin() {
   const { sidebar } = useContext(UserContext);
@@ -68,36 +75,90 @@ export default function Admin() {
           (window.location.pathname === "/admin/AktaJualBeli" &&
             Cookies.get("step") === "8") ||
           (window.location.pathname === "/admin/AktaPemberianHakTanggungan" &&
-            Cookies.get("step") === "8") ? (
+            Cookies.get("step") === "8") ||
+          window.location.pathname === "/admin/agoraRTC" ? (
             <PexipProvider>
               <SidebarLive />
             </PexipProvider>
-          ) : window.location.pathname === "/admin/step6/call_mobile" ? null : (
-            <Sidebar />
+          ) : window.location.pathname === "/admin/topUp" ? null : (
+            <Sidebar_v2 />
           )}
 
           <div
-            className={`relative bg-white min-h-screen sidebar-transition ${
-              sidebar && window.location.pathname !== "/admin/step6/call"
-                ? " md:ml-30"
-                : "md:ml-50"
-            } ${sidebar ? null : "ml-0"}`}
+            className={`relative min-h-screen sidebar-transition md:ml-53 ${
+              sidebar ? null : "ml-0"
+            }`}
           >
-            <NotifikasiProvider>
+            {/* <NotifikasiProvider>
               <AdminNavbar />
-            </NotifikasiProvider>
+            </NotifikasiProvider> */}
             {/* Header */}
-            <HeaderStats />
-            <div className="px-4 md:px-10 mx-auto w-full -m-24">
+            {/* <HeaderStats /> */}
+            <div
+              className={`px-4 md:px-8 mt-12 w-full -m-24 ${
+                window.location.pathname === "/admin/topUp"
+                  ? "bg-white"
+                  : "mx-auto"
+              }`}
+            >
               <Switch>
                 <UserProvider>
                   <LengkapiDiriCard />
                   <Route path="/admin/dashboard" exact component={Dashboard} />
-                  <Route path="/admin/tables" exact component={RecordView} />
+                  {/* <Route path="/admin/tables" exact component={RecordView} /> */}
 
                   <PexipProvider>
                     <Route path="/admin/step6" exact component={Preflight} />
                   </PexipProvider>
+                  <SuratKuasaProvider>
+                    {/* <FormDokumen />
+                    <FormDokumenSuratKuasa /> */}
+                    <Route
+                      path="/admin/pendaftaran_tanah_sistematis_lengkap/uploadAjb"
+                      exact
+                      component={UploadAjb}
+                    />
+                    <Route
+                      path="/admin/pendaftaran_tanah_sistematis_lengkap/uploadPbb"
+                      exact
+                      component={UploadPbb}
+                    />
+                    <Route
+                      path="/admin/pendaftaran_tanah_sistematis_lengkap/uploadBphtb"
+                      exact
+                      component={UploadBphtb}
+                    />
+                    <Route
+                      path="/admin/pendaftaran_tanah_sistematis_lengkap/uploadPph"
+                      exact
+                      component={UploadPh}
+                    />
+                    <Route
+                      path="/admin/pendaftaran_tanah_sistematis_lengkap/inputDataForm"
+                      exact
+                      component={DokumenPtsl}
+                    />
+                    <Route
+                      path="/admin/pendaftaran_tanah_sistematis_lengkap/pembubuhan"
+                      exact
+                      component={Stamping}
+                    />
+                    <Route
+                      path="/admin/surat_kuasa/uploadSertipikat"
+                      exact
+                      component={UploadSertipikat}
+                    />
+                    <Route
+                      path="/admin/surat_kuasa/inputDataForm"
+                      exact
+                      component={DokumenSuratKuasa}
+                    />
+                    <Route
+                      path="/admin/surat_kuasa/pembubuhan"
+                      exact
+                      component={StampingSuratKuasa}
+                    />
+                  </SuratKuasaProvider>
 
                   <TopUpProvider>
                     <Payment />
@@ -132,6 +193,13 @@ export default function Admin() {
                       exact
                       component={DokumenDetailsBpn}
                     />
+                    <AgoraProvider>
+                      <Route
+                        path="/admin/agoraRTC"
+                        exact
+                        component={AgoraRtc}
+                      />
+                    </AgoraProvider>
                     <Route path="/admin/step6/call" exact component={Maps} />
                     <PexipProvider>
                       <Route

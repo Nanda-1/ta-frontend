@@ -36,6 +36,9 @@ export const RegistProvider = (props) => {
   var auth = localStorage.getItem("authentication");
   var token = JSON.parse(auth);
 
+  var dataDiri = JSON.parse(localStorage.getItem("dataDiri"));
+  // var token = JSON.parse(auth);
+
   const refreshToken = () => {
     fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
       method: "POST",
@@ -121,6 +124,42 @@ export const RegistProvider = (props) => {
       .catch((error) => {
         console.log("error", error);
       });
+  };
+
+  const getUserFile = (type) => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/users/get-file?file_type=" +
+        type,
+      {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          Authorization: "Bearer " + token.access_token,
+        },
+      }
+    )
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.blob();
+        }
+      })
+      .then((result) => {
+        if (type === "selfie_photo") {
+          // localStorage.setItem(type, )
+          setInputRegist({ ...inputRegist, type: result });
+          getUserFile("self_video");
+        } else {
+          setInputRegist({ ...inputRegist, type: result });
+          setTimeout(() => {
+            sendLengkapiDiriUmum();
+          }, 2000);
+        }
+        // setTtdImage(URL.createObjectURL(result));
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const getDataProv = () => {
@@ -252,46 +291,31 @@ export const RegistProvider = (props) => {
   };
 
   // Post API LengkapiDiri
-  const sendLengkapiDiriUmum = async () => {
-    // event.preventDefault();
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + token.access_token);
-    // myHeaders.append("Content-Type", "multipart/form-data");
-
-    let formdata = new FormData();
-    formdata.append("uid", object.uid);
-    formdata.append("nama", cookies.get("nama"));
-    formdata.append("tempat_lahir", cookies.get("tempat_lahir"));
-    formdata.append("tanggal_lahir", cookies.get("tgl_lahir"));
-    formdata.append("gender", cookies.get("gender"));
-    formdata.append("no_nik", cookies.get("nik"));
-    formdata.append("no_npwp", cookies.get("npwp"));
-    formdata.append("alamat", cookies.get("alamat"));
-    formdata.append("prov", cookies.get("id_prov"));
-    formdata.append("kotkab", cookies.get("id_kota"));
-    formdata.append("kecamatan", cookies.get("id_camat"));
-    formdata.append("kodepos", cookies.get("kodepos"));
-    formdata.append("nik_photo", cookies.get("nik_photo"));
-    formdata.append("npwp_photo", cookies.get("npwp_photo"));
-    formdata.append("roles", "umum");
-    formdata.append("status_nikah", cookies.get("status"));
-    formdata.append("self_photo", cookies.get("self_photo"));
-    formdata.append("self_video", cookies.get("self_video"));
-    formdata.append("specimen_tdtgn_file", cookies.get("specimen_tdtgn_file"));
-
-    let requestOptions = {
+  const sendLengkapiDiriUmum = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/update-profile", {
       method: "POST",
-      credentials: "same-origin",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow",
-    };
-
-    await fetch(
-      process.env.REACT_APP_BACKEND_HOST_AUTH + "api/lengkapidiri/update",
-      requestOptions
-    )
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token.access_token,
+      },
+      body: JSON.stringify({
+        name: dataDiri.nama,
+        place_of_birth: dataDiri.tempat_lahir,
+        date_of_birth: dataDiri.tanggal_lahir,
+        gender: dataDiri.gender,
+        no_nik: dataDiri.no_nik,
+        no_npwp: dataDiri.no_npwp,
+        address: dataDiri.alamat,
+        prov: dataDiri.id_prov,
+        kotkab: dataDiri.id_kota,
+        district_id: dataDiri.id_camat,
+        post_code: dataDiri.kodepos,
+        marriage_status: dataDiri.status_nikah,
+        roles: "umum",
+        selfie_photo: inputRegist.selfie_photo,
+        self_video: inputRegist.self_video,
+      }),
+    })
       .then((res) => {
         if (res.status === 401) {
           refreshToken();
@@ -300,43 +324,22 @@ export const RegistProvider = (props) => {
         }
       })
       .then((res) => {
-        let data = res.data;
+        setLoading(false);
         let sukses = res.success;
 
-        if (data === null && sukses === false) {
-          if (res.error === "user not found") {
-            swal({
-              title: "Gagal!",
-              text: "User tidak ditemukan",
-              icon: "warning",
-            });
-          } else {
-            swal({
-              title: "Gagal!",
-              text: res.error,
-              icon: "error",
-            });
-          }
-          // setLoad(false);
-          console.log(res);
-          console.log(formdata);
-          console.log(false);
-        } else if (sukses === true) {
-          console.log(res);
-          console.log(formdata);
-          console.log(true);
-          history.push("/admin/dashboard");
-          let name = cookies.get("nama");
+        if (!sukses) {
           swal({
-            title: "Registrasi Berhasil",
-            text: "Selamat Datang " + name + " di Dashboard IDS",
+            title: "Gagal!",
+            text: res.data.error,
+            icon: "warning",
+          });
+        } else {
+          swal({
+            title: "Berhasil",
+            text: res.data.message,
             icon: "success",
           });
         }
-      })
-      .catch((error) => {
-        // setLoad(false);
-        console.log("error", error);
       });
   };
 
@@ -643,7 +646,7 @@ export const RegistProvider = (props) => {
         getDataProv,
         getDataKota,
         getDataKec,
-
+        getUserFile,
         getCityFilter1,
         getDistrictFilter1,
         getCityFilter,
