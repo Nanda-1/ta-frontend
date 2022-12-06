@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 @import url("https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
 
 .font-roboto {
   font-family: "Roboto", sans-serif;
@@ -10,9 +11,41 @@
   font-family: "Montserrat", sans-serif;
 }
 
+.font-sans {
+  font-family: "Open Sans", sans-serif;
+}
+
+.bg-purple-2 {
+  background: #bc3157;
+}
+
+.bg-green-3 {
+  background: #2ca676;
+}
+
+.bg-cyan {
+  background: #46bac1;
+}
+
+.bg-light-blue-2 {
+  background: #7856ff;
+}
+
+body {
+  background-color: white;
+}
+
+.bg-yellow {
+  background: #ffb13a;
+}
+
 .bg-blue {
   --tw-bg-opacity: 1;
   background-color: #5275c1;
+}
+
+.bg-default {
+  background: #f5f5f5 !important;
 }
 
 .bg-gray {
@@ -45,6 +78,16 @@
 
 .text-xxs {
   font-size: 0.6rem;
+  line-height: 1rem;
+}
+
+.text-2xs {
+  font-size: 0.5rem;
+  line-height: 1rem;
+}
+
+.text-3xs {
+  font-size: 0.3rem;
   line-height: 1rem;
 }
 
@@ -118,12 +161,20 @@
   margin-left: 13rem;
 }
 
+.md\:ml-53 {
+  margin-left: 17.5rem;
+}
+
 .md\:pt-16 {
   padding-top: 4rem;
 }
 
 .md\:w-44 {
   width: 11rem;
+}
+
+.md\:w-46 {
+  width: 17.5rem;
 }
 
 .border-blue {
@@ -320,6 +371,10 @@ input[type="number"] {
   border: 1px solid #e2e2e2;
 }
 
+.border-grey-3 {
+  border: 1px solid #eeeeee;
+}
+
 .content-center {
   align-content: center;
 }
@@ -344,6 +399,10 @@ input[type="number"] {
 
 .w-900-d {
   width: 40rem;
+}
+
+.w-96 {
+  width: 24rem;
 }
 
 .space-y-4 {
@@ -477,6 +536,31 @@ input[type="number"] {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.sidebar {
+  font-family: "Open Sans", sans-serif;
+}
+
+.list-blanko {
+  color: #828282;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 19px;
+}
+
+.list-blanko:hover {
+  font-weight: 700;
+}
+
+.list-akta-btn {
+  margin-top: -11px;
+  position: absolute;
+}
+
+.list-animation {
+  border-left: 1px solid #828282;
+  transition: 0.3s all ease;
 }
 
 .pt-12 {
@@ -625,9 +709,43 @@ input[type="number"] {
 }
 
 .sidebar-icon {
-  width: 20px;
+  width: 21px;
   position: absolute;
-  padding-top: 5px;
+  padding-top: 3px;
+}
+
+.sidebar-font {
+  font-size: 14px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+}
+
+.sidebar-line {
+  width: 95%;
+  background: #eeeeee;
+}
+
+.topup-line {
+  background: #eeeeee;
+  height: 5px;
+}
+
+.total-line {
+  background: #eeeeee;
+  height: 2px;
+}
+
+.package-tooltip {
+  background: rgba(82, 117, 193, 0.12);
+  padding: 3px 7px;
+}
+
+.font-700 {
+  font-weight: 700;
+}
+
+.font-600 {
+  font-weight: 600;
 }
 
 .pl-6 {
@@ -643,8 +761,16 @@ input[type="number"] {
 }
 
 .sidebar-bg {
-  background: #f3ffff;
+  /* background:  #F5F5F5; */
   z-index: 10;
+}
+
+.sidebar-active {
+  height: 48px;
+  width: 6px;
+  background-color: #5275c1;
+  position: absolute;
+  border-radius: 0 7px 7px 0;
 }
 
 .avatar {
@@ -1069,10 +1195,10 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
   justify-items: center;
 }
-
-video{
+/* 
+video {
   width: 80% !important;
-}
+} */
 
 .vid {
   position: relative;
@@ -1150,4 +1276,52 @@ video{
   cursor: pointer;
   display: block;
   margin: 0 auto;
+}
+
+.text-black-2 {
+  color: #333333;
+}
+
+.card-shadow {
+  box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.06);
+}
+
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.add-quota:disabled .fa {
+  color: rgba(0, 0, 0, 0.25);
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.border-b-1 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+}
+
+.quota-btn {
+  padding: 2px 5px;
+}
+
+.sidebar-scroll {
+  overflow-y: scroll;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.sidebar-scroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.left-320-px {
+  left: 320px;
+}
+
+.checkout-button:disabled {
+  background: rgba(0, 0, 0, 0.25);
 }

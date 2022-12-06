@@ -15,9 +15,9 @@ export const UserProvider = (props) => {
   const [modalOtpLogin, setModalOtpLogin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resend, setResend] = useState(false);
-  const [selesai, setSelesai] = useState(false);
-  const [pending, setPending] = useState(false);
-  const [draft, setDraft] = useState(false);
+  const [selesai, setSelesai] = useState(0);
+  const [pending, setPending] = useState(0);
+  const [draft, setDraft] = useState(0);
   const [sidebar, setSidebar] = useState(true);
   const [step, setStep] = useState(1);
   const [meteraiQuota, setMeteraiQuota] = useState(0);
@@ -35,7 +35,7 @@ export const UserProvider = (props) => {
   var auth = JSON.parse(login);
 
   const refreshToken = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/auth/refresh", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -44,15 +44,17 @@ export const UserProvider = (props) => {
     })
       .then((response) => response.json())
       .then((result) => {
+        console.log(result);
         if (result.success === true) {
-          auth.token = result.data.access_token;
-          localStorage.setItem("dataPPAT", JSON.stringify(auth));
+          auth.access_token = result.data.access_token;
+          localStorage.setItem("authentication", JSON.stringify(auth));
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
           localStorage.removeItem("dataPPAT");
+          localStorage.removeItem("authentication");
           setTimeout(() => {
             history.push("/login");
           }, 1000);
@@ -61,8 +63,8 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const fetchDataUser = async (id) => {
-    await fetch(process.env.REACT_APP_BACKEND_HOST + "api/users/" + id, {
+  const fetchDataUser = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/match-token", {
       method: "GET",
       redirect: "follow",
       headers: { Authorization: "Bearer " + auth.access_token },
@@ -78,10 +80,51 @@ export const UserProvider = (props) => {
         setDataUser(result.data);
         localStorage.setItem("dataPPAT", JSON.stringify(result.data));
         setTimeout(() => {
-          window.location.reload()
+          setLoading(false);
+          window.location.reload();
         }, 3000);
       })
-      .catch((error) => console.log("error", error.message));
+      .catch((error) => fetchDataUser());
+  };
+
+  const createSuratKuasa = (type) => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "api/transactions/create",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.access_token,
+        },
+        body: JSON.stringify({
+          doc_type: type,
+        }),
+      }
+    )
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        if (result.success === false) {
+          swal("Error", result.error, "error");
+        } else {
+          if (type === "surat_kuasa") {
+            history.push("/admin/surat_kuasa/uploadSertipikat");
+          } else {
+            history.push(
+              "/admin/pendaftaran_tanah_sistematis_lengkap/uploadAjb"
+            );
+          }
+          cookies.set("transaction_id", result.data.transaction_id);
+          window.location.reload();
+        }
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const createDocumentAJB = () => {
@@ -89,7 +132,7 @@ export const UserProvider = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + auth.token,
+        Authorization: "Bearer " + auth.access_token,
       },
       body: JSON.stringify({
         doc_type: "akta_jual_beli",
@@ -119,7 +162,7 @@ export const UserProvider = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + auth.token,
+        Authorization: "Bearer " + auth.access_token,
       },
       body: JSON.stringify({
         doc_type: "akta_pemberian_hak_tanggungan",
@@ -153,7 +196,7 @@ export const UserProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + auth.token },
+        headers: { Authorization: "Bearer " + auth.access_token },
       }
     )
       .then((response) => {
@@ -190,20 +233,24 @@ export const UserProvider = (props) => {
     )
       .then((res) => res.json())
       .then((res) => {
-        if (res.data === null) {
+        if (!res.success) {
           swal("Error", res.error, "error");
           setLoading(false);
         } else {
           localStorage.setItem(
             "authentication",
             JSON.stringify(res.data.token)
-            );
-            swal("Berhasil", "Kode OTP berhasil diverifikasi", "success");
+          );
+          swal({
+            title: "Berhasil",
+            text: res.data.message,
+            icon: "success",
+            buttons: false,
+          });
+
+          if (auth.access_token) {
             fetchDataUser(res.data.user.user_id);
-          // setTimeout(() => {
-          //   window.location.reload();
-          //   setLoading(false);
-          // }, 5000);
+          }
         }
       })
       .catch((error) => console.log("error", error));
@@ -298,7 +345,7 @@ export const UserProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + auth.token },
+        headers: { Authorization: "Bearer " + auth.access_token },
       }
     )
       .then((response) => response.json())
@@ -320,7 +367,7 @@ export const UserProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + auth.token },
+        headers: { Authorization: "Bearer " + auth.access_token },
       }
     )
       .then((response) => response.json())
@@ -342,7 +389,7 @@ export const UserProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + auth.token },
+        headers: { Authorization: "Bearer " + auth.access_token },
       }
     )
       .then((response) => response.json())
@@ -368,7 +415,7 @@ export const UserProvider = (props) => {
       {
         method: "GET",
         redirect: "follow",
-        headers: { Authorization: "Bearer " + auth.token },
+        headers: { Authorization: "Bearer " + auth.access_token },
       }
     )
       .then((response) => {
@@ -384,16 +431,17 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const quotaTtd = () => {
+  const cekQuota = (type) => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/users/quota?name=ttd&user_id=" +
-        object.uid,
+      process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/check-quota?name=" + type,
       {
         method: "GET",
         redirect: "follow",
-        // headers: {'Content-Type': 'application/docx'}
-        headers: { Authorization: "Bearer " + auth.token },
+        headers: {
+          Authorization: "Bearer " + auth.access_token,
+          "Kunci-Masuk":
+            "EqRkdrkckcHKyJZI3PNsEhD4PeqmKZqqO8pv8jI5lilxuU72wnkueE42iReEMItBPbATcfGCsGC",
+        },
       }
     )
       .then((response) => {
@@ -404,7 +452,15 @@ export const UserProvider = (props) => {
         }
       })
       .then((result) => {
-        setTtdQuota(result.data.quota_value);
+        if (type === "eform") {
+          setFormKuota(result.data.quota_value);
+          cekQuota("ttd");
+        } else if (type === "ttd") {
+          setTtdQuota(result.data.quota_value);
+          cekQuota("emeterai");
+        } else {
+          setMeteraiQuota(result.data.quota_value);
+        }
       })
       .catch((error) => console.log("error", error));
   };
@@ -418,7 +474,7 @@ export const UserProvider = (props) => {
         method: "GET",
         redirect: "follow",
         // headers: {'Content-Type': 'application/docx'}
-        headers: { Authorization: "Bearer " + auth.token },
+        headers: { Authorization: "Bearer " + auth.access_token },
       }
     )
       .then((response) => {
@@ -438,12 +494,13 @@ export const UserProvider = (props) => {
     fetchDataUser,
     createDocumentAJB,
     createDocumentAPHT,
+    createSuratKuasa,
     transactionList,
     dataPenjual,
     otpExpired,
     quotaForm,
     quotaMeterai,
-    quotaTtd,
+    cekQuota,
   };
 
   return (

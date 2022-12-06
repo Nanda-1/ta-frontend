@@ -10,7 +10,6 @@ export default function BpnInfo() {
   useEffect(() => {
     listTransaksi();
     getCountUsers();
-    // getDocBaru('draft')
     getDocPending();
     getDocSelesai();
     // eslint-disable-next-line react-hooks/exhaustive-deps
