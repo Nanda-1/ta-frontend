@@ -32,7 +32,7 @@ export default function ProdukSatuan() {
   const formatHarga = (angka) => {
     var parts = angka.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return "Rp " + parts.join(",");
+    return "Rp" + parts.join(",");
   };
 
   const tambahNilai = (type, harga, pajak) => {
@@ -70,67 +70,83 @@ export default function ProdukSatuan() {
   };
 
   return (
-    <>
-      <label className="font-bold text-xl">Produk Satuan</label>
-      <div className="grid grid-cols-3 mt-2 text-grey w-full">
-        {produkSatuan.map((el, index) => {
-          return (
-            <div className="doc-box p-4 mx-4" key={index}>
-              <div className="font-bold text-xl" key={index}>
-                {el.product_name === "eform"
-                  ? "Blangko"
-                  : el.product_name === "ttd"
-                  ? "Tanda tangan"
-                  : "e-Meterai"}
-              </div>
-              <div className="font-semibold mt-2 ml-4">
-                {formatHarga(Number(el.product_price))}
-              </div>
-              <div className="font-semibold mt-2 ml-4 text-xs">
-                Pajak {formatHarga(Number(el.product_tax))}
-              </div>
-              <div className="mt-4 mx-auto w-full text-center">
-                <button
-                  className="focus:outline-none mr-4"
-                  onClick={() =>
-                    kurangNilai(
-                      el.product_name,
-                      el.product_price,
-                      el.product_tax
-                    )
-                  }
-                  disabled={
-                    count.eform > 0 || count.ttd > 0 || count.emeterai > 0
-                      ? false
-                      : true
-                  }
+    <div className="font-sans">
+      <label className="font-bold text-lg">Produk Satuan</label>
+      {produkSatuan.length === 0 ? (
+        <div className="text-center my-3 text-sm text-grey">Tidak Ada Produk</div>
+      ) : (
+        <div className="grid grid-cols-3 mt-2 text-grey w-full">
+          {produkSatuan.map((el, index) => {
+            return (
+              <div
+                className={`card-shadow border-grey-3 rounded-lg px-6 py-4 ${
+                  index !== produkSatuan.length ? "mr-4" : null
+                }`}
+                key={index}
+              >
+                <div
+                  className="font-bold text-sm text-600 text-black"
+                  key={index}
                 >
-                  <i className="fa fa-minus bg-blue py-1 px-2 rounded-full text-white text-xxs"></i>
-                </button>
-                {el.product_name === "eform" ? (
-                  <>{count.eform}</>
-                ) : el.product_name === "ttd" ? (
-                  <>{count.ttd}</>
-                ) : (
-                  <>{count.emeterai}</>
-                )}
-                <button
-                  className="focus:outline-none ml-4"
-                  onClick={() =>
-                    tambahNilai(
-                      el.product_name,
-                      el.product_price,
-                      el.product_tax
-                    )
-                  }
-                >
-                  <i className="fa fa-plus bg-blue py-1 px-2 rounded-full text-white text-xxs"></i>
-                </button>
+                  {el.product_name === "eform"
+                    ? "Blangko"
+                    : el.product_name === "ttd"
+                    ? "Tanda tangan"
+                    : "e-Meterai"}
+                </div>
+                <div className="flex justify-between mt-2">
+                  <div className="font-bold mt-2 w-full text-blue text-sm">
+                    {formatHarga(Number(el.product_price))} <br />
+                    <label className="text-xs text-black font-light">
+                      Pajak {formatHarga(Number(el.product_tax))}
+                    </label>
+                  </div>
+                  <div className="mt-4 w-full text-right">
+                    <button
+                      className="focus:outline-none add-quota"
+                      onClick={() =>
+                        kurangNilai(
+                          el.product_name,
+                          el.product_price,
+                          el.product_tax
+                        )
+                      }
+                      disabled={
+                        count.eform > 0 || count.ttd > 0 || count.emeterai > 0
+                          ? false
+                          : true
+                      }
+                    >
+                      <i
+                        className={`fa fa-minus text-blue border-blue quota-btn rounded-full text-xs`}
+                      ></i>
+                    </button>
+                    <label className="font-bold border-b-1 px-2 mx-2 text-sm">
+                      {el.product_name === "eform"
+                        ? count.eform
+                        : el.product_name === "ttd"
+                        ? count.ttd
+                        : count.emeterai}
+                    </label>
+                    <button
+                      className="focus:outline-none"
+                      onClick={() =>
+                        tambahNilai(
+                          el.product_name,
+                          el.product_price,
+                          el.product_tax
+                        )
+                      }
+                    >
+                      <i className="fa fa-plus text-blue border-blue quota-btn rounded-full text-xs"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-    </>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
