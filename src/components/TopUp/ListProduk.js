@@ -2,9 +2,16 @@ import React, { useContext } from "react";
 import { TopUpContext } from "Context/TopUpContext";
 import PaketProduk from "./PaketProduk";
 import ProdukSatuan from "./ProdukSatuan";
+import Payment from "components/Modals/Payment";
 
 export default function ListProduk() {
-  const { total, setLoadingFile, item, functions } = useContext(TopUpContext);
+  const {
+    total,
+    setLoadingFile,
+    item,
+    functions,
+    paymentModal,
+  } = useContext(TopUpContext);
 
   const { topUp } = functions;
 
@@ -16,36 +23,41 @@ export default function ListProduk() {
   const formatHarga = (angka) => {
     var parts = angka.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return "Rp " + parts.join(",");
+    return "Rp" + parts.join(",");
   };
 
   return (
     <>
+      {paymentModal ? <Payment /> : null}
       <div className="w-full grid grid-cols-4 relative break-words font-montserrat cursor-default">
         <div className="col-span-3">
           <ProdukSatuan />
           <PaketProduk />
         </div>
-        <div className="text-white mt-9 ml-3">
-          <div className="bg-blue rounded-lg p-6 ">
-            <div className="font-bold text-xl mb-6">Ringkasan</div>
-            <div className="mb-5">
-              Total Harga :{" "}
+        <div className="text-black mt-9 card-shadow border-grey-3 rounded-lg font-sans">
+          <div className="rounded-lg p-4 text-sm">
+            <div className="font-bold font-700 mb-6">Ringkasan Pemesanan</div>
+            <div className="mb-5 text-xs text-grey">
+              Total Harga :
               <span className="float-right">{formatHarga(total.harga)}</span>
             </div>
-            <div className="mb-5">
-              Pajak :{" "}
+            <div className="mb-5 text-xs text-grey">
+              Pajak :
               <span className="float-right">{formatHarga(total.pajak)}</span>
             </div>
-            <div className="font-bold">Total Pesanan</div>
-            <div className="text-right text-lg font-bold">
-              {formatHarga(total.pajak + total.harga)}
+            <hr className="my-3 mx-auto total-line" />
+            <div className="font-bold">
+              Total Tagihan
+              <span className="float-right">
+                {formatHarga(total.pajak + total.harga)}
+              </span>
             </div>
             <button
-              className="checkout-button align-bottom text-blue bg-white mt-8 w-full font-bold py-2 rounded-sm"
+              className="checkout-button text-white bg-blue mt-8 w-full font-bold py-2 rounded-lg"
               onClick={pesanItem}
+              disabled={total.harga === 0 ? true : false}
             >
-              Pesan
+              Bayar
             </button>
           </div>
         </div>
