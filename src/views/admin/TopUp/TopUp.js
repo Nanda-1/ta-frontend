@@ -3,9 +3,11 @@ import { TopUpContext } from "Context/TopUpContext";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import { useHistory } from "react-router-dom";
 import ListProduk from "components/TopUp/ListProduk";
+import Cookies from "js-cookie";
 
 export default function TopUp() {
-  const { historiList, loadingFile, functions } = useContext(TopUpContext);
+  const { historiList, loadingFile, functions, setPaymentModal } =
+    useContext(TopUpContext);
   const { historiTopUp } = functions;
 
   let history = useHistory();
@@ -18,6 +20,7 @@ export default function TopUp() {
 
   useEffect(() => {
     historiTopUp();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formatter = new Intl.DateTimeFormat("id-GB", {
@@ -26,31 +29,38 @@ export default function TopUp() {
     day: "2-digit",
   });
 
+  const detailBtn = (id) => {
+    setPaymentModal(true);
+    Cookies.set("top_up_transaction_id", id);
+  };
+
   return (
-    <>
+    <div className="px-32 pt-16 bg-white font-sans pb-6">
       {loadingFile ? <ModalDokumen /> : null}
+      <h1 className="text-xl font-bold">Top Up</h1>
+      <hr className="my-3 mx-auto topup-line" />
       <ListProduk />
-      <div className="mt-12 text-2xl font-bold">Histori Top Up</div>
-      <div className="">
-        <table className="items-center w-full overflow-x-auto bg-transparent border-collapse">
+      <div className="mt-8 text-2xl font-bold">Riwayat Top Up</div>
+      <div className="card-shadow border-grey-3 w-9/12 rounded-lg my-4">
+        <table className="items-center w-full overflow-x-auto mb-6">
           <thead>
             <tr>
-              <th className="px-6 align-middle border-black py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+              <th className="px-6 align-middle py-4 text-grey text-sm font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-left">
                 No.
               </th>
-              <th className="px-6 align-middle border-black py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+              <th className="px-6 align-middle py-4 text-grey text-sm font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-left">
                 Tanggal
               </th>
-              <th className="px-6 align-middle border-black py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+              <th className="px-6 align-middle py-4 text-grey text-sm font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-left">
                 Produk
               </th>
-              <th className="px-6 align-middle border-black py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+              <th className="px-6 align-middle py-4 text-grey text-sm font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-left">
                 Total Harga
               </th>
-              <th className="px-6 align-middle border-black py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+              <th className="px-6 align-middle py-4 text-grey text-sm font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-left">
                 Status
               </th>
-              <th className="px-6 align-middle border-black py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+              <th className="px-6 align-middle py-4 text-grey text-sm font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-left">
                 Aksi
               </th>
             </tr>
@@ -59,7 +69,7 @@ export default function TopUp() {
             {!historiList ? (
               <tr>
                 <td
-                  className="px-6 text-center border-l-0 text-gray-500 border-r-0 text-xs p-6 bg-gray"
+                  className="px-6 text-center border-l-0 text-grey border-r-0 text-xs p-6"
                   colSpan={6}
                 >
                   Tidak Ada Transaksi
@@ -104,13 +114,8 @@ export default function TopUp() {
                       </td>
                       <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
                         <button
-                          className="bg-blue text-white text-md px-2 py-1 rounded-sm"
-                          onClick={() =>
-                            history.push(
-                              "/admin/detail_pesanan=" +
-                                el.top_up_transaction_id
-                            )
-                          }
+                          className="bg-blue text-white text-md px-4 py-2 rounded-lg"
+                          onClick={() => detailBtn(el.top_up_transaction_id)}
                         >
                           Detail
                         </button>
@@ -124,6 +129,6 @@ export default function TopUp() {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 }
