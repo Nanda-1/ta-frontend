@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import React, { createContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import swal from "sweetalert";
@@ -64,11 +65,11 @@ export const TopUpProvider = (props) => {
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
-          // localStorage.removeItem("dataPPAT");
-          // localStorage.removeItem("authentication");
-          // setTimeout(() => {
-          //   history.push("/login");
-          // }, 1000);
+          localStorage.removeItem("dataPPAT");
+          localStorage.removeItem("authentication");
+          setTimeout(() => {
+            history.push("/login");
+          }, 1000);
         }
       })
       .catch((error) => console.log("error", error));
@@ -306,8 +307,10 @@ export const TopUpProvider = (props) => {
           setLoadingFile(false);
         } else {
           setTimeout(() => {
-            history.push(
-              "/admin/checkout=" + result.data.top_up_transaction_id
+            setPaymentModal(true);
+            Cookies.set(
+              "top_up_transaction_id",
+              result.data.top_up_transaction_id
             );
             setLoadingFile(false);
           }, 2000);
@@ -316,7 +319,7 @@ export const TopUpProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const topUpPay = (id, token) => {
+  const topUpPay = (id) => {
     fetch(process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/top-up/pay", {
       method: "POST",
       headers: {
