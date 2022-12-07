@@ -25,8 +25,8 @@ export default function SidebarLive() {
 
   return (
     <>
-      <nav className="fixed md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden sidebar-bg flex flex-wrap items-center justify-between md:w-50 z-40 p-2 font-roboto sidebar-open">
-        <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
+       <nav className="fixed sidebar-scroll md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden sidebar bg-white flex flex-wrap items-center justify-between md:w-46 z-40 py-4 font-roboto sidebar-open">
+          <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
           {channel?.length > 1 ? <AgoraVideoCall /> : "null"}
         </div>
       </nav>
