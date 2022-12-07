@@ -40,7 +40,7 @@ export default function TopUp() {
       <h1 className="text-xl font-bold">Top Up</h1>
       <hr className="my-3 mx-auto topup-line" />
       <ListProduk />
-      <div className="mt-8 text-2xl font-bold">Riwayat Top Up</div>
+      <div className="mt-8 text-xl font-bold">Riwayat Top Up</div>
       <div className="card-shadow border-grey-3 w-9/12 rounded-lg my-4">
         <table className="items-center w-full overflow-x-auto mb-6">
           <thead>
@@ -99,17 +99,23 @@ export default function TopUp() {
                       <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
                         {formatHarga(el.sub_total_fee + el.tax_fee)}
                       </td>
-                      <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
+                      <td className=" text-left text-xs border border-l-0 border-r-0 border-t-0">
                         {el.payment_status === "success" ? (
-                          <div className="text-green pl-2">Berhasil</div>
+                          <span className="success-label text-tex px-3 rounded py-1">
+                            Berhasil
+                          </span>
                         ) : el.payment_status === "unpaid" ? (
-                          <div className="text-red-500 pl-2">Belum dibayar</div>
+                          <span className="unpaid-label text-tex px-3 rounded py-1">
+                            Belum Dibayar
+                          </span>
                         ) : el.payment_status === "pending" ? (
-                          <div className="text-orange-500 pl-2">
+                          <span className="pending-label text-tex px-3 rounded py-1">
                             Menunggu Pembayaran
-                          </div>
+                          </span>
                         ) : (
-                          <div className="text-red-500 pl-2">Gagal</div>
+                          <span className="failed-label text-tex px-3 rounded py-1">
+                            Gagal
+                          </span>
                         )}
                       </td>
                       <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
