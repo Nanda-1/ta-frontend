@@ -89,11 +89,6 @@ export default function Admin() {
               sidebar ? null : "ml-0"
             }`}
           >
-            {/* <NotifikasiProvider>
-              <AdminNavbar />
-            </NotifikasiProvider> */}
-            {/* Header */}
-            {/* <HeaderStats /> */}
             <div
               className={`px-4 md:px-8 mt-12 w-full -m-24 ${
                 window.location.pathname === "/admin/topUp"
