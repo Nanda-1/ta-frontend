@@ -55,9 +55,9 @@ const DokumenPtsl = () => {
         <div className="w-full lg:w-12/12 px-1">
           {/* <form onSubmit={addDokumen}> */}
           <div className="relative flex min-w-0 break-words w-full mb-6 justify-between">
-            <div className="rounded-t mb-0 px-6 text-grey py-6 bg-white shadow-lg mr-6 w-full rounded-lg border-0">
-              <div className="mb-6">
-                <div className="flex w-full justify-center py-2 ">
+            <div className="rounded-t mb-0 px-6 bg-white text-grey py-6 shadow-lg mr-6 w-full rounded-lg border-0">
+              <div className="mb-6 mx-auto bg-gray">
+                <div className="flex w-full justify-center py-2">
                   {pageNumber === 1 ? (
                     <>
                       <button
@@ -109,13 +109,15 @@ const DokumenPtsl = () => {
                     </>
                   )}
                 </div>
-                <Document
-                  file={filePtsl}
-                  // file={b64}
-                  onLoadSuccess={onDocumentLoadSuccess}
-                >
-                  <Page pageNumber={pageNumber}></Page>
-                </Document>
+                <div className="lg:w-9/12 mx-auto pb-6">
+                  <Document
+                    file={filePtsl}
+                    // file={b64}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={pageNumber}></Page>
+                  </Document>
+                </div>
               </div>
             </div>
             <FormDokumen />

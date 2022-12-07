@@ -1325,3 +1325,23 @@ video {
 .checkout-button:disabled {
   background: rgba(0, 0, 0, 0.25);
 }
+
+.pending-label {
+  background: #fff8dd;
+  color: #ffb13a;
+}
+
+.failed-label {
+  background: rgba(188, 49, 87, 0.1);
+  color: #bc3157;
+}
+
+.unpaid-label {
+  background: rgba(83, 112, 212, 0.1);
+  color: #5370d4;
+}
+
+.success-label {
+  background: #DFF0D0;
+  color: #266900;
+}

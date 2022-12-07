@@ -195,9 +195,9 @@ const Stamping = () => {
       let lower_x_coord = obj.setCoords().oCoords.bl.x;
       let lower_y_coord = canvas.getHeight() - obj.setCoords().oCoords.bl.y;
       let upper_x_coord = obj.setCoords().oCoords.tr.x;
-      let upper_y_coord = canvas.getHeight() - obj.setCoords().oCoords.tr.y; 
+      let upper_y_coord = canvas.getHeight() - obj.setCoords().oCoords.tr.y;
 
-      console.log(lower_y_coord)
+      console.log(lower_y_coord);
 
       setDataPtsl({
         ...dataPtsl,
@@ -255,8 +255,8 @@ const Stamping = () => {
         <div className="w-full lg:w-8/12 px-1">
           {/* <form onSubmit={addDokumen}> */}
           <div className="relative flex min-w-0 break-words w-full mb-6 justify-between">
-            <div className="rounded-t mb-0  text-grey font-sans shadow-lg mr-6 w-full rounded-lg border-0">
-              <div className="text-white text-xs text-right bg-darkgray py-4 px-10 pembubuhan shadow-md">
+            <div className="rounded-t mb-0 text-grey font-sans shadow-lg w-full rounded-lg border-0">
+              <div className="text-white text-xs text-right bg-white py-4 px-10 pembubuhan shadow-md">
                 <button
                   className="bg-blue px-6 py-2 rounded-md mr-2 text-xs font-bold"
                   onClick={() => stampMeterai("addMeterai")}
@@ -304,20 +304,18 @@ const Stamping = () => {
                 <div
                   ref={ref}
                   id="pdf-wrapper"
+                  className="lg:w-9/12"
                   style={{
                     width: "fit-content",
                     margin: "0 auto",
                     marginTop: "1rem",
                   }}
                 >
-                  <div
-                    className="canvas-wrapper"
-                    style={{ position: "absolute" }}
-                  >
+                  <div className=" absolute">
                     <canvas
                       id="canvasMeterai"
-                      className="z-2 border-blue"
-                      style={{ zIndex: "2" }}
+                      className="z-2"
+                      style={{ zIndex: "2", position: "absolute" }}
                     >
                       <img
                         src={MeteraiImg}

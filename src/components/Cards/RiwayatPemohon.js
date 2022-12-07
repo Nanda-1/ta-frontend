@@ -75,7 +75,7 @@ export default function RiwayatPemohon() {
     <>
       <div className="relative break-words font-montserrat mb-8 ">
         <div className="text-bold mt-6 mb-2 w-full">
-          <div className="text-xl text-black font-bold">Riwayat Permohonan</div>
+          <div className="text-lg text-black font-bold">Riwayat Permohonan</div>
         </div>
         <div className="relative font-bold box-content px-3 py-5 card-shadow rounded-lg bg-white">
           <div className="block overflow-x-auto">
