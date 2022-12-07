@@ -75,24 +75,31 @@ export default function PaketProduk() {
         : id === "2a1cf5d2-9088-4c08-9fc9-c88a29a2ca53"
         ? count.paket2 - 1
         : count.paket3 - 1;
-
-    setCount({ ...count, [name]: data });
-    let hasil = total.pajak - tax;
-    let totalHarga = total.harga - price;
-    setTotal({ ...total, pajak: hasil, harga: totalHarga });
-    addPaket(data, id);
+        
+    if (data >= 0) {
+      setCount({ ...count, [name]: data });
+      let hasil = total.pajak - tax;
+      let totalHarga = total.harga - price;
+      setTotal({ ...total, pajak: hasil, harga: totalHarga });
+      addPaket(data, id);
+    }
   };
 
   const tooltipDesc = (name) => {
     const indexOfSpace = name.indexOf(" ");
+    let data = [
+      { name: "100 e-Meterai" },
+      { name: "100 Tanda Tangan" },
+      { name: "100 e-Form" },
+    ];
 
     if (indexOfSpace === -1) {
       return "";
     }
 
-    return `Anda akan mendapatkan ${
+    return `Anda Mendapatkan ${
       name.substring(indexOfSpace + 1) === "Hemat"
-        ? "100 e-sdfdsf" + <br /> + "100 e-ww"
+        ? data.map((el) => el.name)
         : name.substring(indexOfSpace + 1)
     }`;
   };
@@ -147,13 +154,8 @@ export default function PaketProduk() {
                       onClick={() =>
                         handleKurangPaket(el.package_id, el.price, el.tax)
                       }
-                      disabled={
-                        count.paket1 > 0 || count.paket1 > 0 || count.paket1 > 0
-                          ? false
-                          : true
-                      }
                     >
-                      <i className="fa fa-plus text-blue border-blue quota-btn rounded-full text-xs"></i>
+                      <i className="fa fa-minus text-blue border-blue quota-btn rounded-full text-xs"></i>
                     </button>
                     <label className="font-bold border-b-1 px-2 mx-2 text-sm">
                       {el.package_id === "a95616a7-1a31-4adc-82e3-31c92b77b836"
