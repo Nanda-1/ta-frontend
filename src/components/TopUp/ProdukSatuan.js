@@ -60,20 +60,23 @@ export default function ProdukSatuan() {
         ? count.ttd - 1
         : count.emeterai - 1;
 
-    setCount({ ...count, [type]: data });
+    if (data >= 0) {
+      setCount({ ...count, [type]: data });
+      let hasil = total.pajak - Number(pajak);
+      let totalHarga = total.harga - Number(harga);
+      setTotal({ ...total, pajak: hasil, harga: totalHarga });
 
-    let hasil = total.pajak - Number(pajak);
-    let totalHarga = total.harga - Number(harga);
-    setTotal({ ...total, pajak: hasil, harga: totalHarga });
-
-    addForm(data, type);
+      addForm(data, type);
+    }
   };
 
   return (
     <div className="font-sans">
       <label className="font-bold text-lg">Produk Satuan</label>
       {produkSatuan.length === 0 ? (
-        <div className="text-center my-3 text-sm text-grey">Tidak Ada Produk</div>
+        <div className="text-center my-3 text-sm text-grey">
+          Tidak Ada Produk
+        </div>
       ) : (
         <div className="grid grid-cols-3 mt-2 text-grey w-full">
           {produkSatuan.map((el, index) => {
@@ -110,11 +113,6 @@ export default function ProdukSatuan() {
                           el.product_price,
                           el.product_tax
                         )
-                      }
-                      disabled={
-                        count.eform > 0 || count.ttd > 0 || count.emeterai > 0
-                          ? false
-                          : true
                       }
                     >
                       <i

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { TopUpContext } from "Context/TopUpContext";
 import ModalDokumen from "components/Modals/ModalDokumen";
-import { useHistory } from "react-router-dom";
 import ListProduk from "components/TopUp/ListProduk";
 import Cookies from "js-cookie";
 
@@ -9,8 +8,6 @@ export default function TopUp() {
   const { historiList, loadingFile, functions, setPaymentModal } =
     useContext(TopUpContext);
   const { historiTopUp } = functions;
-
-  let history = useHistory();
 
   const formatHarga = (angka) => {
     var parts = angka.toString().split(".");
@@ -97,14 +94,16 @@ export default function TopUp() {
                         })}
                       </td>
                       <td className="px-6 text-left text-xs p-4 border border-l-0 border-r-0 border-t-0">
-                        {formatHarga(el.sub_total_fee + el.tax_fee)}
+                        {formatHarga(
+                          el.sub_total_fee + el.tax_fee + el.admin_fee
+                        )}
                       </td>
                       <td className=" text-left text-xs border border-l-0 border-r-0 border-t-0">
                         {el.payment_status === "success" ? (
                           <span className="success-label text-tex px-3 rounded py-1">
                             Berhasil
                           </span>
-                        ) : el.payment_status === "unpaid" ? (
+                        ) : el.payment_status === null ? (
                           <span className="unpaid-label text-tex px-3 rounded py-1">
                             Belum Dibayar
                           </span>

@@ -75,7 +75,7 @@ export default function PaketProduk() {
         : id === "2a1cf5d2-9088-4c08-9fc9-c88a29a2ca53"
         ? count.paket2 - 1
         : count.paket3 - 1;
-        
+
     if (data >= 0) {
       setCount({ ...count, [name]: data });
       let hasil = total.pajak - tax;
@@ -90,7 +90,7 @@ export default function PaketProduk() {
     let data = [
       { name: "100 e-Meterai" },
       { name: "100 Tanda Tangan" },
-      { name: "100 e-Form" },
+      { name: "100 Form" },
     ];
 
     if (indexOfSpace === -1) {
@@ -129,7 +129,7 @@ export default function PaketProduk() {
                     : "100 e-Meterai"}
                   <a
                     data-tip={tooltipDesc(el.package_name)}
-                    className="package-tooltip text-blue mx-2 rounded-full text-xxs"
+                    className="package-tooltip text-blue mx-2 rounded-full text-2xs"
                   >
                     i
                   </a>

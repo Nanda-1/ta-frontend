@@ -1,8 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { TopUpContext } from "Context/TopUpContext";
-import PaymentList from "components/Payment/PaymentList";
-import Secure from "../../assets/img/security.png";
 import Cookies from "js-cookie";
+import PaymentMethod from "components/Payment/PaymentMethod";
 
 export default function Payment() {
   const {
@@ -45,7 +44,7 @@ export default function Payment() {
           ? el.product_name === "eform"
           : el.product_name === "ttd"
       );
-      const quota = nama_produk.split("")[0];
+      const quota = nama_produk.split("")[0] + nama_produk.split("")[1];
       return formatHarga(filter.map((el) => el.product_price * Number(quota)));
     }
   };
@@ -72,14 +71,7 @@ export default function Payment() {
                       Pembayaran
                     </h2>
                   </div>
-                  <h2 className="font-bold font-700 text-black">
-                    Metode Pembayaran
-                  </h2>
-                  <div className="relative flex-col overflow-x-auto modal">
-                    <div className="flex-row" style={{ height: "300px" }}>
-                      <PaymentList />
-                    </div>
-                  </div>
+                  <PaymentMethod midtrans={midtrans} checkout={checkout} />
                   <hr className="mt-3 border-t-4" />
                   <div className="text-black">
                     <h3 className="font-700 mt-1">Rincian Pembelian</h3>
@@ -94,7 +86,6 @@ export default function Payment() {
                         </div>
                       );
                     })}
-                    {/* <div className="text-grey flex text-xs py-1"> */}
                     <div className="text-grey flex text-xs py-1">
                       <label>Pajak</label>
                       <label className="ppat-1 w-full">
@@ -107,7 +98,6 @@ export default function Payment() {
                         {formatHarga(Number(checkout.admin_fee))}
                       </label>
                     </div>
-                    {/* </div> */}
                   </div>
                 </div>
                 <div
@@ -120,11 +110,13 @@ export default function Payment() {
                       {midtrans
                         ? formatHarga(Number(midtrans.gross_amount))
                         : formatHarga(
-                            checkout.sub_total_fee + checkout.tax_fee
+                            checkout.sub_total_fee +
+                              checkout.tax_fee +
+                              checkout.admin_fee
                           )}
                     </label>
                   </div>
-                  <button
+                  {/* <button
                     className="bg-blue text-white flex rounded-lg px-16 py-2 text-sm"
                     style={{ alignSelf: "center" }}
                   >
@@ -134,7 +126,7 @@ export default function Payment() {
                       className="mr-2"
                     />
                     Bayar
-                  </button>
+                  </button> */}
                   {/* </div> */}
                 </div>
               </div>

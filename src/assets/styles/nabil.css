@@ -737,7 +737,7 @@ input[type="number"] {
 
 .package-tooltip {
   background: rgba(82, 117, 193, 0.12);
-  padding: 3px 7px;
+  padding: 1px 6px;
 }
 
 .font-700 {

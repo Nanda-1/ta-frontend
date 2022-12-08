@@ -6,12 +6,6 @@ import swal from "sweetalert";
 export const TopUpContext = createContext();
 
 export const TopUpProvider = (props) => {
-  const [taxBlangko, setTaxBlangko] = useState(0);
-  const [priceBlangko, setPriceBlangko] = useState(0);
-  const [taxTtd, setTaxTtd] = useState(0);
-  const [priceTtd, setPriceTtd] = useState(0);
-  const [taxMeterai, setTaxMeterai] = useState(0);
-  const [priceMeterai, setPriceMeterai] = useState(0);
   const [token, setToken] = useState("");
   const [historiList, setHistoriList] = useState();
   const [count, setCount] = useState({
@@ -39,9 +33,6 @@ export const TopUpProvider = (props) => {
   const [item, setItem] = useState([]);
 
   let history = useHistory();
-
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
 
   var auth = localStorage.getItem("authentication");
   var getToken = JSON.parse(auth);
@@ -71,143 +62,6 @@ export const TopUpProvider = (props) => {
             history.push("/login");
           }, 1000);
         }
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const blankoTax = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/websetting/detail?name=eform.tax",
-      {
-        method: "GET",
-        redirect: "follow",
-        headers: { Authorization: "Bearer " + getToken.access_token },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        setTaxBlangko(result.data.value);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const blangkoPrice = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/websetting/detail?name=eform.price",
-      {
-        method: "GET",
-        redirect: "follow",
-        headers: { Authorization: "Bearer " + getToken.access_token },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        setPriceBlangko(result.data.value);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const ttdTax = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/websetting/detail?name=ttd.tax",
-      {
-        method: "GET",
-        redirect: "follow",
-        headers: { Authorization: "Bearer " + getToken.access_token },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        setTaxTtd(result.data.value);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const ttdPrice = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/websetting/detail?name=ttd.price",
-      {
-        method: "GET",
-        redirect: "follow",
-        headers: { Authorization: "Bearer " + getToken.access_token },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        setPriceTtd(result.data.value);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const meteraiTax = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/websetting/detail?name=ematerai.tax",
-      {
-        method: "GET",
-        redirect: "follow",
-        headers: { Authorization: "Bearer " + getToken.access_token },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        setTaxMeterai(result.data.value);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const meteraiPrice = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/websetting/detail?name=ematerai.price",
-      {
-        method: "GET",
-        redirect: "follow",
-        headers: { Authorization: "Bearer " + getToken.access_token },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        setPriceMeterai(result.data.value);
       })
       .catch((error) => console.log("error", error));
   };
@@ -330,18 +184,7 @@ export const TopUpProvider = (props) => {
       },
       body: JSON.stringify({
         top_up_id: id,
-        // listPayment
         payment_type: listPayment.payment_type,
-        // bank: listPayment.bank,
-        // cstore: {
-        //   store: listPayment.store,
-        // },
-        // gopay: {
-        //   callback_url: "https://demo.infinids.id",
-        // },
-        // credit_card: {
-        //   token_id: token,
-        // },
       }),
     })
       .then((response) => {
@@ -397,34 +240,16 @@ export const TopUpProvider = (props) => {
   return (
     <TopUpContext.Provider
       value={{
-        taxBlangko,
-        setTaxBlangko,
-        taxMeterai,
-        setTaxMeterai,
-        taxTtd,
-        setTaxTtd,
         count,
         setCount,
         total,
         setTotal,
-        blankoTax,
-        meteraiTax,
-        ttdTax,
         listPaketQuota,
         setListPaketQuota,
         paketKuota,
         produk,
         produkSatuan,
         setProdukSatuan,
-        priceBlangko,
-        setPriceBlangko,
-        priceMeterai,
-        setPriceMeterai,
-        priceTtd,
-        setPriceTtd,
-        blangkoPrice,
-        ttdPrice,
-        meteraiPrice,
         functions,
         token,
         setToken,
