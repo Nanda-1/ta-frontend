@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import cookies from "js-cookie";
 import swal from "sweetalert";
@@ -187,12 +187,10 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const transactionList = (id) => {
+  const transactionList = () => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/" +
-        id +
-        "/list?is_ppat=1",
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "api/transactions?transaction_status=draft",
       {
         method: "GET",
         redirect: "follow",
@@ -407,30 +405,6 @@ export const UserProvider = (props) => {
     history.push("/admin/details/transaction_id=" + object.uid);
   };
 
-  const quotaMeterai = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/users/quota?name=emeterai&user_id=" +
-        object.uid,
-      {
-        method: "GET",
-        redirect: "follow",
-        headers: { Authorization: "Bearer " + auth.access_token },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        setMeteraiQuota(result.data.quota_value);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
   const cekQuota = (type) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_QUOTA + "api/check-quota?name=" + type,
@@ -465,31 +439,6 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const quotaForm = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/users/quota?name=eform&user_id=" +
-        object.uid,
-      {
-        method: "GET",
-        redirect: "follow",
-        // headers: {'Content-Type': 'application/docx'}
-        headers: { Authorization: "Bearer " + auth.access_token },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        setFormKuota(result.data.quota_value);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
   const functions = {
     fetchDataUser,
     createDocumentAJB,
@@ -498,8 +447,6 @@ export const UserProvider = (props) => {
     transactionList,
     dataPenjual,
     otpExpired,
-    quotaForm,
-    quotaMeterai,
     cekQuota,
   };
 
