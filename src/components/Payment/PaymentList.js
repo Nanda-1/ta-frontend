@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { TopUpContext } from "Context/TopUpContext";
 import Bri from "assets/img/icon/bank_bri.png";
 import Bni from "assets/img/icon/bank_bni.png";
@@ -15,15 +15,7 @@ export default function PaymentList() {
 
   const handleButton = (type) => {
     let text1 = "payment_type";
-    let text2 = "bank";
-
-    if (type === "bri" || type === "bni" || type === "bca") {
-      setListPayment({ [text1]: "bank_transfer", [text2]: type });
-    } else if (type === "indomaret" || type === "alfamart") {
-      setListPayment({ [text1]: "cstore", store: type });
-    } else {
-      setListPayment({ [text1]: type });
-    }
+    setListPayment({ [text1]: type });
   };
 
   if (listPayment.length !== 0) {
@@ -34,7 +26,7 @@ export default function PaymentList() {
       <>
         <button
           className="border cursor-pointer hover:pilihPayment text-sm text-left w-full p-3 my-1 rounded-md"
-          onClick={() => handleButton("echannel")}
+          onClick={() => handleButton("mandiri")}
         >
           <img src={Mandiri} className="bank-icon" alt="Mandiri" />
           <span className="font-bold p-2">Bank Mandiri</span>
