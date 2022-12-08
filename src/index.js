@@ -16,7 +16,6 @@ import swal from "sweetalert";
 import lengkapiDiri from "layouts/LengkapiDiri";
 import { TopUpProvider } from "Context/TopUpContext";
 import TopUp from "views/admin/TopUp/TopUp";
-import Payment from "components/Modals/Payment";
 
 var val = localStorage.getItem("dataPPAT");
 

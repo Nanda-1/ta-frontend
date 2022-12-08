@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 
 // components
 import UserInfo from "components/Cards/UserInfo.js";
-import HistoryCard from "components/Cards/HistoryCard.js";
 
 // Context
 import { UserContext } from "Context/UserContext";
