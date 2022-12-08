@@ -1,6 +1,5 @@
 import { UserContext } from "Context/UserContext";
 import React, { useContext, useState } from "react";
-import { useHistory } from "react-router";
 import ArrowUp from "../../assets/img/arrow-up.png";
 import ArrowDown from "../../assets/img/arrow-down.png";
 
@@ -77,7 +76,7 @@ export default function ListBlanko() {
         className="list-akta-btn mx-auto w-full focus:outline-none"
         onClick={() => setActive(!active)}
       >
-        <img src={!active ? ArrowDown : ArrowUp} className="mx-auto" />
+        <img src={!active ? ArrowDown : ArrowUp} className="mx-auto" alt="arrow" />
       </button>
     </>
   );

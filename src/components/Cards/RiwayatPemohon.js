@@ -39,7 +39,7 @@ export default function RiwayatPemohon() {
   };
 
   useEffect(() => {
-    // transactionList(dataUser.uid);
+    transactionList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -77,31 +77,31 @@ export default function RiwayatPemohon() {
         <div className="text-bold mt-6 mb-2 w-full">
           <div className="text-lg text-black font-bold">Riwayat Permohonan</div>
         </div>
-        <div className="relative font-bold box-content px-3 py-5 card-shadow rounded-lg bg-white">
+        <div className="relative font-bold box-content px-3 py-2 card-shadow rounded-lg bg-white">
           <div className="block overflow-x-auto">
             {/* Projects table */}
             <table className="items-center w-full overflow-x-auto bg-transparent border-collapse">
               <thead>
                 <tr>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
                     Nama Pemohon
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
                     E-Mail
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-left">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
                     Nama Dokumen
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-center">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
                     Nomor Dokumen
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-center">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
                     Kategori
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold text-center">
+                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
                     Status
                   </th>
-                  <th className="px-6 text-center align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-semibold">
+                  <th className="px-6 text-center align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold">
                     Aksi
                   </th>
                 </tr>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { UserContext } from "Context/UserContext";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function KuotaCard_v2() {
   const { functions, meteraiQuota, ttdQuota, formQuota } =
@@ -8,10 +8,10 @@ export default function KuotaCard_v2() {
 
   const { cekQuota } = functions;
 
-  // useEffect(() => {
-  //   cekQuota("eform");
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    cekQuota("eform");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const histori = useHistory();
 
@@ -56,7 +56,7 @@ export default function KuotaCard_v2() {
                 <h3 className="text-black text-xl mb-4 font-bold">
                   {item.name.includes("meterai")
                     ? meteraiQuota
-                    : item.name.includes("blanko")
+                    : item.name.includes("Blanko")
                     ? formQuota
                     : ttdQuota}
                 </h3>
