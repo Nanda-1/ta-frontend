@@ -6,9 +6,6 @@ import swal from "sweetalert";
 import ModalDokumen from "components/Modals/ModalDokumen";
 
 export default function Register() {
-  //Show Phone
-  const [phonex, setPhonex] = useState(false);
-
   //Show Error
   const [errorEmail, setErrorEmail] = useState(false);
 
@@ -31,12 +28,7 @@ export default function Register() {
   };
 
   //Save to Context
-  const {
-    regist,
-    setRegist,
-    setStatus,
-    apiRegist,
-  } = useContext(RegistContext);
+  const { regist, setRegist, setStatus, apiRegist } = useContext(RegistContext);
 
   const changeHandle = (e) => {
     let isian = e.target.value;
@@ -102,22 +94,18 @@ export default function Register() {
       // setFail(false);
       setIsValid(false);
       setErrorEmail(true);
-      setPhonex(false);
     } else if (regist["phone"] !== "") {
       // setFail(false);
       setIsValid(false);
       setErrorEmail(false);
-      setPhonex(false);
     } else if (regist["email"] !== "") {
       // setFail(false);
       setIsValid(false);
       setErrorEmail(false);
-      setPhonex(false);
     } else {
       // setFail(false);
       setIsValid(true);
       setErrorEmail(false);
-      setPhonex(false);
     }
     return isValid;
   };

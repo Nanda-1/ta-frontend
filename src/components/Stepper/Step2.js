@@ -1,9 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { FormGroup } from "reactstrap";
-import cookies from "js-cookie";
 import { RegistContext } from "views/auth/RegistContext";
-import swal from "sweetalert";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import KeteranganPhoto from "components/RegistPPAT/KeteranganPhoto";
 

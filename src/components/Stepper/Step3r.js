@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RegistContext } from "views/auth/RegistContext";
-import cookies from "js-cookie";
 import { FormGroup } from "reactstrap";
 import FormDataDiri from "components/RegistPPAT/FormDataDiri";
-// import swal from "sweetalert";
 
 const Step3r = (provs) => {
   const { inputRegist, setInputRegist, dataProv, dataKota, dataKec, all } =

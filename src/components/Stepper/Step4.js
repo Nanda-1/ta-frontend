@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { FormGroup } from "reactstrap";
 import cookies from "js-cookie";
 import { RegistContext } from "views/auth/RegistContext";
@@ -13,23 +13,10 @@ const Step4 = (props) => {
   const { inputRegist, setInputRegist, ppatFile, setLoading, loading } =
     useContext(RegistContext);
 
-  // const [load, setLoad] = useState(false);
-
   const [capturing, setCapturing] = React.useState(false);
 
   const handleStopCaptureClick = React.useCallback(() => {
-    // setCapturing(false);
-    // sendVideo();
     cookies.set("statues", true);
-    // swal({
-    //   title: "Berhasil",
-    //   text: "Rekam Wajah Berhasil",
-    //   icon: "success",
-    // });
-    // setLoading(true);
-    // setTimeout(function () {
-    //   sendVideo();
-    // }, 5000);
   }, []);
 
   var val = localStorage.getItem("dataPPAT");

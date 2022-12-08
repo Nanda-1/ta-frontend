@@ -25,10 +25,6 @@ export default function Login() {
     password: "",
   });
 
-  const trim = (value) => {
-    return value.replace(/^\s+|\s+$/g, "");
-  };
-
   const handleChange = (event) => {
     let typeOfInput = event.target.value;
     let name = event.target.name;
