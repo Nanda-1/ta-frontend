@@ -5,10 +5,10 @@ import { UserContext } from "Context/UserContext";
 import Cookies from "js-cookie";
 import { useHistory } from "react-router-dom";
 
-export default function HistoryCard({dataUser}) {
-  const { functions, listTransaction } = useContext(UserContext);
+export default function HistoryCard({ dataUser }) {
+  const { listTransaction } = useContext(UserContext);
 
-  const { transactionList } = functions;
+  // const { transactionList } = functions;
 
   let history = useHistory();
 
@@ -45,25 +45,25 @@ export default function HistoryCard({dataUser}) {
 
   const currentDoc = (id, statusDoc, typeDoc) => {
     Cookies.set("id_transaksi", id, { expires: 1 });
-    let url = ''
+    let url = "";
 
-    if(typeDoc === "akta_jual_beli"){
-      url = 'AktaJualBeli'
-    }else{
-      url = 'AktaPemberianHakTanggungan'
+    if (typeDoc === "akta_jual_beli") {
+      url = "AktaJualBeli";
+    } else {
+      url = "AktaPemberianHakTanggungan";
     }
 
     if (statusDoc === "draft") {
-      Cookies.set("step", 'input_data_penjual');
+      Cookies.set("step", "input_data_penjual");
       history.push("/admin/" + url);
     } else if (statusDoc === "pihak_pertama") {
-      Cookies.set("step", 'input_data_pembeli');
+      Cookies.set("step", "input_data_pembeli");
       history.push("/admin/" + url);
     } else if (statusDoc === "pihak_kedua") {
-      Cookies.set("step", 'dokumen');
+      Cookies.set("step", "dokumen");
       history.push("/admin/" + url);
     } else if (statusDoc === "submit_dokumen") {
-      Cookies.set("step", 'stamping');
+      Cookies.set("step", "stamping");
       history.push("/admin/" + url);
     } else {
       history.push(`/admin/preview_dokumen/transaction_id=${id}`);

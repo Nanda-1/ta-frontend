@@ -1,20 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import { UserContext } from "Context/UserContext";
-import { Link } from "react-router-dom";
 
 export default function DokumenCard() {
   const {
-    dataUser,
     selesai,
     pending,
     draft,
-    dokumenPending,
-    dokumenSelesai,
-    dokumenDraft,
-    functions,
+    // functions,
   } = useContext(UserContext);
 
-  const { quotaMeterai, cekQuota, quotaForm } = functions;
+  // const { quotaMeterai, cekQuota, quotaForm } = functions;
 
   useEffect(() => {
     // dokumenSelesai(dataUser.uid);
