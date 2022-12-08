@@ -1,14 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-import { MyAjbContext } from "Context/AjbContext";
-import { FormGroup } from "reactstrap";
-import swal from "sweetalert";
 import { useHistory } from "react-router";
 import { MySuratKuasaContext } from "Context/SuratKuasaContext";
 import InputKeteranganSuratKuasa from "components/Modals/SuratKuasa/InputKeterangan";
 import FormDokumenSuratKuasa from "./FormDokumenSuratKuasa";
-// import { connect } from "socket.io-client";
 
 const DokumenSuratKuasa = () => {
   const {

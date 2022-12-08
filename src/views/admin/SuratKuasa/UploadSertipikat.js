@@ -2,12 +2,12 @@ import React, { useContext, useState } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import swal from "sweetalert";
-import { useHistory } from "react-router";
 import { MySuratKuasaContext } from "Context/SuratKuasaContext";
 import ModalDokumen from "components/Modals/ModalDokumen";
 
 const UploadSertipikat = () => {
-  const { dataPtsl, setDataPtsl, addActors2, loading } = useContext(MySuratKuasaContext);
+  const { dataPtsl, setDataPtsl, addActors2, loading } =
+    useContext(MySuratKuasaContext);
 
   const [file, setFile] = useState("");
   const [numPages, setNumPages] = useState(null);
@@ -29,8 +29,6 @@ const UploadSertipikat = () => {
   function nextPage() {
     changePage(1);
   }
-
-  const history = useHistory();
 
   function onFileChange(event) {
     // setFile(event.target.files[0]);
@@ -63,16 +61,9 @@ const UploadSertipikat = () => {
     }
   }
 
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
-
-  //   if (inputAjb.ppat_name === undefined) {
-  //     setInputAjb({ ...inputAjb, ppat_name: object.nama });
-  //   }
-
   return (
     <>
-    {loading ? <ModalDokumen /> : null}
+      {loading ? <ModalDokumen /> : null}
       <div className="flex content-center items-center justify-center h-full mt-20">
         <div className="w-full lg:w-10/12 px-1">
           {/* <form onSubmit={addDokumen}> */}

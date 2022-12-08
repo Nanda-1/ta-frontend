@@ -1,12 +1,7 @@
 import React, { useContext, useState } from "react";
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
-import { MyAjbContext } from "Context/AjbContext";
-import { FormGroup } from "reactstrap";
 import swal from "sweetalert";
 import { useHistory } from "react-router";
 import { MySuratKuasaContext } from "Context/SuratKuasaContext";
-// import { connect } from "socket.io-client";
 
 const UploadBphtb = () => {
   const { dataPtsl, setDataPtsl } = useContext(MySuratKuasaContext);
@@ -47,9 +42,6 @@ const UploadBphtb = () => {
     }
   }
 
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
-
   return (
     <>
       <div className="flex content-center items-center justify-center h-full mt-20">
@@ -76,7 +68,7 @@ const UploadBphtb = () => {
                       <div className="h-auto">
                         <label htmlFor="upload-button" className=" mx-auto">
                           {file ? (
-                            <img src={file} />
+                            <img src={file} alt='file' />
                           ) : (
                             <>
                               {/* <i className={"far fa-file-alt text-6xl py-2"}></i>{" "} */}

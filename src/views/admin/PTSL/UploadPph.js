@@ -44,9 +44,6 @@ const UploadPh = () => {
     }
   }
 
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
-
   return (
     <>
       {loading ? <ModalDokumen /> : null}
@@ -74,7 +71,7 @@ const UploadPh = () => {
                       <div className="h-auto">
                         <label htmlFor="upload-button" className=" mx-auto">
                           {file ? (
-                            <img src={file} />
+                            <img src={file} alt='file' />
                           ) : (
                             <>
                               {/* <i className={"far fa-file-alt text-6xl py-2"}></i>{" "} */}

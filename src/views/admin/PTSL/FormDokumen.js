@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { MySuratKuasaContext } from "Context/SuratKuasaContext";
-// import { connect } from "socket.io-client";
 
 const FormDokumen = () => {
   const {
@@ -24,26 +23,6 @@ const FormDokumen = () => {
     getDataKec();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
-
-  const format = function date2str(x, y) {
-    var z = {
-      M: x.getMonth() + 1,
-      d: x.getDate(),
-      h: x.getHours(),
-      m: x.getMinutes(),
-      s: x.getSeconds(),
-    };
-    y = y.replace(/(M+|d+|h+|m+|s+)/g, function (v) {
-      return ((v.length > 1 ? "0" : "") + z[v.slice(-1)]).slice(-2);
-    });
-
-    return y.replace(/(y+)/g, function (v) {
-      return x.getFullYear().toString().slice(-v.length);
-    });
-  };
 
   return (
     <div className="rounded-t mb-0 px-6 text-grey py-6 bg-white w-800-d shadow-lg rounded-lg border-0">

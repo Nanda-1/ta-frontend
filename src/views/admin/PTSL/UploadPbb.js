@@ -43,9 +43,6 @@ const UploadPbb = () => {
     }
   }
 
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
-
   return (
     <>
       <div className="flex content-center items-center justify-center h-full mt-20">
@@ -72,7 +69,7 @@ const UploadPbb = () => {
                       <div className="h-auto">
                         <label htmlFor="upload-button" className=" mx-auto">
                           {file ? (
-                            <img src={file} />
+                            <img src={file} alt='file' />
                           ) : (
                             <>
                               {/* <i className={"far fa-file-alt text-6xl py-2"}></i>{" "} */}

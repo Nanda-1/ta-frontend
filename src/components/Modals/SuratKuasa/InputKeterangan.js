@@ -1,19 +1,18 @@
 import React, { useContext } from "react";
 
 // Context
-import { DokumenContext } from "Context/DokumenContext";
-import Meterai from "assets/img/signature/meterai.png";
 import { MySuratKuasaContext } from "Context/SuratKuasaContext";
 import Cookies from "js-cookie";
 
 export default function InputKeteranganSuratKuasa() {
-  const { dataPtsl, setDataPtsl, uploadPtsl2 } = useContext(MySuratKuasaContext);
+  const { dataPtsl, setDataPtsl, uploadPtsl2 } =
+    useContext(MySuratKuasaContext);
 
   const handleChange = (event) => {
     let inputValue = event.target.value;
     let formInput = event.target.name;
     setDataPtsl({ ...dataPtsl, [formInput]: inputValue });
-    Cookies.set(formInput, inputValue)
+    Cookies.set(formInput, inputValue);
   };
 
   return (
@@ -49,7 +48,10 @@ export default function InputKeteranganSuratKuasa() {
               onChange={handleChange}
             />
           </div>
-          <button className="bg-blue w-full text-white font-bold mt-4 py-1 rounded-lg" onClick={() => uploadPtsl2()}>
+          <button
+            className="bg-blue w-full text-white font-bold mt-4 py-1 rounded-lg"
+            onClick={() => uploadPtsl2()}
+          >
             Submit
           </button>
         </div>

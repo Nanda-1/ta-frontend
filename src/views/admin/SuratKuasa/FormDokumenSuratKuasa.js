@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { MySuratKuasaContext } from "Context/SuratKuasaContext";
+import React from "react";
 
 const FormDokumenSuratKuasa = ({ dataPtsl, setDataPtsl, uploadPtsl2 }) => {
   const handleChange = (event) => {

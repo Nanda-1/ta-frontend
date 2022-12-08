@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { useHistory } from "react-router";
 import { MySuratKuasaContext } from "Context/SuratKuasaContext";
 import FormDokumen from "./FormDokumen";
 import InputKeterangan from "components/Modals/PTSL/InputKeterangan";
-// import { connect } from "socket.io-client";
 
 const DokumenPtsl = () => {
   const {

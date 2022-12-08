@@ -138,7 +138,6 @@ export const SuratKuasaProvider = (props) => {
       .then((response) => {
         let data = response.data.eform_json_data;
         let obj = eval("(" + data + ")");
-        console.log(obj);
         setDataPtsl({
           ...dataPtsl,
           no_hak_milik: obj.no_hak_milik || "",
