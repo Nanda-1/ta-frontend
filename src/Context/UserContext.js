@@ -25,6 +25,7 @@ export const UserProvider = (props) => {
   const [formQuota, setFormKuota] = useState(0);
   const [lengkapidiri, setLengkapidiri] = useState(false);
   const [coordMaps, setCoordMaps] = useState([]);
+  const [dataNik, setDataNik] = useState([]);
 
   let history = useHistory();
 
@@ -63,15 +64,17 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const fetchDataUser = () => {
+  const fetchDataUser = (token) => {
     fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/match-token", {
       method: "GET",
       redirect: "follow",
-      headers: { Authorization: "Bearer " + auth.access_token },
+      headers: { Authorization: "Bearer " + token },
     })
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -80,8 +83,10 @@ export const UserProvider = (props) => {
         setDataUser(result.data);
         localStorage.setItem("dataPPAT", JSON.stringify(result.data));
         setTimeout(() => {
-          setLoading(false);
-          window.location.reload();
+          if (!window.location.pathname.includes("dashboard")) {
+            history.push("/admin/dashboard");
+            window.location.reload();
+          }
         }, 3000);
       })
       .catch((error) => fetchDataUser());
@@ -105,6 +110,8 @@ export const UserProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -128,21 +135,27 @@ export const UserProvider = (props) => {
   };
 
   const createDocumentAJB = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/transaction", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + auth.access_token,
-      },
-      body: JSON.stringify({
-        doc_type: "akta_jual_beli",
-        // user_id: id,
-      }),
-      redirect: "follow",
-    })
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/create",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.access_token,
+        },
+        body: JSON.stringify({
+          doc_type: "akta_jual_beli",
+          // user_id: id,
+        }),
+        redirect: "follow",
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -158,21 +171,27 @@ export const UserProvider = (props) => {
   };
 
   const createDocumentAPHT = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/transaction", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + auth.access_token,
-      },
-      body: JSON.stringify({
-        doc_type: "akta_pemberian_hak_tanggungan",
-        // user_id: id,
-      }),
-      redirect: "follow",
-    })
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/create",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.access_token,
+        },
+        body: JSON.stringify({
+          doc_type: "akta_pemberian_hak_tanggungan",
+          // user_id: id,
+        }),
+        redirect: "follow",
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -189,8 +208,7 @@ export const UserProvider = (props) => {
 
   const transactionList = () => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions?transaction_status=draft",
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION + "/api/transactions",
       {
         method: "GET",
         redirect: "follow",
@@ -200,6 +218,8 @@ export const UserProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -246,9 +266,7 @@ export const UserProvider = (props) => {
             buttons: false,
           });
 
-          if (auth.access_token) {
-            fetchDataUser(res.data.user.user_id);
-          }
+          fetchDataUser(res.data.token.access_token);
         }
       })
       .catch((error) => console.log("error", error));
@@ -334,12 +352,10 @@ export const UserProvider = (props) => {
     }
   };
 
-  const dokumenSelesai = (id) => {
+  const dokumenSelesai = () => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/" +
-        id +
-        "/list?status=selesai&is_ppat=1",
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions?doc_status=finish",
       {
         method: "GET",
         redirect: "follow",
@@ -348,20 +364,16 @@ export const UserProvider = (props) => {
     )
       .then((response) => response.json())
       .then((result) => {
-        if (result.data) {
-          let data = result.data.length;
-          setSelesai(data);
-        }
+        let data = result.data.length;
+        setSelesai(data);
       })
       .catch((error) => console.log("error", error));
   };
 
-  const dokumenDraft = (id) => {
+  const dokumenDraft = () => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/" +
-        id +
-        "/list?status=draft&is_ppat=1",
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions?doc_status=draft",
       {
         method: "GET",
         redirect: "follow",
@@ -370,20 +382,16 @@ export const UserProvider = (props) => {
     )
       .then((response) => response.json())
       .then((result) => {
-        if (result.data) {
-          let data = result.data.length;
-          setDraft(data);
-        }
+        let data = result.data.length;
+        setDraft(data);
       })
       .catch((error) => console.log("error", error));
   };
 
-  const dokumenPending = (id) => {
+  const dokumenPending = () => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/" +
-        id +
-        "/list?status=pending&is_ppat=1",
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions?doc_status=pending",
       {
         method: "GET",
         redirect: "follow",
@@ -392,11 +400,8 @@ export const UserProvider = (props) => {
     )
       .then((response) => response.json())
       .then((result) => {
-        if (result.data) {
-          let data = result.data.length;
-          setPending(data);
-        }
-        // setDataCount({...dataCount, 'pending' : data})
+        let data = result.data.length;
+        setPending(data);
       })
       .catch((error) => console.log("error", error));
   };
@@ -421,6 +426,8 @@ export const UserProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -435,6 +442,32 @@ export const UserProvider = (props) => {
         } else {
           setMeteraiQuota(result.data.quota_value);
         }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const cekKtp = (no_nik) => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/users/get-profile?no_nik=" +
+        no_nik,
+      {
+        method: "GET",
+        redirect: "follow",
+        headers: { Authorization: "Bearer " + auth.access_token },
+      }
+    )
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        setDataNik({ ...dataNik, data: result.data });
       })
       .catch((error) => console.log("error", error));
   };
@@ -494,6 +527,9 @@ export const UserProvider = (props) => {
         setLengkapidiri,
         coordMaps,
         setCoordMaps,
+        cekKtp,
+        dataNik,
+        setDataNik,
       }}
     >
       {props.children}

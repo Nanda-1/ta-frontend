@@ -1,28 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { MySuratKuasaContext } from "Context/SuratKuasaContext";
 
 const FormDokumen = () => {
-  const {
-    dataPtsl,
-    setDataPtsl,
-    getDataProv,
-    getDataKota,
-    getDataKec,
-    uploadPtsl,
-  } = useContext(MySuratKuasaContext);
+  const { dataPtsl, setDataPtsl, uploadPtsl } = useContext(MySuratKuasaContext);
 
   const handleChange = (event) => {
     let inputValue = event.target.value;
     let formInput = event.target.name;
     setDataPtsl({ ...dataPtsl, [formInput]: inputValue });
   };
-
-  useEffect(() => {
-    getDataProv();
-    getDataKota();
-    getDataKec();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="rounded-t mb-0 px-6 text-grey py-6 bg-white w-800-d shadow-lg rounded-lg border-0">

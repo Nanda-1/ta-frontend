@@ -50,8 +50,8 @@ export default function Auth() {
           <Switch>
             <RegistProvider>
               <UserProvider>
-                <LoginRoute path="/" exact component={Login} />
-                <LoginRoute path="/login" exact component={Login} />
+                <Route path="/" exact component={Login} />
+                <Route path="/login" exact component={Login} />
                 <Route path="/login_otp" exact component={ModalOtp} />
               </UserProvider>
               <Route path="/forgotpwd" exact component={Forgotpwd} />

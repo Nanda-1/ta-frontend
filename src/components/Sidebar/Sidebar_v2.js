@@ -51,12 +51,14 @@ export default function Sidebar_v2() {
             >
               <i className="fas fa-bars"></i>
             </button>
-            <img
-              src={LogoIppat}
-              alt="logo_ippat"
-              className="mx-auto"
-              width={80}
-            />
+            {window.screen.width > 500 ? (
+              <img
+                src={LogoIppat}
+                alt="logo_ippat"
+                className="mx-auto"
+                width={80}
+              />
+            ) : null}
             <ul className="md:hidden items-center flex flex-wrap list-none">
               <li className="inline-block relative">
                 <NotificationDropdown />
@@ -74,36 +76,27 @@ export default function Sidebar_v2() {
             >
               {/* Collapse header */}
               <div className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid ">
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+                    onClick={() => setCollapseShow("hidden")}
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
                 <div className="flex flex-wrap">
-                  <div className="w-6/12">
-                    <Link
-                      className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-md uppercase font-bold p-4 px-0"
-                      to="/"
-                    >
-                      Notus React
-                    </Link>
-                  </div>
-                  <div className="w-6/12 flex justify-end">
-                    <button
-                      type="button"
-                      className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-                      onClick={() => setCollapseShow("hidden")}
-                    >
-                      <i className="fas fa-times"></i>
-                    </button>
+                  <div className="w-full text-center">
+                    <img
+                      src={LogoIppat}
+                      alt="logo_ippat"
+                      className="mx-auto"
+                      width={85}
+                    />
                   </div>
                 </div>
               </div>
               {/* Form */}
-              <form className="mt-6 mb-4 md:hidden">
-                <div className="mb-3 pt-0">
-                  <input
-                    type="text"
-                    placeholder="Search"
-                    className="px-3 py-2 h-12 border border-solid  border-blueGray-500 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-base leading-snug shadow-none outline-none focus:outline-none w-full font-normal"
-                  />
-                </div>
-              </form>
               <table className=" ml-4">
                 <tbody>
                   <tr>
@@ -115,7 +108,7 @@ export default function Sidebar_v2() {
                       />
                     </td>
                     <td className="font-bold text-sm">
-                      {object.user_detail.name}
+                      {object.user_detail?.name}
                     </td>
                   </tr>
                   <tr>
@@ -128,7 +121,11 @@ export default function Sidebar_v2() {
               {/* Navigation */}
               <div className="ml-4 mt-3">
                 <label className="font-700 flex" style={{ fontSize: "13px" }}>
-                  <img src={NewDoc} style={{ width: "15px", height: "18px" }} className='mr-2 mb-2' />
+                  <img
+                    src={NewDoc}
+                    style={{ width: "15px", height: "18px" }}
+                    className="mr-2 mb-2"
+                  />
                   Buat Baru Blangko Akta PPAT
                 </label>
                 <div>
@@ -156,17 +153,17 @@ export default function Sidebar_v2() {
                 </li>
 
                 <li className="items-center mt-2">
-                  {window.location.pathname.includes("dokumen") ? (
+                  {window.location.pathname.includes("ppat") ? (
                     <div className="sidebar-active"></div>
                   ) : null}
                   <Link
                     className={
                       "text-md py-2 ml-6 block focus:outline-none" +
-                      (window.location.pathname.includes("dokumen")
+                      (window.location.pathname.includes("ppat")
                         ? "text-sky-500 hover:text-sky-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
-                    to="/admin/dokumen"
+                    to="/admin/ppat"
                   >
                     <img
                       src={DataPpat}

@@ -162,7 +162,7 @@ body {
 }
 
 .md\:ml-53 {
-  margin-left: 17.5rem;
+  margin-left: 16rem;
 }
 
 .md\:pt-16 {
@@ -174,7 +174,7 @@ body {
 }
 
 .md\:w-46 {
-  width: 17.5rem;
+  width: 16rem;
 }
 
 .border-blue {
@@ -403,6 +403,10 @@ input[type="number"] {
 
 .w-96 {
   width: 24rem;
+}
+
+.w-100 {
+  width: 80rem;
 }
 
 .space-y-4 {
@@ -1318,6 +1322,20 @@ video {
   scrollbar-width: none; /* Firefox */
 }
 
+.dokumen-all-scroll {
+  overflow-y: scroll;
+}
+
+.dokumen-all-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.dokumen-all-scroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .left-320-px {
   left: 320px;
 }
@@ -1344,4 +1362,322 @@ video {
 .success-label {
   background: #DFF0D0;
   color: #266900;
+}
+
+
+@media screen and (max-width: 480px) {
+  .login-screen {
+    grid-column: span 3 / span 3 !important;
+  }
+
+  .syarat-ketentuan-mobile {
+    width: 90% !important;
+  }
+
+  .register-mobile {
+    width: 90% !important;
+    margin: 0 auto;
+  }
+
+  .setuju-btn {
+    width: fit-content !important;
+    flex-direction: column;
+    margin: 0 1.5rem !important;
+  }
+
+  .otp {
+    margin-left: 2% !important;
+    justify-content: center;
+  }
+
+  .otp input {
+    margin-right: 10px !important;
+  }
+
+  .syarat-next {
+    width: 100% !important;
+    margin-bottom: 8%;
+  }
+
+  .syarat-next button,
+  .syarat-next Link {
+    width: 100% !important;
+    margin-top: 5px;
+  }
+
+  .toogle-syarat {
+    width: 85% !important;
+  }
+
+  .pertanyaan-text {
+    overflow: scroll;
+  }
+
+  .pertanyaan-text-2 {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .verifikasi-title {
+    text-align: center;
+  }
+
+  .sidebar-transition {
+    margin-left: 0 !important;
+  }
+
+  .sidebar-transition .mt-20 {
+    margin-top: 2rem !important;
+  }
+
+  .sidebar-open {
+    position: inherit !important;
+    width: auto;
+  }
+
+  .dashboard-mobile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .document-card-mobile {
+    margin-top: 1rem;
+  }
+
+  .filter-card {
+    padding: 0 1.5rem;
+  }
+
+  .filter-search-btn {
+    padding: 0 4rem;
+  }
+
+  .filter-text-mobile label {
+    font-size: 0.7rem !important;
+  }
+
+  .paginationActive {
+    width: 6% !important;
+  }
+
+  .paginationItems {
+    width: 4.5%;
+  }
+
+  .paginationBtn {
+    width: 7%;
+  }
+
+  .unknown-btn {
+    padding: 0.8rem !important;
+  }
+
+  .unknown-btn img {
+    width: 60%;
+    margin-bottom: 1rem !important;
+  }
+
+  .unknown-btn label {
+    font-size: 11px;
+  }
+
+  .layanan-mobile {
+    display: block !important;
+  }
+
+  .tipe-layanan-card {
+    margin: 0 !important;
+  }
+
+  .layanan-btn {
+    display: flex;
+    justify-content: center;
+  }
+
+  .layanan-btn .cancel {
+    padding: 0 1rem;
+  }
+
+  .ajb-card {
+    margin-top: 1rem;
+    margin-bottom: 8rem !important;
+  }
+
+  .ajb-card .font-inter {
+    padding-bottom: 1rem !important;
+  }
+
+  .nilai-tanah {
+    width: 60% !important;
+  }
+
+  .show-doc {
+    width: 100%;
+  }
+
+  .form-doc {
+    margin-top: 1rem;
+  }
+
+  .form-input,
+  .form-input input,
+  .form-input select {
+    font-size: 11px;
+    padding-bottom: 0.5rem;
+  }
+
+  .form-input input,
+  .form-input select {
+    margin-bottom: 6px;
+  }
+
+  .list-berkas {
+    overflow: scroll;
+  }
+
+  .list-berkas table {
+    width: 400%;
+  }
+
+  .list-btn {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-right: 0;
+  }
+
+  .list-btn button {
+    margin-right: 0;
+    margin-top: 10px;
+  }
+
+  .show-doc-modal {
+    width: 80% !important;
+    margin: 0 auto;
+  }
+
+  .show-doc-modal .react-pdf__Document {
+    width: 100% !important;
+  }
+
+  .modal-pdf {
+    width: fit-content !important;
+    font-size: 11px;
+  }
+
+  .modal-pendukung {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .topup-mobile {
+    padding: 0 10%;
+  }
+
+  .choose-card {
+    margin-right: 0 !important;
+  }
+
+  .list-satuan {
+    flex-direction: column;
+    margin-top: 0.2rem !important;
+  }
+
+  .list-satuan .text-right {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .list-satuan .text-right button {
+    background-color: transparent !important;
+  }
+
+  .quota-btn {
+    padding: 2px 6px;
+  }
+
+  .total-card {
+    margin-top: 1rem;
+  }
+
+  .pilihtipe-mobile {
+    width: 90% !important;
+    margin: 0 auto !important;
+  }
+
+  .tipe-mobile {
+    width: 150%;
+  }
+
+  .px-tipe {
+    padding: 0 2rem !important;
+  }
+
+  .stepper-mobile,
+  .card-stepper {
+    width: 95% !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .card-stepper .rounded-t {
+    padding: 1rem 0.5rem;
+  }
+
+  .stepper-mobile .card-title {
+    display: none;
+  }
+
+  .stepper-upload{
+    margin: 0 2rem !important;
+  }
+
+  .stepper-upload img{
+   width: 40%;
+   height: 40%;
+  }
+
+  .upload-ket{
+    padding: 1rem 1rem !important;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .h-pdf{
+    font-size: 7px;
+    height: auto !important;
+    overflow: inherit !important;
+  }
+
+  .h-pdf button{
+    z-index: 2 !important;
+  }
+
+  .stepper-webcame{
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .stepper-webcame video{
+    margin-left: 0 !important;
+  }
+
+  .stepper-webcame img{
+    width: 100%;
+    margin: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .card-color-2 {
+    margin-top: 1rem;
+  }
+
+}
+
+@media screen and (max-width: 375px) {
+  .card-color {
+    margin-top: 1rem !important;
+  }
+
+  .card-color-2 {
+    margin-top: 0;
+  }
 }

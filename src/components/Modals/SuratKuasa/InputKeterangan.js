@@ -39,14 +39,6 @@ export default function InputKeteranganSuratKuasa() {
               value={dataPtsl.doc_num}
               onChange={handleChange}
             />
-            <span>Nominal Transaksi</span>
-            <input
-              type="number"
-              className="px-3 py-2 bg-gray border-grey rounded text-sm shadow-md focus:outline-none w-full mb-2"
-              name="price_value"
-              value={dataPtsl.price_value}
-              onChange={handleChange}
-            />
           </div>
           <button
             className="bg-blue w-full text-white font-bold mt-4 py-1 rounded-lg"

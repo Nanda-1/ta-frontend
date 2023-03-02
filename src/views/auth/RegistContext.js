@@ -28,6 +28,7 @@ export const RegistProvider = (props) => {
   const [dataCityFilter, setdataCityFilter] = useState([]);
   const [dataDistrictFilter, setdataDistrictFilter] = useState([]);
   const [ttdImage, setTtdImage] = useState("");
+  const [fileLengkapiDiri, setFileLengkapiDiri] = useState("");
   const [loading, setLoading] = useState(false);
 
   var val = localStorage.getItem("dataPPAT");
@@ -147,16 +148,17 @@ export const RegistProvider = (props) => {
         }
       })
       .then((result) => {
-        if (type === "selfie_photo") {
-          // localStorage.setItem(type, )
-          setInputRegist({ ...inputRegist, type: result });
-          getUserFile("self_video");
-        } else {
-          setInputRegist({ ...inputRegist, type: result });
-          setTimeout(() => {
-            sendLengkapiDiriUmum();
-          }, 2000);
-        }
+        setFileLengkapiDiri(result);
+        // if (type === "selfie_photo") {
+        //   // localStorage.setItem(type, )
+        //   setInputRegist({ ...inputRegist, type: result });
+        //   getUserFile("self_video");
+        // } else {
+        //   setInputRegist({ ...inputRegist, type: result });
+        //   setTimeout(() => {
+        //     sendLengkapiDiriUmum();
+        //   }, 2000);
+        // }
         // setTtdImage(URL.createObjectURL(result));
       })
       .catch((error) => console.log("error", error));
@@ -621,28 +623,20 @@ export const RegistProvider = (props) => {
         functions,
         regist,
         setRegist,
-
         tipe,
         setTipe,
-
         skppat,
         setSkppat,
-
         inputRegist,
         setInputRegist,
-
         dataRegist,
         setDataRegist,
-
         dataProv,
         setDataProv,
-
         dataKota,
         setDataKota,
-
         dataKec,
         setDataKec,
-
         getDataProv,
         getDataKota,
         getDataKec,
@@ -659,9 +653,7 @@ export const RegistProvider = (props) => {
         setdataDistrictFilter1,
         dataDistrictFilter,
         setdataDistrictFilter,
-
         all,
-
         resendEmailRegist,
         sendMailLengkapiDiri,
         sendLengkapiDiriUmum,
@@ -673,7 +665,6 @@ export const RegistProvider = (props) => {
         toSign,
         toCA,
         stepper,
-
         refreshToken,
         ttdImage,
         setTtdImage,
@@ -681,6 +672,8 @@ export const RegistProvider = (props) => {
         loading,
         setLoading,
         b64toBlob,
+        fileLengkapiDiri,
+        setFileLengkapiDiri,
       }}
     >
       {props.children}

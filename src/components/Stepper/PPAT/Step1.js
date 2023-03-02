@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { RegistContext } from "views/auth/RegistContext";
 import swal from "sweetalert";
 
@@ -8,16 +8,28 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 import PreviewFile from "components/RegistPPAT/PreviewFile";
 
 const Step1 = (props) => {
-  const { inputRegist, setInputRegist, ppatFile, loading, setLoading } =
-    useContext(RegistContext);
+  const {
+    inputRegist,
+    setInputRegist,
+    ppatFile,
+    loading,
+    setLoading,
+    fileLengkapiDiri,
+    setFileLengkapiDiri,
+    getUserFile,
+  } = useContext(RegistContext);
 
-  //Preview PDF
-  const [file, setFile] = useState("");
+  useEffect(() => {
+    if (props.currentStep === 1) {
+      getUserFile("sk_pengangkatan");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function onFileChange(event) {
     event.preventDefault();
     if (event.target.files.length) {
-      setFile(event.currentTarget.files[0]);
+      setFileLengkapiDiri(event.currentTarget.files[0]);
       let getFile = event.currentTarget.files[0];
       let typeDoc = event.currentTarget.files[0].type;
       if (typeDoc !== "application/pdf") {
@@ -37,6 +49,8 @@ const Step1 = (props) => {
       }
     }
   }
+
+  console.log(fileLengkapiDiri);
 
   if (props.currentStep !== 1) {
     return null;
@@ -71,7 +85,7 @@ const Step1 = (props) => {
                 >
                   <div className="mx-auto my-auto h-auto w-auto">
                     <label htmlFor="upload-button" className="w-auto">
-                      {file.length === 0 ? (
+                      {fileLengkapiDiri.length === 0 ? (
                         <div>
                           <img
                             className="mx-auto my-4 align-middle h-36 w-36 bg-fix"
@@ -88,7 +102,7 @@ const Step1 = (props) => {
                           <div className="py-4 my-auto pb-0">
                             <div className="Example__container">
                               <div className="Example__container__document overflow-y-auto-d h-pdf">
-                                <PreviewFile file={file} />
+                                <PreviewFile file={fileLengkapiDiri} />
                               </div>
                             </div>
                           </div>

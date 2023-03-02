@@ -22,7 +22,7 @@ export default function Dashboard() {
   cookies.remove("tipe_otp");
   localStorage.removeItem('dataDiri')
 
-  if (object.lengkapidiri === false) {
+  if (!object.user_detail) {
     setLengkapidiri(true);
   }
 

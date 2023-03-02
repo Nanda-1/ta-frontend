@@ -41,48 +41,18 @@ const UserDropdown = () => {
   };
 
   return (
-    <>
-      <a
-        className="text-blueGray-500 block pr-10"
-        href="logout"
-        ref={btnDropdownRef}
-        onClick={(e) => {
-          e.preventDefault();
-          dropdownPopoverShow ? closeDropdownPopover() : openDropdownPopover();
-        }}
-      >
-        <div className="items-center flex">
-          <span className="w-8 h-8 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
-            <img
-              alt="..."
-              className="w-full rounded-full align-middle border-black"
-              src={noImage}
-            />
-          </span>
-          <div className={"px-3 text-blue"}>
-            {!object.nama ? "Pengguna" : getName(object.nama)}
-            <i className={"fas fa-caret-down px-4"}></i>
-          </div>
-        </div>
-      </a>
-      <div
-        ref={popoverDropdownRef}
-        className={
-          (dropdownPopoverShow ? "block " : "hidden ") +
-          "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-        }
-      >
-        <a
-          href="login"
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer"
-          }
-          onClick={handleLogout}
-        >
-          Log Out
-        </a>
+    <div className="items-center flex">
+      <span className="w-8 h-8 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
+        <img
+          alt="..."
+          className="w-full rounded-full align-middle border-black"
+          src={noImage}
+        />
+      </span>
+      <div className={"px-3 text-blue"}>
+        {!object.user_detail ? "Pengguna" : getName(object.user_detail.name)}
       </div>
-    </>
+    </div>
   );
 };
 

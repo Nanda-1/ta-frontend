@@ -1,10 +1,19 @@
 import React from "react";
 
-const FormDokumenSuratKuasa = ({ dataPtsl, setDataPtsl, uploadPtsl2 }) => {
+const FormDokumenSuratKuasa = ({
+  dataPtsl,
+  setDataPtsl,
+  uploadPtsl2,
+  cekKtp,
+}) => {
   const handleChange = (event) => {
     let inputValue = event.target.value;
     let formInput = event.target.name;
     setDataPtsl({ ...dataPtsl, [formInput]: inputValue });
+  };
+
+  const getDataNik = () => {
+    cekKtp(dataPtsl.no_identitas);
   };
 
   return (
@@ -20,6 +29,22 @@ const FormDokumenSuratKuasa = ({ dataPtsl, setDataPtsl, uploadPtsl2 }) => {
       <div className="text-sm">
         <span>Yang bertanda tangan :</span>
         <br />
+        <span>Nomor Identitas</span>
+        <div className="flex">
+          <input
+            type="number"
+            className="px-3 py-2 bg-gray border-grey rounded text-sm shadow-md focus:outline-none w-full mb-2"
+            name="no_identitas"
+            value={dataPtsl.no_identitas}
+            onChange={handleChange}
+          />
+          <button
+            className="bg-blue text-white px-3 ml-1 mb-2 rounded"
+            onClick={getDataNik}
+          >
+            <i className="fas fa-search w-full"></i>
+          </button>
+        </div>
         <span>Nama</span>
         <input
           type="text"
@@ -42,14 +67,6 @@ const FormDokumenSuratKuasa = ({ dataPtsl, setDataPtsl, uploadPtsl2 }) => {
           className="px-3 py-2 bg-gray border-grey rounded text-sm shadow-md focus:outline-none w-full mb-2"
           name="tanggal_lahir"
           value={dataPtsl.tanggal_lahir}
-          onChange={handleChange}
-        />
-        <span>Nomor Identitas</span>
-        <input
-          type="number"
-          className="px-3 py-2 bg-gray border-grey rounded text-sm shadow-md focus:outline-none w-full mb-2"
-          name="no_identitas"
-          value={dataPtsl.no_identitas}
           onChange={handleChange}
         />
         <span>Alamat</span>

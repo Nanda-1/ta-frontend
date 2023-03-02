@@ -30,24 +30,28 @@ export const AjbProvider = (props) => {
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
+  var auth = localStorage.getItem("authentication");
+  var token = JSON.parse(auth);
+
   const refreshToken = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/auth/refresh", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        refresh_token: object.refresh_token,
+        refresh_token: token.refresh_token,
       }),
     })
       .then((response) => response.json())
       .then((result) => {
         if (result.success === true) {
-          object.token = result.data.token;
-          localStorage.setItem("dataPPAT", JSON.stringify(object));
+          token.access_token = result.data.access_token;
+          localStorage.setItem("authentication", JSON.stringify(token));
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
+          localStorage.removeItem("authentication");
           localStorage.removeItem("dataPPAT");
           setTimeout(() => {
             history.push("/login");
@@ -65,7 +69,7 @@ export const AjbProvider = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + object.token,
+        Authorization: "Bearer " + token.access_token,
       },
       credentials: "same-origin",
       body: JSON.stringify({
@@ -112,6 +116,8 @@ export const AjbProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -134,7 +140,7 @@ export const AjbProvider = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + object.token,
+        Authorization: "Bearer " + token.access_token,
         // 'Access-Control-Allow-Origin' : '*'
       },
       credentials: "same-origin",
@@ -179,6 +185,8 @@ export const AjbProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -214,7 +222,7 @@ export const AjbProvider = (props) => {
         method: "POST",
         headers: {
           Accept: "application/json",
-          Authorization: "Bearer " + object.token,
+          Authorization: "Bearer " + token.access_token,
         },
         credentials: "same-origin",
         body: formdata,
@@ -224,6 +232,8 @@ export const AjbProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -243,6 +253,8 @@ export const AjbProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.blob();
         }
@@ -273,7 +285,7 @@ export const AjbProvider = (props) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + object.token,
+          Authorization: "Bearer " + token.access_token,
         },
         credentials: "same-origin",
         body: JSON.stringify({
@@ -299,6 +311,8 @@ export const AjbProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -316,29 +330,26 @@ export const AjbProvider = (props) => {
   };
 
   const dokumenAjb = (doc) => {
-    let id = inputAjb.id_transaksi
-      ? Number(inputAjb.id_transaksi)
-      : Number(Cookies.get("id_transaksi"));
-
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/getdocument?transaction_id=" +
-        id +
-        "&doc_type=" +
-        doc,
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/" +
+        Cookies.get("id_transaksi") +
+        "/document?doc_type=akta_jual_beli",
       {
         method: "GET",
         // body: formdata,
         redirect: "follow",
         headers: {
-          "Content-Type": "application/pdf",
-          Authorization: "Bearer " + object.token,
+          // "Content-Type": "application/pdf",
+          Authorization: "Bearer " + token.access_token,
         },
       }
     )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -356,29 +367,26 @@ export const AjbProvider = (props) => {
   };
 
   const getDokumenAjb = (doc) => {
-    let id = inputAjb.id_transaksi
-      ? Number(inputAjb.id_transaksi)
-      : Number(Cookies.get("id_transaksi"));
-
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/getdocument?transaction_id=" +
-        id +
-        "&doc_type=" +
-        doc,
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/" +
+        Cookies.get("id_transaksi") +
+        "/document?doc_type=akta_jual_beli",
       {
         method: "GET",
         // body: formdata,
         redirect: "follow",
         headers: {
-          "Content-Type": "application/pdf",
-          Authorization: "Bearer " + object.token,
+          // "Content-Type": "application/pdf",
+          Authorization: "Bearer " + token.access_token,
         },
       }
     )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.blob();
         }
@@ -408,13 +416,15 @@ export const AjbProvider = (props) => {
         redirect: "follow",
         headers: {
           "Content-Type": "application/pdf",
-          Authorization: "Bearer " + object.token,
+          Authorization: "Bearer " + token.access_token,
         },
       }
     )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.blob();
         }
@@ -436,7 +446,7 @@ export const AjbProvider = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + object.token,
+        Authorization: "Bearer " + token.access_token,
         // 'Access-Control-Allow-Origin' : '*'
       },
       credentials: "same-origin",
@@ -455,6 +465,8 @@ export const AjbProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -488,20 +500,20 @@ export const AjbProvider = (props) => {
   const getTtdImage = () => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST +
-        "api/lengkapidiri/download/" +
-        object.uid +
-        "/specimen_tdtgn_file",
+        "api/users/get-file?file_type=specimen_tdtgn_file",
       {
         method: "GET",
         redirect: "follow",
         headers: {
-          Authorization: "Bearer " + object.token,
+          Authorization: "Bearer " + token.access_token,
         },
       }
     )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.blob();
         }
@@ -517,7 +529,7 @@ export const AjbProvider = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + object.token,
+        Authorization: "Bearer " + token.access_token,
         // 'Access-Control-Allow-Origin' : '*'
       },
       credentials: "same-origin",
@@ -534,6 +546,8 @@ export const AjbProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }
@@ -553,7 +567,7 @@ export const AjbProvider = (props) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + object.token,
+        Authorization: "Bearer " + token.access_token,
         // 'Access-Control-Allow-Origin' : '*'
       },
       credentials: "same-origin",
@@ -567,6 +581,8 @@ export const AjbProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.blob();
         }
@@ -585,14 +601,21 @@ export const AjbProvider = (props) => {
   };
 
   const cekKtp = (nik, type) => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/lengkapidiri/nik/" + nik, {
-      method: "GET",
-      redirect: "follow",
-      headers: { Authorization: "Bearer " + object.token },
-    })
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST +
+        "api/users/get-profile?no_nik=" +
+        nik,
+      {
+        method: "GET",
+        redirect: "follow",
+        headers: { Authorization: "Bearer " + token.access_token },
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
         }

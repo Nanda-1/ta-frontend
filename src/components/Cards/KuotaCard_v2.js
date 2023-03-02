@@ -64,10 +64,10 @@ export default function KuotaCard_v2() {
               <div
                 className={`${
                   item.name === "E-Meterai"
-                    ? "bg-blue"
+                    ? "bg-blue card-color"
                     : item.name === "Tanda Tangan"
                     ? "bg-purple-2"
-                    : "bg-light-blue-2"
+                    : "bg-light-blue-2 card-color"
                 }`}
                 style={{ height: "10px", borderRadius: "0 0 8px 8px" }}
               ></div>

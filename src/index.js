@@ -17,7 +17,7 @@ import lengkapiDiri from "layouts/LengkapiDiri";
 import { TopUpProvider } from "Context/TopUpContext";
 import TopUp from "views/admin/TopUp/TopUp";
 
-var val = localStorage.getItem("dataPPAT");
+var val = localStorage.getItem("authentication");
 
 const PrivateRoute = ({ ...props }) => {
   if (val) {
@@ -36,17 +36,17 @@ const PrivateRoute = ({ ...props }) => {
 
 ReactDOM.render(
   <BrowserRouter>
-    <UserProvider>
-      <Switch>
-        <PrivateRoute path="/admin" component={Admin} />
-        <PrivateRoute path="/lengkapiDiri" component={lengkapiDiri} />
+    <Switch>
+      <UserProvider>
         <TopUpProvider>
+          <Route path="/" component={Auth} />
+          <PrivateRoute path="/admin" component={Admin} />
+          <PrivateRoute path="/lengkapiDiri" component={lengkapiDiri} />
           {/* <Payment /> */}
           <PrivateRoute path="/topup" component={TopUp} />
         </TopUpProvider>
-          <Route path="/" component={Auth} />
-      </Switch>
-    </UserProvider>
+      </UserProvider>
+    </Switch>
   </BrowserRouter>,
   document.getElementById("root")
 );

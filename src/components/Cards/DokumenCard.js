@@ -6,17 +6,15 @@ export default function DokumenCard() {
     selesai,
     pending,
     draft,
-    // functions,
+    dokumenSelesai,
+    dokumenDraft,
+    dokumenPending,
   } = useContext(UserContext);
 
-  // const { quotaMeterai, cekQuota, quotaForm } = functions;
-
   useEffect(() => {
-    // dokumenSelesai(dataUser.uid);
-    // dokumenPending(dataUser.uid);
-    // dokumenDraft(dataUser.uid);
-    // quotaForm(dataUser.uid);
-    // quotaMeterai(dataUser.uid);
+    dokumenSelesai();
+    dokumenDraft();
+    dokumenPending();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -60,7 +58,7 @@ export default function DokumenCard() {
                     ? "bg-green-3"
                     : item.name === "Pending"
                     ? "bg-yellow"
-                    : "bg-cyan"
+                    : "bg-cyan card-color-2"
                 }`}
                 style={{ height: "10px", borderRadius: "0 0 8px 8px" }}
               ></div>

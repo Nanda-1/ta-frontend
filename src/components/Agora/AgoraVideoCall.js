@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 
 const appId = "15ade710d3de457bbd2ddc96f487c621"; //ENTER APP ID HERE
 const token =
-  "007eJxTYPAubJ2bFZuavH7mhXu6BWzL2Hps90V+r+g8VBi6qljtyT0FBkPTxJRUc0ODFOOUVBNT86SkFKOUlGRLszQTC/NkMyPDdvYJyQ2BjAztjh3MjAwQCOKzM5SkFpdk5qUzMAAAzpQg+g==";
+  "007eJxTYGC2P+H46EPg3htiC2TmzTOY6n/91FOHMx8sNz/nNCm6GX5agcHQNDEl1dzQIMU4JdXE1DwpKcUoJSXZ0izNxMI82czIcJvD+eSGQEaGhnmvWBkZIBDE52bITCmOL0ktLsnMS2dgAADpOyUL";
 
 const AgoraVideoCall = () => {
   const [inCall, setInCall] = useState(true);

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { FormGroup } from "reactstrap";
 import { RegistContext } from "views/auth/RegistContext";
@@ -6,11 +6,25 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 import KeteranganPhoto from "components/RegistPPAT/KeteranganPhoto";
 
 const Step2 = (props) => {
-  const { inputRegist, setInputRegist, ppatFile, loading, b64toBlob } =
-    useContext(RegistContext);
+  const {
+    inputRegist,
+    setInputRegist,
+    ppatFile,
+    loading,
+    b64toBlob,
+    fileLengkapiDiri,
+    setFileLengkapiDiri,
+    getUserFile,
+  } = useContext(RegistContext);
+
+  useEffect(() => {
+    if (props.currentStep === 2) {
+      getUserFile("ktp");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [capturing, setCapturing] = useState(false);
-  const [imagess, setImagess] = useState(null);
   const webcamRef = useRef(null);
 
   const videoConstraints = {
@@ -24,7 +38,7 @@ const Step2 = (props) => {
 
     //capture with base64
     const imageSrc = webcamRef.current.getScreenshot();
-    setImagess(imageSrc);
+    setFileLengkapiDiri(imageSrc);
 
     //convert base64 to image/jpg
     const contentType = "image/jpg";
@@ -38,8 +52,10 @@ const Step2 = (props) => {
 
   const handleStopCaptureClick = () => {
     setCapturing(false);
-    setImagess(null);
+    setFileLengkapiDiri("");
   };
+
+  console.log(fileLengkapiDiri);
 
   if (props.currentStep !== 2) {
     return null;
@@ -64,8 +80,8 @@ const Step2 = (props) => {
           </div>
           <div className="space-y-4">
             <span className="flex h-custom-d w-customs-d mx-auto border-2 border-blue-400 pt-2 border-dashed rounded">
-              {imagess ? (
-                <img src={imagess} alt="" className="mb-2 ml-2" />
+              {fileLengkapiDiri.length !== 0 ? (
+                <img src={fileLengkapiDiri} alt="" className="mb-2 ml-2" />
               ) : (
                 <Webcam
                   ref={webcamRef}

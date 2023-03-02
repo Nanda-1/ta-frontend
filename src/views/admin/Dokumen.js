@@ -1,26 +1,33 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import { UserContext } from "Context/UserContext";
 import Cookies from "js-cookie";
 import { useHistory } from "react-router-dom";
+import { get } from "jquery";
 
 export default function Dokumen() {
-  const { functions, listTransaction } = useContext(UserContext);
+  const { functions, listTransaction, cekKtp, dataNik } =
+    useContext(UserContext);
 
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
   const { transactionList } = functions;
 
+  const [listNik, setListNik] = useState([]);
+
   let history = useHistory();
 
   const getType = (data) => {
-    if (data === "akta_jual_beli") {
-      return "Akta Jual Beli";
-    } else {
-      return "Akta Pemberian Hak Tanggungan";
+    let result = data.replace(/_/g, " ");
+    var splitStr = result.toLowerCase().split(" ");
+    for (var i = 0; i < splitStr.length; i++) {
+      splitStr[i] =
+        splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
+    // Directly return the joined string
+    return splitStr.join(" ");
   };
 
   const getStatus = (data) => {
@@ -36,6 +43,8 @@ export default function Dokumen() {
       return (
         <div className="text-orange-500">Menunggu pengisian data akta</div>
       );
+    } else if (data === "stamp_emeterai") {
+      return <div className="text-orange-500">Menunggu Tanda Tangan</div>;
     } else {
       return "Selesai";
     }
@@ -43,8 +52,11 @@ export default function Dokumen() {
 
   useEffect(() => {
     transactionList(object.uid);
+    // cekKtp()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // console.log(cekKtp());
 
   const currentDoc = (id, statusDoc, typeDoc) => {
     Cookies.set("id_transaksi", id, { expires: 1 });
@@ -68,24 +80,39 @@ export default function Dokumen() {
     window.location.reload();
   };
 
+  const getDataUmum = (data, type) => {
+    let obj = eval("(" + data + ")");
+    
+
+    // if (
+    //   type === "nama" &&
+    //   (obj.nama === object.user_detail.name ||
+    //     obj.name === object.user_detail.name)
+    // ) {
+    //   return obj.nama || obj.name;
+    // } else if (type === "email") {
+    //   if (obj.name === object.user_detail.name) {
+    //     return object.email;
+    //   } else {
+    //     return "sas";
+    //   }
+    // } else {
+    //   return "dfd";
+    // }
+    //  cekKtp(obj.no_nik || obj.ni_identitas)
+  };
+
   return (
-    <div className="relative bg-white flex flex-col min-w-full break-words pb-6 font-roboto">
+    <div className="relative flex flex-col min-w-full break-words pb-6 font-sans dokumen-all-scroll">
       <div className={"text-blue text-bold text-xl pl-6 mb-2"}>
         Daftar Dokumen
       </div>
-      <div className="relative font-bold box-content w-full px-3 py-5 history-shadow rounded-lg mb-2">
-        <div className="block w-full overflow-x-auto">
+      <div className="relative font-bold box-content bg-white px-3 py-2 history-shadow rounded-lg mb-2">
+        <div className="block overflow-x-auto">
           {/* Projects table */}
-          <table className="items-center w-full bg-transparent border-collapse">
+          <table className="items-center bg-transparent border-collapse w-100">
             <thead>
               <tr>
-                <th
-                  className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
-                  }
-                >
-                  No.
-                </th>
                 <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
@@ -141,7 +168,7 @@ export default function Dokumen() {
               {listTransaction.length === 0 || !listTransaction ? (
                 <tr>
                   <td
-                    className="px-6 text-center border-l-0 border-r-0 text-xs p-6 bg-gray"
+                    className="px-6 text-center border-l-0 border-r-0 text-xxs text-gray p-6"
                     colSpan={7}
                   >
                     Anda belum membuat dokumen
@@ -152,54 +179,60 @@ export default function Dokumen() {
                   {listTransaction.map((item, index) => {
                     return (
                       <tr key={index}>
-                        <td className="px-6 text-left text-xs p-4">
-                          {item.actors.length === 0 ? (
-                            <div className="italic">{index + 1}</div>
-                          ) : (
-                            index + 1
-                          )}
-                        </td>
-                        <td className="px-6 text-left text-xs p-4">
+                        <td
+                          className="px-6 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                          width={"18%"}
+                        >
                           {item.actors.length === 0 ? (
                             <div className="italic">Belum diinput</div>
-                          ) : (
+                          ) : item.actors[0].user_name ? (
                             item.actors[0].user_name
+                          ) : (
+                            getDataUmum(item.eform_json_data, "nama")
                           )}
                         </td>
-                        <td className="px-6 text-left text-xs p-4">
+                        <td
+                          className="px-6 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                          width={"18%"}
+                        >
                           {item.actors.length === 0 ? (
                             <div className="italic">Belum diinput</div>
-                          ) : (
+                          ) : item.actors[0].user_email ? (
                             item.actors[0].user_email
+                          ) : (
+                            getDataUmum(item.eform_json_data, "email")
                           )}
                         </td>
-                        <td className="px-6 text-left text-xs p-4">
+                        <td
+                          className="px-6 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                          width={"18%"}
+                        >
                           {item.doc_name ? (
                             item.doc_name
                           ) : (
                             <div className="italic">Belum diinput</div>
                           )}
                         </td>
-                        <td className="px-6 text-left text-xs p-4">
+                        <td
+                          className="px-6 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                          width={"18%"}
+                        >
                           {item.doc_num ? (
                             item.doc_num
                           ) : (
                             <div className="italic">Belum diinput</div>
                           )}
                         </td>
-                        <td className="px-6 text-xs p-4">
+                        <td
+                          className="px-6 text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                          width={"25%"}
+                        >
                           {getType(item.doc_type)}
                         </td>
-                        {item.total_pending_invitation === 0 ? (
-                          <td className="px-6 text-xs p-4">
-                            {getStatus(item.doc_status)}
-                          </td>
-                        ) : (
-                          <td className="px-6 text-center text-yellow text-xs p-4">
-                            Menunggu Registrasi
-                          </td>
-                        )}
-                        <td className="px-6 text-center text-xs p-4">
+                        <td className="px-6 text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0">
+                          {item.doc_status}
+                        </td>
+                        <td className="px-6 text-center text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0">
                           {item.doc_status === "selesai" ? (
                             <Link
                               className="bg-blue text-white py-2 px-3 rounded-md cursor-pointer"

@@ -12,14 +12,6 @@ export default function RiwayatPemohon() {
 
   let history = useHistory();
 
-  const getType = (data) => {
-    if (data === "akta_jual_beli") {
-      return "Akta Jual Beli";
-    } else {
-      return "Akta Pemberian Hak Tanggungan";
-    }
-  };
-
   const getStatus = (data) => {
     if (data === "submit_dokumen") {
       return <div className="text-red-500">Menunggu pembubuhan meterai</div>;
@@ -53,6 +45,8 @@ export default function RiwayatPemohon() {
       url = "AktaPemberianHakTanggungan";
     }
 
+    console.log(id)
+
     if (statusDoc === "draft") {
       Cookies.set("step", "input_data_penjual");
       history.push("/admin/" + url);
@@ -65,15 +59,40 @@ export default function RiwayatPemohon() {
     } else if (statusDoc === "submit_dokumen") {
       Cookies.set("step", "stamping");
       history.push("/admin/" + url);
+    } else if (statusDoc === "stamp_emeterai") {
+      Cookies.set("transaction_id", id);
+      history.push("/admin/" + typeDoc + "/pembubuhan");
+    } else if (statusDoc === "generate_document") {
+      Cookies.set("transaction_id", id);
+      history.push("/admin/" + typeDoc + "/inputDataForm");
     } else {
       history.push(`/admin/preview_dokumen/transaction_id=${id}`);
     }
     window.location.reload();
   };
 
+  const getDataUmum = (data, kategori) => {
+    let obj = eval("(" + data + ")");
+
+    if (kategori === "nama") {
+      return obj.nama || obj.name;
+    }
+  };
+
+  const getType = (data) => {
+    let result = data.replace(/_/g, " ");
+    var splitStr = result.toLowerCase().split(" ");
+    for (var i = 0; i < splitStr.length; i++) {
+      splitStr[i] =
+        splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    }
+    // Directly return the joined string
+    return splitStr.join(" ");
+  };
+
   return (
     <>
-      <div className="relative break-words font-montserrat mb-8 ">
+      <div className="relative break-words font-sans mb-8 ">
         <div className="text-bold mt-6 mb-2 w-full">
           <div className="text-lg text-black font-bold">Riwayat Permohonan</div>
         </div>
@@ -83,25 +102,25 @@ export default function RiwayatPemohon() {
             <table className="items-center w-full overflow-x-auto bg-transparent border-collapse">
               <thead>
                 <tr>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
+                  <th className="px-3 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
                     Nama Pemohon
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
+                  <th className="px-3 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
                     E-Mail
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
+                  <th className="px-3 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-left">
                     Nama Dokumen
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
+                  <th className="px-3 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
                     Nomor Dokumen
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
+                  <th className="px-3 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
                     Kategori
                   </th>
-                  <th className="px-6 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
+                  <th className="px-3 align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold text-center">
                     Status
                   </th>
-                  <th className="px-6 text-center align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold">
+                  <th className="px-3 text-center align-middle border border-solid py-3 text-xs border-l-0 border-r-0 border-t-0 font-semibold">
                     Aksi
                   </th>
                 </tr>
@@ -111,7 +130,7 @@ export default function RiwayatPemohon() {
                 !listTransaction ? (
                   <tr>
                     <td
-                      className="px-6 text-center text-grey border-l-0 border-r-0 text-xxs p-6"
+                      className="px-3 text-center text-grey border-l-0 border-r-0 text-xxs p-6"
                       colSpan={7}
                     >
                       Tidak Ada Dokumen
@@ -122,47 +141,44 @@ export default function RiwayatPemohon() {
                     {listTransaction.slice(0, 5).map((item, index) => {
                       return (
                         <tr key={index}>
-                          <td className="px-6 text-left text-xs p-4">
-                            {item.actors && item.actors.length === 0 ? (
+                          <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
+                            {item.actors.length === 0 ||
+                            item.eform_json_data.length === 0 ? (
                               <div className="italic">Belum diinput</div>
+                            ) : item.eform_json_data.length !== null ? (
+                              getDataUmum(item.eform_json_data, "nama")
                             ) : (
                               item.actors[0].user_name
                             )}
                           </td>
-                          <td className="px-6 text-left text-xs p-4">
+                          <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
                             {item.actors && item.actors.length === 0 ? (
                               <div className="italic">Belum diinput</div>
                             ) : (
                               item.actors[0].user_email
                             )}
                           </td>
-                          <td className="px-6 text-left text-xs p-4">
+                          <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
                             {item.doc_name ? (
                               item.doc_name
                             ) : (
                               <div className="italic">Belum diinput</div>
                             )}
                           </td>
-                          <td className="px-6 text-left text-xs p-4">
+                          <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
                             {item.doc_num ? (
                               item.doc_num
                             ) : (
                               <div className="italic">Belum diinput</div>
                             )}
                           </td>
-                          <td className="px-6 text-xs p-4">
+                          <td className="px-3 text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
                             {getType(item.doc_type)}
                           </td>
-                          {item.total_pending_invitation === 0 ? (
-                            <td className="px-6 text-xs p-4">
-                              {getStatus(item.doc_status)}
-                            </td>
-                          ) : (
-                            <td className="px-6 text-center text-yellow text-xs p-4">
-                              Menunggu Registrasi
-                            </td>
-                          )}
-                          <td className="px-6 text-center text-xs p-4">
+                          <td className="px-3 text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
+                            {item.doc_status}
+                          </td>
+                          <td className="px-3 text-center text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
                             {item.doc_status === "selesai" ? (
                               <Link
                                 className="bg-blue text-white py-2 px-3 rounded-md cursor-pointer"
@@ -174,12 +190,12 @@ export default function RiwayatPemohon() {
                               <button
                                 onClick={() =>
                                   currentDoc(
-                                    item.id,
+                                    item.transaction_id,
                                     item.doc_status,
                                     item.doc_type
                                   )
                                 }
-                                className="bg-blue text-white py-2 px-3 rounded-md cursor-pointer"
+                                className="bg-blue font-bold text-white py-2 px-3 rounded-md cursor-pointer"
                               >
                                 Detail
                               </button>
@@ -193,6 +209,16 @@ export default function RiwayatPemohon() {
               </tbody>
             </table>
           </div>
+          {listTransaction.length > 5 ? (
+            <div className="w-full my-3 text-center">
+              <button
+                className="text-xs border font-bold px-6 py-2 rounded shadow focus:outline-none"
+                onClick={() => history.push("/admin/dokumen")}
+              >
+                Lihat Semua
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
       {/* </div> */}

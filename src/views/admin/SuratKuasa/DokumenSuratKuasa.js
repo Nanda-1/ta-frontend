@@ -15,6 +15,7 @@ const DokumenSuratKuasa = () => {
     getDokumen,
     dataPtsl,
     uploadPtsl2,
+    cekKtp,
     setDataPtsl,
   } = useContext(MySuratKuasaContext);
 
@@ -124,6 +125,7 @@ const DokumenSuratKuasa = () => {
               dataPtsl={dataPtsl}
               setDataPtsl={setDataPtsl}
               uploadPtsl2={uploadPtsl2}
+              cekKtp={cekKtp}
             />
           </div>
           <div className="w-full flex justify-between mb-6">

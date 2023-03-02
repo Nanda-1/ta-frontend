@@ -10,6 +10,7 @@ export const SuratKuasaProvider = (props) => {
   const [dataProv, setDataProv] = useState([]);
   const [dataKec, setDataKec] = useState([]);
   const [dataKota, setDataKota] = useState([]);
+  const [dataNik, setDataNik] = useState([]);
   const [filePtsl, setFilePtsl] = useState();
   const [loading, setLoading] = useState(false);
   const [otpModal, setOtpModal] = useState(false);
@@ -22,7 +23,7 @@ export const SuratKuasaProvider = (props) => {
   var auth = JSON.parse(login);
 
   const refreshToken = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
+    fetch(process.env.REACT_APP_BACKEND_HOST + "api/auth/refresh-token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -31,7 +32,6 @@ export const SuratKuasaProvider = (props) => {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         if (result.success === true) {
           auth.access_token = result.data.access_token;
           localStorage.setItem("authentication", JSON.stringify(auth));
@@ -40,8 +40,8 @@ export const SuratKuasaProvider = (props) => {
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
-          localStorage.removeItem("dataPPAT");
           localStorage.removeItem("authentication");
+          localStorage.removeItem("dataPPAT");
           setTimeout(() => {
             history.push("/login");
           }, 1000);
@@ -252,7 +252,7 @@ export const SuratKuasaProvider = (props) => {
     setLoading(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/add-actors",
+        "api/transactions/add-data",
       {
         method: "POST",
         headers: {
@@ -262,7 +262,9 @@ export const SuratKuasaProvider = (props) => {
         body: JSON.stringify({
           transaction_id: Cookies.get("transaction_id"),
           actors: [],
-          docs: [{ doc_type: "sertipikat", base64_doc: dataPtsl.doc_sertipikat }],
+          docs: [
+            { doc_type: "sertipikat", base64_doc: dataPtsl.doc_sertipikat },
+          ],
         }),
         redirect: "follow",
       }
@@ -347,7 +349,7 @@ export const SuratKuasaProvider = (props) => {
           transaction_id: Cookies.get("transaction_id"),
           doc_name: Cookies.get("doc_name"),
           doc_num: Cookies.get("doc_num"),
-          price_value: Cookies.get("price_value"),
+          // price_value: Cookies.get("price_value"),
           data: {
             letak_jalan: dataPtsl.letak_jalan,
             letak_kelurahan: dataPtsl.letak_kelurahan,
@@ -472,8 +474,8 @@ export const SuratKuasaProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
-        }else if (response.status === 500) {
-          setLoading(false)
+        } else if (response.status === 500) {
+          setLoading(false);
         } else {
           return response.json();
         }
@@ -532,6 +534,35 @@ export const SuratKuasaProvider = (props) => {
       });
   };
 
+  const cekKtp = (no_nik) => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/users/get-profile?no_nik=" +
+        no_nik,
+      {
+        method: "GET",
+        redirect: "follow",
+        headers: { Authorization: "Bearer " + auth.access_token },
+      }
+    )
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        if (result.success === false) {
+          swal("Gagal", result.error, "error");
+        } else {
+         setDataPtsl({...dataPtsl, nama: result.data.name})
+        }
+        console.log(result)
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   return (
     <MySuratKuasaContext.Provider
       value={{
@@ -567,6 +598,9 @@ export const SuratKuasaProvider = (props) => {
         uploadPtsl2,
         otpTandaTangan,
         addMeterai,
+        cekKtp,
+        dataNik,
+        setDataNik,
       }}
     >
       {props.children}

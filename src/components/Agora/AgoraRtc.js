@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import { createClient } from "agora-rtc-react";
-import { ClientConfig } from "agora-rtc-sdk-ng";
 import Cookies from "js-cookie";
 
-const config = {
-  mode: "rtc",
-  codec: "vp8",
-};
 const appId = "15ade710d3de457bbd2ddc96f487c621"; //ENTER APP ID HERE7eJxTYPjPIsG6PXX/ptlCk40LKt7nFy71Y4j7ZO5yaEHxfedXTyUUGAxNE1NSzQ0NUoxTUk1MzZOSUoxSUpItzdJMLMyTzYwMv8+sTW4IZGToYytmZWSAQBCfnaEktbgkMy+dgQEAsIUg/g==";
 
 const AgoraRtc = () => {
@@ -14,7 +8,7 @@ const AgoraRtc = () => {
   const [channelName, setChannelName] = useState("");
   if (inCall) {
     Cookies.set("channelName", channelName);
-    window.location.reload()
+    window.location.reload();
   }
   return (
     <div>
