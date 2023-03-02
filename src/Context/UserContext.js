@@ -95,7 +95,7 @@ export const UserProvider = (props) => {
   const createSuratKuasa = (type) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/create",
+        "/api/transactions/create",
       {
         method: "POST",
         headers: {
@@ -316,7 +316,7 @@ export const UserProvider = (props) => {
   const getDokumen = (id, type) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/getdocument?transaction_id=" +
+        "/api/transaction/getdocument?transaction_id=" +
         id +
         "&doc_type=" +
         type,

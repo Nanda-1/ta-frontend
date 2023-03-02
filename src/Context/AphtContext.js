@@ -279,7 +279,7 @@ export const AphtProvider = (props) => {
 
     fetch(
       process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/getdocument?transaction_id=" +
+        "/api/transaction/getdocument?transaction_id=" +
         id +
         "&doc_type=" +
         doc,
@@ -319,7 +319,7 @@ export const AphtProvider = (props) => {
 
     fetch(
       process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/getdocument?transaction_id=" +
+        "/api/transaction/getdocument?transaction_id=" +
         id +
         "&doc_type=" +
         doc,
@@ -481,7 +481,7 @@ export const AphtProvider = (props) => {
 
     fetch(
       process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/getdocument?transaction_id=" +
+        "/api/transaction/getdocument?transaction_id=" +
         id +
         "&doc_type=" +
         doc,

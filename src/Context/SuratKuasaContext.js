@@ -90,7 +90,7 @@ export const SuratKuasaProvider = (props) => {
   const getDokumen = (type) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/" +
+        "/api/transactions/" +
         Cookies.get("transaction_id") +
         "/document?doc_type=" +
         type,
@@ -119,7 +119,7 @@ export const SuratKuasaProvider = (props) => {
   const getDokumenDetail = () => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/" +
+        "/api/transactions/" +
         Cookies.get("transaction_id"),
       {
         method: "GET",
@@ -208,7 +208,7 @@ export const SuratKuasaProvider = (props) => {
     setLoading(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/add-data",
+        "/api/transactions/add-data",
       {
         method: "POST",
         headers: {
@@ -252,7 +252,7 @@ export const SuratKuasaProvider = (props) => {
     setLoading(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/add-data",
+        "/api/transactions/add-data",
       {
         method: "POST",
         headers: {
@@ -291,7 +291,7 @@ export const SuratKuasaProvider = (props) => {
     setLoading(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/generate-document",
+        "/api/transactions/generate-document",
       {
         method: "POST",
         headers: {
@@ -338,7 +338,7 @@ export const SuratKuasaProvider = (props) => {
     setLoading(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/generate-document",
+        "/api/transactions/generate-document",
       {
         method: "POST",
         headers: {
@@ -414,7 +414,7 @@ export const SuratKuasaProvider = (props) => {
     setLoading(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/sign-doc/step-1",
+        "/api/transactions/sign-doc/step-1",
       {
         method: "POST",
         headers: {
@@ -452,7 +452,7 @@ export const SuratKuasaProvider = (props) => {
     setLoading(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/stamp-emeterai",
+        "/api/transactions/stamp-emeterai",
       {
         method: "POST",
         headers: {
@@ -499,7 +499,7 @@ export const SuratKuasaProvider = (props) => {
   const otpTandaTangan = (otp) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "api/transactions/sign-doc/step-2",
+        "/api/transactions/sign-doc/step-2",
       {
         method: "POST",
         headers: {
