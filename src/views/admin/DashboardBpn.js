@@ -8,8 +8,6 @@ import BpnInfo from "components/Cards/Bpn/BpnInfo";
 import cookies from "js-cookie";
 
 export default function DashboardBpn() {
-
-  cookies.remove('id_transaksi')
   
   return (
     <>

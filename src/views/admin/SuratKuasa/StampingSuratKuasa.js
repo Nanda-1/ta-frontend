@@ -66,7 +66,7 @@ const StampingSuratKuasa = () => {
   const handlePembubuhan2 = () => {
     setBtnConfirmMeterai(false);
     setLoading(true);
-    addMeterai();
+    addMeterai(pageNumber);
   };
 
   const addTtd = (data) => {
@@ -308,7 +308,7 @@ const StampingSuratKuasa = () => {
                   >
                     <canvas
                       id="canvasMeterai"
-                      className="z-2 border-blue"
+                      className="z-2"
                       style={{ zIndex: "2" }}
                     >
                       <img

@@ -15,7 +15,7 @@ export default function Dashboard() {
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
-  cookies.remove("id_transaksi");
+  // cookies.remove("id_transaksi");
   cookies.remove("step");
   cookies.remove("otp_sms");
   cookies.remove("phone");

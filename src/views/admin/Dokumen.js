@@ -64,16 +64,60 @@ export default function Dokumen() {
     let apht = "AktaPemberianHakTanggungan";
     if (statusDoc === "draft") {
       Cookies.set("step", 1);
-      history.push("/admin/" + typeDoc === "akta_jual_beli" ? ajb : apht);
+      history.push(
+        "/admin/" + typeDoc === "akta_jual_beli"
+          ? ajb
+          : typeDoc === "surat_kuasa"
+          ? "surat_kuasa/uploadSertipikat"
+          : typeDoc === "pendaftaran_tanah_sistematis_lengkap"
+          ? "pendaftaran_tanah_sistematis_lengkap/uploadAjb"
+          : apht
+      );
     } else if (statusDoc === "pihak_pertama") {
       Cookies.set("step", 4);
-      history.push("/admin/" + typeDoc === "akta_jual_beli" ? ajb : apht);
+      history.push(
+        "/admin/" + typeDoc === "akta_jual_beli"
+          ? ajb
+          : typeDoc === "surat_kuasa"
+          ? "surat_kuasa"
+          : typeDoc === "pendaftaran_tanah_sistematis_lengkap"
+          ? "pendaftaran_tanah_sistematis_lengkap"
+          : apht
+      );
     } else if (statusDoc === "pihak_kedua") {
       Cookies.set("step", 7);
-      history.push("/admin/" + typeDoc === "akta_jual_beli" ? ajb : apht);
+      history.push(
+        "/admin/" + typeDoc === "akta_jual_beli"
+          ? ajb
+          : typeDoc === "surat_kuasa"
+          ? "surat_kuasa"
+          : typeDoc === "pendaftaran_tanah_sistematis_lengkap"
+          ? "pendaftaran_tanah_sistematis_lengkap"
+          : apht
+      );
     } else if (statusDoc === "submit_dokumen") {
       Cookies.set("step", 8);
-      history.push("/admin/" + typeDoc === "akta_jual_beli" ? ajb : apht);
+      history.push(
+        "/admin/" + typeDoc === "akta_jual_beli"
+          ? ajb
+          : typeDoc === "surat_kuasa"
+          ? "surat_kuasa"
+          : typeDoc === "pendaftaran_tanah_sistematis_lengkap"
+          ? "pendaftaran_tanah_sistematis_lengkap"
+          : apht
+      );
+    } else if (statusDoc === "stamp_emeterai") {
+      history.push(
+        "/admin/" + typeDoc === "surat_kuasa"
+          ? "surat_kuasa/pembubuhan"
+          : "pendaftaran_tanah_sistematis_lengkap/pembubuhan"
+      );
+    } else if (statusDoc === "generate_document") {
+      history.push(
+        "/admin/" + typeDoc === "surat_kuasa"
+          ? "surat_kuasa/inputDataForm"
+          : "pendaftaran_tanah_sistematis_lengkap/inputDataForm"
+      );
     } else {
       history.push(`/admin/preview_dokumen/transaction_id=${id}`);
     }
@@ -82,7 +126,6 @@ export default function Dokumen() {
 
   const getDataUmum = (data, type) => {
     let obj = eval("(" + data + ")");
-    
 
     // if (
     //   type === "nama" &&
@@ -245,7 +288,7 @@ export default function Dokumen() {
                               <button
                                 onClick={() =>
                                   currentDoc(
-                                    item.id,
+                                    item.transaction_id,
                                     item.doc_status,
                                     item.doc_type
                                   )

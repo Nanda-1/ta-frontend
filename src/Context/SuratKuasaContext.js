@@ -23,7 +23,7 @@ export const SuratKuasaProvider = (props) => {
   var auth = JSON.parse(login);
 
   const refreshToken = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/auth/refresh-token", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -91,7 +91,7 @@ export const SuratKuasaProvider = (props) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
-        Cookies.get("transaction_id") +
+        Cookies.get("id_transaksi") +
         "/document?doc_type=" +
         type,
       {
@@ -106,6 +106,8 @@ export const SuratKuasaProvider = (props) => {
           refreshToken();
         } else if (res.status === 404) {
           setAddKeterangan(true);
+        } else if (res.status === 500) {
+          swal("Gagal", res.data.error, "error");
         } else {
           return res.blob();
         }
@@ -120,7 +122,7 @@ export const SuratKuasaProvider = (props) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
-        Cookies.get("transaction_id"),
+        Cookies.get("id_transaksi"),
       {
         method: "GET",
         headers: {
@@ -260,7 +262,7 @@ export const SuratKuasaProvider = (props) => {
           Authorization: "Bearer " + auth.access_token,
         },
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: Cookies.get("id_transaksi"),
           actors: [],
           docs: [
             { doc_type: "sertipikat", base64_doc: dataPtsl.doc_sertipikat },
@@ -299,7 +301,7 @@ export const SuratKuasaProvider = (props) => {
           Authorization: "Bearer " + auth.access_token,
         },
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: Cookies.get("id_transaksi"),
           doc_name: Cookies.get("doc_name"),
           doc_num: Cookies.get("doc_num"),
           price_value: Cookies.get("price_value"),
@@ -346,9 +348,10 @@ export const SuratKuasaProvider = (props) => {
           Authorization: "Bearer " + auth.access_token,
         },
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: Cookies.get("id_transaksi"),
           doc_name: Cookies.get("doc_name"),
           doc_num: Cookies.get("doc_num"),
+          price_value: "20000",
           // price_value: Cookies.get("price_value"),
           data: {
             letak_jalan: dataPtsl.letak_jalan,
@@ -423,7 +426,7 @@ export const SuratKuasaProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: Cookies.get("id_transaksi"),
           llx: dataPtsl.llx.toString(),
           lly: dataPtsl.lly.toString(),
           urx: dataPtsl.urx.toString(),
@@ -448,7 +451,7 @@ export const SuratKuasaProvider = (props) => {
       .catch((error) => swal("Error", error, "error"));
   };
 
-  const addMeterai = () => {
+  const addMeterai = (pageNum) => {
     setLoading(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
@@ -461,12 +464,12 @@ export const SuratKuasaProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: Cookies.get("id_transaksi"),
           llx: dataPtsl.llx,
           lly: dataPtsl.lly,
           urx: dataPtsl.urx,
           ury: dataPtsl.ury,
-          page: Number(dataPtsl.page),
+          page: Number(pageNum),
         }),
         redirect: "follow",
       }
@@ -477,6 +480,7 @@ export const SuratKuasaProvider = (props) => {
         } else if (response.status === 500) {
           setLoading(false);
         } else {
+          console.log(response);
           return response.json();
         }
       })
@@ -493,7 +497,7 @@ export const SuratKuasaProvider = (props) => {
           window.location.reload();
         }, 2000);
       })
-      .catch((error) => swal("Error", error, "error"));
+      .catch((error) => console.log(error));
   };
 
   const otpTandaTangan = (otp) => {
@@ -556,9 +560,9 @@ export const SuratKuasaProvider = (props) => {
         if (result.success === false) {
           swal("Gagal", result.error, "error");
         } else {
-         setDataPtsl({...dataPtsl, nama: result.data.name})
+          setDataPtsl({ ...dataPtsl, nama: result.data.name });
         }
-        console.log(result)
+        console.log(result);
       })
       .catch((error) => console.log("error", error));
   };

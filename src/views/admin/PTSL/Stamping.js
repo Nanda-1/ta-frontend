@@ -71,7 +71,7 @@ const Stamping = () => {
   const handlePembubuhan2 = () => {
     setBtnConfirmMeterai(false);
     setLoading(true);
-    addMeterai();
+    addMeterai(pageNumber);
   };
 
   const addTtd = (data) => {
@@ -196,8 +196,6 @@ const Stamping = () => {
       let lower_y_coord = canvas.getHeight() - obj.setCoords().oCoords.bl.y;
       let upper_x_coord = obj.setCoords().oCoords.tr.x;
       let upper_y_coord = canvas.getHeight() - obj.setCoords().oCoords.tr.y;
-
-      console.log(lower_y_coord);
 
       setDataPtsl({
         ...dataPtsl,
