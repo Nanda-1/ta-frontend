@@ -43,9 +43,9 @@ class Modal2 extends Component {
         icon: "warning",
       });
     } else {
-      var str = this.state.phone.length - 3;
-      var res = this.state.phone.substring(3, str);
-      var newStr = this.state.phone.replace(res, "******");
+      var str = this.state.phone?.length - 3;
+      var res = this.state.phone?.substring(3, str);
+      var newStr = this.state.phone?.replace(res, "******");
     }
     return newStr;
   };

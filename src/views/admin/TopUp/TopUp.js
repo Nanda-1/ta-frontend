@@ -39,7 +39,7 @@ export default function TopUp() {
     <div className="px-32 pt-16 bg-white font-sans pb-6">
       {loadingFile ? <ModalDokumen /> : null}
       <h1 className="text-xl font-bold flex items-center">
-        <img src={BackBtn} className='p-1 pr-3 cursor-pointer' onClick={() => histori.goBack()} style={{height: 'fit-content'}} />
+        <img alt="" src={BackBtn} className='p-1 pr-3 cursor-pointer' onClick={() => histori.goBack()} style={{height: 'fit-content'}} />
         Top Up
       </h1>
       <hr className="my-3 mx-auto topup-line" />

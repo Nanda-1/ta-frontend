@@ -137,6 +137,7 @@ export const SuratKuasaProvider = (props) => {
       })
       .then((response) => {
         let data = response.data.eform_json_data;
+        // eslint-disable-next-line no-eval
         let obj = eval("(" + data + ")");
         setDataPtsl({
           ...dataPtsl,

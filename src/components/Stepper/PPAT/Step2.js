@@ -17,14 +17,9 @@ const Step2 = (props) => {
     getUserFile,
   } = useContext(RegistContext);
 
-  useEffect(() => {
-    if (props.currentStep === 2) {
-      getUserFile("ktp");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const [capturing, setCapturing] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [imagess, setImagess] = useState(null);
   const webcamRef = useRef(null);
 
   const videoConstraints = {
@@ -38,7 +33,8 @@ const Step2 = (props) => {
 
     //capture with base64
     const imageSrc = webcamRef.current.getScreenshot();
-    setFileLengkapiDiri(imageSrc);
+    // setFileLengkapiDiri(imageSrc);
+    setImagess(imageSrc);
 
     //convert base64 to image/jpg
     const contentType = "image/jpg";
@@ -48,6 +44,7 @@ const Step2 = (props) => {
     var blobs = new Blob([blob], { type: "image/png" });
     setInputRegist({ ...inputRegist, nik_photo: blobs });
     ppatFile("ktp", blobs);
+
   };
 
   const handleStopCaptureClick = () => {
@@ -55,7 +52,14 @@ const Step2 = (props) => {
     setFileLengkapiDiri("");
   };
 
-  console.log(fileLengkapiDiri);
+  // useEffect(() => {
+  //   if (props.currentStep === 2) {
+  //     getUserFile("ktp");
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  // console.log(fileLengkapiDiri);
 
   if (props.currentStep !== 2) {
     return null;
@@ -65,9 +69,9 @@ const Step2 = (props) => {
     <>
       {loading ? <ModalDokumen /> : null}
       <FormGroup>
-        <div className="relative flex-col break-words w-800-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
-          <div className="rounded-t mt-8 mb-0 px-6 py-6">
-            <div className="text-center mb-2">
+        <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
+          <div className="rounded-t px-6 py-10">
+            <div className="text-center">
               <h1 className="text-blue text-xl font-bold">Unggah KTP Anda</h1>
             </div>
             <div className="text-coolGray-900 text-center">
@@ -80,8 +84,10 @@ const Step2 = (props) => {
           </div>
           <div className="space-y-4">
             <span className="flex h-custom-d w-customs-d mx-auto border-2 border-blue-400 pt-2 border-dashed rounded">
-              {fileLengkapiDiri.length !== 0 ? (
-                <img src={fileLengkapiDiri} alt="" className="mb-2 ml-2" />
+              {/* {fileLengkapiDiri.length !== 0 ? (
+                <img src={fileLengkapiDiri} alt="" className="mb-2 ml-2" /> */}
+              {imagess ? (
+                <img src={imagess} alt="" className="mb-2 ml-2" />
               ) : (
                 <Webcam
                   ref={webcamRef}
@@ -95,7 +101,7 @@ const Step2 = (props) => {
               )}
             </span>
           </div>
-          <div className="text-center w-auto ml-12 mr-12 mt-4 mx-auto">
+          <div className="text-center w-customs-d mt-4 mx-auto justify-content-between">
             <button
               type="button"
               className="bg-blue text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"

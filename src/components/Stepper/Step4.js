@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React, {useState, useContext } from "react";
 import { FormGroup } from "reactstrap";
-import cookies from "js-cookie";
 import { RegistContext } from "views/auth/RegistContext";
 import "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";
@@ -10,19 +9,54 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 
 //swavideo
 const Step4 = (props) => {
-  const { inputRegist, setInputRegist, ppatFile, setLoading, loading } =
-    useContext(RegistContext);
+  const [newName, setnewName] = useState("");
+  const names = [
+    "Kedipkan Mata Anda",
+    "Buka Mulut Anda",
+    "Tengok ke kanan",
+    "Tengok ke kiri",
+  ];
+
+  const {
+    inputRegist,
+    setInputRegist,
+    verifVideo,
+    setLoading,
+    loading,
+  } = useContext(RegistContext);
 
   const [capturing, setCapturing] = React.useState(false);
 
-  const handleStopCaptureClick = React.useCallback(() => {
-    cookies.set("statues", true);
-  }, []);
+  // const handleStopCaptureClick = React.useCallback(() => {
+  //   cookies.set("statues", true);
+  // }, []);
 
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
   const handleStartCaptureClick = async () => {
+    var browser_name = "";
+    const isIE = false || !!document.documentMode;
+    const isEdge = !isIE && !!window.StyleMedia;
+    if (navigator.userAgent.indexOf("Chrome") !== -1 && !isEdge) {
+      browser_name = "chrome";
+    } else if (navigator.userAgent.indexOf("Safari") !== -1 && !isEdge) {
+      browser_name = "safari";
+    } else if (navigator.userAgent.indexOf("Firefox") !== -1) {
+      browser_name = "firefox";
+    } else if (
+      navigator.userAgent.indexOf("MSIE") !== -1 ||
+      !!document.documentMode === true
+    ) {
+      //IF IE > 10
+      browser_name = "ie";
+    } else if (isEdge) {
+      browser_name = "edge";
+    } else {
+      browser_name = "other-browser";
+    }
+    console.log(browser_name);
+
     navigator.getUserMedia =
       navigator.getUserMedia ||
       navigator.webkitGetUserMedia ||
@@ -41,31 +75,57 @@ const Step4 = (props) => {
         let mediaRecorder = new MediaRecorder(stream, options);
         mediaRecorder.ondataavailable = handleDataAvailable;
         mediaRecorder.start();
-
+        textcounter();
         function handleDataAvailable(event) {
           var transcodedMp4 = new Blob([event.data], { type: "video/webm" });
-          let uid = object.uid;
-          var fileOfBlob = new File([transcodedMp4], "video_" + uid + ".webm");
+          var fileOfBlob = new File(
+            [transcodedMp4],
+            "video_" + object.user_id + ".webm"
+          );
 
           setInputRegist({ ...inputRegist, self_video: transcodedMp4 });
 
-          downloadData(transcodedMp4, "rekamwajah_" + object.nama + ".mp4");
-          setLoading(true);
+          downloadData(transcodedMp4, "rekamwajah_" + object.user_id + ".webm");
+
           // console.log(event)
           setInputRegist({ ...inputRegist, self_video: fileOfBlob });
+          // verifVideo("self_video", fileOfBlob);
+          setLoading(true);
           setTimeout(() => {
-            ppatFile("self_video", transcodedMp4);
+            // ppatFile("self_video", fileOfBlob);
+            verifVideo("self_video", fileOfBlob);
+            // localStorage.setItem("self_video", fileOfBlob);
             // console.log(fileOfBlob);
-          }, 2000);
+          }, 10000);
         }
 
         setTimeout(function () {
           mediaRecorder.stop();
-        }, 15000);
+        }, 10000);
       })
       .catch(function (err) {
         console.log("Ada kesalahan! " + err);
       });
+  };
+
+  var textcounter = function () {
+    const timeoutIds = [];
+
+    names.forEach((text, i) => {
+      const timeoutId = setTimeout(() => {
+        // const index = currentIndex + 1;
+        // setCurrentIndex(index);
+        // setCurrentIndex((prev) => [...prev, updatedData]);
+        const index = Math.floor(Math.random() * names.length);
+        setnewName(names[index]);
+      }, 2000 * i);
+
+      timeoutIds.push(timeoutId);
+    });
+
+    return () => {
+      timeoutIds.forEach((id) => clearTimeout(id));
+    };
   };
 
   var downloadData = (function () {
@@ -330,11 +390,10 @@ const Step4 = (props) => {
 
   return (
     <>
-      <p className="pt-10"></p>
       {loading ? <ModalDokumen /> : null}
       <FormGroup>
-        <div className="relative flex-col break-words w-800-d mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">
-          <div className="rounded-t mt-8 px-6 py-6">
+        <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
+          <div className="rounded-t px-6 py-10">
             <div className="text-center mb-2">
               <h1 className="text-blue text-xl font-bold">Rekam Wajah</h1>
             </div>
@@ -364,10 +423,10 @@ const Step4 = (props) => {
                 </div>
               </div>
             </span>
-            <div className="text-center w-auto ml-12 mr-12 mx-auto">
+            <div className="text-center w-customs-d mt-4 mb-12-d mx-auto">
               {capturing ? (
                 <>
-                  <button
+                  {/* <button
                     type="button"
                     className="bg-blue text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                     onClick={handleStopCaptureClick}
@@ -376,7 +435,14 @@ const Step4 = (props) => {
                   </button>
                   <p className="text-sm">
                     Klik tombol "Selesai" untuk memproses
-                  </p>
+                  </p> */}
+                  <div>
+                    {/* {texts.map((text) => (
+                      <p key={text}>{text}</p>
+                    ))} */}
+                    {/* <p>{names[nameIndex]}</p> */}
+                    <p>{newName}</p>
+                  </div>
                 </>
               ) : (
                 <button

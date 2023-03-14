@@ -38,7 +38,6 @@ export const RegistProvider = (props) => {
   var token = JSON.parse(auth);
 
   var dataDiri = JSON.parse(localStorage.getItem("dataDiri"));
-  // var token = JSON.parse(auth);
 
   const refreshToken = () => {
     fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
@@ -50,7 +49,7 @@ export const RegistProvider = (props) => {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result.success === true) {
           token.access_token = result.data.access_token;
           localStorage.setItem("authentication", JSON.stringify(token));
@@ -102,8 +101,105 @@ export const RegistProvider = (props) => {
       redirect: "follow",
       body: formdata,
     };
+
     fetch(
       process.env.REACT_APP_BACKEND_HOST_AUTH + "api/update-profile/file",
+      requestOptionsGet
+    )
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => {
+        if (response.success) {
+          swal("Berhasil", response.data.message, "success");
+          setLoading(false);
+        } else {
+          setLoading(false);
+          swal("Gagal", response.error, "error");
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  const ppatDetail = () => {
+    var dates = dataDiri.tgl_sk;
+
+    function padTo2Digits(num) {
+      return num.toString().padStart(2, "0");
+    }
+
+    function formatDate(date) {
+      return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+      ].join("/");
+    }
+
+    let tanggalan = formatDate(new Date(dates));
+
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/update-profile/ppat-details",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token.access_token,
+        },
+        body: JSON.stringify({
+          no_sk: dataDiri.no_sk_pengangkatan,
+          sk_date: tanggalan,
+          ppat_name: dataDiri.ppat_name,
+          ppat_address: dataDiri.ppat_alamat,
+          ppat_district_id: dataDiri.ppat_kotkab,
+        }),
+      }
+    )
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => {
+        if (response.success) {
+          swal("Berhasil", response.data.message, "success");
+          setLoading(false);
+        } else {
+          setLoading(false);
+          swal("Gagal", response.error, "error");
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  const verifVideo = (type, dataFile) => {
+    let myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
+
+    let formdata = new FormData();
+    formdata.append("file_type", type);
+    formdata.append("file", dataFile);
+
+    let requestOptionsGet = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+      body: formdata,
+    };
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/update-profile/video-verification",
       requestOptionsGet
     )
       .then((res) => {
@@ -260,7 +356,7 @@ export const RegistProvider = (props) => {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + token.access_token);
+    // myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let raw = JSON.stringify({
       email: cookies.get("email"),
@@ -274,7 +370,9 @@ export const RegistProvider = (props) => {
     };
 
     fetch(
-      process.env.REACT_APP_BACKEND_HOST_AUTH + "api/verifikasi/email/send",
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/auth/register/resend-email",
+      // process.env.REACT_APP_BACKEND_HOST_AUTH + "api/verifikasi/email/send",
       requestOptionsGet
     )
       // .then((res) => res.json())
@@ -294,7 +392,23 @@ export const RegistProvider = (props) => {
 
   // Post API LengkapiDiri
   const sendLengkapiDiriUmum = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/update-profile", {
+    var dates = dataDiri.tanggal_lahir;
+
+    function padTo2Digits(num) {
+      return num.toString().padStart(2, "0");
+    }
+
+    function formatDate(date) {
+      return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+      ].join("/");
+    }
+
+    let tanggalan = formatDate(new Date(dates));
+
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/update-profile/kyc", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -303,19 +417,19 @@ export const RegistProvider = (props) => {
       body: JSON.stringify({
         name: dataDiri.nama,
         place_of_birth: dataDiri.tempat_lahir,
-        date_of_birth: dataDiri.tanggal_lahir,
+        date_of_birth: tanggalan,
         gender: dataDiri.gender,
-        no_nik: dataDiri.no_nik,
-        no_npwp: dataDiri.no_npwp,
+        marriage_status: dataDiri.status_nikah,
         address: dataDiri.alamat,
-        prov: dataDiri.id_prov,
-        kotkab: dataDiri.id_kota,
+        province_id: dataDiri.id_prov,
+        city_id: dataDiri.id_kota,
         district_id: dataDiri.id_camat,
         post_code: dataDiri.kodepos,
-        marriage_status: dataDiri.status_nikah,
-        roles: "umum",
-        selfie_photo: inputRegist.selfie_photo,
-        self_video: inputRegist.self_video,
+        no_nik: dataDiri.no_nik,
+        no_npwp: dataDiri.no_npwp,
+        role: "umum",
+        // selfie_photo: inputRegist.selfie_photo,
+        // self_video: inputRegist.self_video,
       }),
     })
       .then((res) => {
@@ -332,7 +446,75 @@ export const RegistProvider = (props) => {
         if (!sukses) {
           swal({
             title: "Gagal!",
-            text: res.data.error,
+            text: res.error,
+            icon: "warning",
+          });
+        } else {
+          swal({
+            title: "Berhasil",
+            text: res.data.message,
+            icon: "success",
+          });
+        }
+      });
+  };
+
+  const sendLengkapiDiriPPAT = () => {
+    var dates = dataDiri.tanggal_lahir;
+
+    function padTo2Digits(num) {
+      return num.toString().padStart(2, "0");
+    }
+
+    function formatDate(date) {
+      return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+      ].join("/");
+    }
+
+    let tanggalan = formatDate(new Date(dates));
+
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/update-profile/kyc", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token.access_token,
+      },
+      body: JSON.stringify({
+        name: dataDiri.nama,
+        place_of_birth: dataDiri.tempat_lahir,
+        date_of_birth: tanggalan,
+        gender: dataDiri.gender,
+        marriage_status: dataDiri.status_nikah,
+        address: dataDiri.alamat,
+        province_id: dataDiri.id_prov,
+        city_id: dataDiri.id_kota,
+        district_id: dataDiri.id_camat,
+        post_code: dataDiri.kodepos,
+        no_nik: dataDiri.no_nik,
+        no_npwp: dataDiri.no_npwp,
+        role: "ppat",
+        // selfie_photo: inputRegist.selfie_photo,
+        // self_video: inputRegist.self_video,
+      }),
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((res) => {
+        setLoading(false);
+        let sukses = res.success;
+
+        if (!sukses) {
+          swal({
+            title: "Gagal!",
+            text: res.error,
             icon: "warning",
           });
         } else {
@@ -387,28 +569,18 @@ export const RegistProvider = (props) => {
 
   const verifiedOTP = async (otp) => {
     cookies.remove("token");
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + token.access_token);
-
-    let raw = JSON.stringify({
-      // email: cookies.get("email"),
-      user_id: object.uid,
-      otp_code: otp,
-    });
-
-    let requestOptionsGet = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
 
     await fetch(
       process.env.REACT_APP_BACKEND_HOST_AUTH +
         "api/auth/register/verify-phone-number",
-      requestOptionsGet
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: cookies.get("uid"),
+          otp_code: otp,
+        }),
+      }
     )
       // .then((res) => res.json())
       .then((res) => {
@@ -420,6 +592,16 @@ export const RegistProvider = (props) => {
       })
       .then((res) => {
         let data = res.data;
+        let sukses = res.success;
+
+        if (!sukses) {
+          swal({
+            title: "Gagal!",
+            text: res.error,
+            icon: "warning",
+          });
+        }
+
         if (data === null) {
           if (res.error === "OTP not valid") {
             swal({
@@ -578,11 +760,11 @@ export const RegistProvider = (props) => {
   };
 
   const toSign = async () => {
-    history.push("/sign");
+    history.push("/lengkapiDiri/sign");
   };
 
   const toCA = async () => {
-    history.push("/ca");
+    history.push("/lengkapiDiri/ca");
   };
 
   const stepper = async () => {
@@ -657,6 +839,7 @@ export const RegistProvider = (props) => {
         resendEmailRegist,
         sendMailLengkapiDiri,
         sendLengkapiDiriUmum,
+        sendLengkapiDiriPPAT,
         verifiedOTP,
         resendOTPRegist,
         // testFaceAPI,
@@ -669,6 +852,8 @@ export const RegistProvider = (props) => {
         ttdImage,
         setTtdImage,
         ppatFile,
+        ppatDetail,
+        verifVideo,
         loading,
         setLoading,
         b64toBlob,

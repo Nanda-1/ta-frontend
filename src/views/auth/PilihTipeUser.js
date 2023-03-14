@@ -67,7 +67,7 @@ export default function PilihTipeUser() {
 
   return (
     <>
-      <div className="container mx-auto px-2 mt-12 cursor-auto">
+      <div className="container mx-auto h-screen">
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full md:w-6/12">
             <div className="relative flex-col break-words w-960-d mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">

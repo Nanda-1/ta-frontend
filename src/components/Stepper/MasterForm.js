@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import {
   Form,
   Button,
@@ -10,6 +9,7 @@ import {
   CardText,
   CardFooter,
 } from "reactstrap";
+import swal from "sweetalert";
 
 //1.Foto KTP
 import Step1 from "./Step2";
@@ -17,13 +17,13 @@ import Step1 from "./Step2";
 import Step2 from "./Step2a";
 //3.Foto BPJS
 import Step3 from "./Step2b";
-//5.Swafoto
+//4.Swafoto
 import Step4 from "./Step3";
-//4.Data Diri
+//5.KYC
 import Step5 from "./Step3r";
 //6.Rekam Wajah
 import Step6 from "./Step4";
-//7.Tandatangan
+//7.CA
 // import Step7 from "./Step5";
 
 // import styled from "styled-components";
@@ -42,7 +42,7 @@ class MasterForm extends Component {
     // Set the intiial input values
     this.num = Cookies.get("step");
     this.state = {
-      currentStep: this.num ? this.num : 1,
+      currentStep: this.num ? Number(this.num) : 1,
     };
 
     // Bind the submission to handleChange()
@@ -81,13 +81,13 @@ class MasterForm extends Component {
       currentStep: currentStep,
     });
 
-    Cookies.set("step", this.state.currentStep);
-
     //sbentar
-    // if (currentStep === 6) {
-    //   // this.context.cekKTP();
-    //   this.context.sendLengkapiDiriUmum();
-    // }
+    if (currentStep === 6) {
+      // this.context.cekKTP();
+      // this.context.setLoading(true);
+      // this.context.sendLengkapiDiriUmum(); 
+    }
+    Cookies.set("step", this.state.currentStep);
   }
 
   // The "next" and "previous" button functions
@@ -122,7 +122,6 @@ class MasterForm extends Component {
           >
             Lanjutkan
           </Button>
-          <hr className="pt-6 border-0" />
         </>
       );
     }
@@ -133,36 +132,28 @@ class MasterForm extends Component {
   // Trigger an alert on form submission
   handleSubmit = (event) => {
     event.preventDefault();
-    this.context.setLoading(true);
+    // this.context.setLoading(true);
     // this.context.getUserFile('selfie_photo');
-    this.context.sendLengkapiDiriUmum();
+    // this.context.sendLengkapiDiriUmum();
 
-    // swal("Apakah anda telah memiliki tanda tangan elektronik sebelumnya ??", {
-    //   buttons: {
-    //     cancel: "Batal",
-    //     catchSign: {
-    //       text: "Belum",
-    //       value: "catchSign",
-    //     },
-    //     catchCA: {
-    //       text: "Sudah",
-    //       value: "catchCA",
-    //     },
-    //   },
-    // }).then((value) => {
-    //   switch (value) {
-    //     case "catchSign":
-    //       this.context.toSign();
-    //       break;
+    swal("Lanjut pembuatan tanda tangan elektronik?", {
+      buttons: {
+        cancel: "Batal",
+        catchCA: {
+          text: "Lanjutkan",
+          value: "catchCA",
+        },
+      },
+    }).then((value) => {
+      switch (value) {
+        case "catchCA":
+          this.context.toSign();
+          break;
 
-    //     case "catchCA":
-    //       this.context.toCA();
-    //       break;
-
-    //     default:
-    //       swal("Submit dibatalkan");
-    //   }
-    // });
+        default:
+          swal("Submit dibatalkan");
+      }
+    });
   };
 
   get submitButton() {
@@ -178,7 +169,6 @@ class MasterForm extends Component {
           >
             Submit
           </Button>
-          <hr className="pt-6 border-0" />
         </>
       );
     }

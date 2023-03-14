@@ -41,7 +41,7 @@ const Step3 = (props) => {
     setImagess(null);
   };
 
-  if (props.currentStep !== 5) {
+  if (props.currentStep !== 4) {
     return null;
   }
 
@@ -49,8 +49,8 @@ const Step3 = (props) => {
     <>
       {loading ? <ModalDokumen /> : null}
       <FormGroup>
-        <div className="relative flex-col break-words w-800-d mx-auto shadow-lg mt-12 rounded-lg bg-white border-0">
-          <div className="rounded-t mt-8 px-6 py-6">
+      <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
+          <div className="rounded-t px-6 py-10">
             <div className="text-center mb-2">
               <h1 className="text-blue text-xl font-bold">Swafoto</h1>
             </div>
@@ -80,10 +80,10 @@ const Step3 = (props) => {
               )}
             </span>
           </div>
-          <div className="text-center w-auto ml-12 mr-12 mt-4 mx-auto">
-            <button
+          <div className="text-center w-customs-d mt-4 mx-auto">
+              <button
               type="button"
-              className="bg-blue mb-4 text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 w-full ease-linear transition-all duration-150"
+              className="bg-blue mb-12-d text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 w-full ease-linear transition-all duration-150"
               onClick={
                 capturing ? handleStopCaptureClick : handleStartCaptureClick
               }

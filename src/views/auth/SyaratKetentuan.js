@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function SyaratKetentuan() {
   const [checked, setChecked] = useState(false);
 
-  const histori = useHistory();
+  // const histori = useHistory();
 
-  const handleNext = () => {
-    histori.push("/pernyataan");
-  };
+  // const handleNext = () => {
+  //   histori.push("/pernyataan");
+  // };
+
   return (
     <>
-      <div className="container mx-auto px-2 h-auto">
+      <div className="container mx-auto h-screen">
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full md:w-6/12">
             <div className="relative flex-col break-words w-960-d mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">
@@ -83,8 +84,8 @@ export default function SyaratKetentuan() {
               </div>
               <hr className="mt-6 border-b-0 border-blueGray-300" />
             </div>
-            <div className="relative flex flex-wrap my-6 w-960-d mx-auto">
-              <div className="w-1/2">
+            <div className="flex w-960-d mb-6 mx-auto setuju-btn">
+              <div className="w-2/3">
                 <div className="flex justify-left">
                   <div className="relative inline-block w-16 align-middle select-none transition duration-200 ease-in">
                     <input
@@ -100,23 +101,42 @@ export default function SyaratKetentuan() {
                       className="toggle-label-d block h-8 -ml-1 -mt-1 rounded-full bg-sky-500 border-blue-500 border-2 cursor-pointer"
                     ></label>
                   </div>
-                  <div className="text-xxs ml-2">
-                    Dengan ini saya menyatakan telah membaca dan tunduk pada
-                    syarat & ketentuan di atas.
+                  <div className="text-xs ml-2">
+                    <label
+                      className="form-check-label text-gray-700"
+                      htmlFor="kt_login_toc_agree"
+                    >
+                      Saya telah membaca dan menyetujui{" "}
+                      <a
+                        href="https://ca.peruri.co.id/ca/legal/"
+                        className="ms-1 a-primary fw-bold text-blue"
+                      >
+                        ketentuan legal, (CP, CPS, Subscriber Agreement, Privacy
+                        Policy)
+                      </a>{" "}
+                      dari Peruri CA.
+                    </label>
                   </div>
                 </div>
               </div>
-              <div className="w-1/2 text-right">
-                <button
-                  disabled={!checked ? true : false}
-                  className={`${
-                    !checked ? "opacity-50" : null
-                  } get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150`}
-                  onClick={handleNext}
-                >
-                  Lanjutkan
-                </button>
-              </div>
+              {checked === false ? (
+                <div className="w-1/3 text-right syarat-next">
+                  <button
+                    disabled
+                    className="get-started opacity-50 text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mb-1 bg-blue active:bg-blue text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+                  >
+                    Lanjutkan
+                  </button>
+                </div>
+              ) : (
+                <div className="w-1/3 text-right syarat-next">
+                  <Link to="/pernyataan">
+                    <button className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mb-1 bg-blue active:bg-blue text-sm shadow hover:shadow-lg ease-linear transition-all duration-150">
+                      Lanjutkan
+                    </button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

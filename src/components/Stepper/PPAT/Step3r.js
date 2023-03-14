@@ -52,14 +52,14 @@ const Step3r = (provs) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (provs.currentStep !== 5) {
+  if (provs.currentStep !== 6) {
     return null;
   }
 
   return (
     <>
       <FormGroup>
-        <div className="relative flex-col break-words w-960-d mb-6 mx-auto shadow-lg mt-12 rounded-lg bg-white border-0">
+        <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
           <FormDataDiri
             changeHandle={changeHandle}
             inputRegist={inputRegist}
@@ -71,9 +71,9 @@ const Step3r = (provs) => {
           />
           <hr className="mt-6 border-b-0 border-blueGray-300" />
         </div>
-        <div className="relative flex-col break-words w-960-d mb-6 mx-auto shadow-lg rounded-lg  bg-yellow-d border-0">
-          <div className="rounded-t mb-0 px-6 py-6">
-            <div className="text-center mb-2">
+        <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-yellow-d border-0">
+          <div className="rounded-t px-6 py-6">
+            <div className="text-center">
               <p className="text-black text-xs">
                 Pastikan Anda mengisikan nama lengkap, alamat email dan nomor
                 handphone yang sesuai. Karena data-data tersebut tidak dapat
@@ -86,7 +86,7 @@ const Step3r = (provs) => {
             </div>
           </div>
         </div>
-        <div className="relative flex-col break-words w-960-d mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">
+        <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
           <FormPPAT
             changeHandle={changeHandle}
             inputRegist={inputRegist}

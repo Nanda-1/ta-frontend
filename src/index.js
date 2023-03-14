@@ -40,10 +40,10 @@ ReactDOM.render(
       <UserProvider>
         <TopUpProvider>
           <Route path="/" component={Auth} />
-          <PrivateRoute path="/admin" component={Admin} />
-          <PrivateRoute path="/lengkapiDiri" component={lengkapiDiri} />
+          <Route path="/admin" component={Admin} />
+          <Route path="/lengkapiDiri" component={lengkapiDiri} />
           {/* <Payment /> */}
-          <PrivateRoute path="/topup" component={TopUp} />
+          <Route path="/topup" component={TopUp} />
         </TopUpProvider>
       </UserProvider>
     </Switch>

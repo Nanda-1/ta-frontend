@@ -95,7 +95,7 @@ const FormDataDiri = ({
               name="gender"
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Pilih Jenis Kelamin
               </option>
               <option value="M">Laki-laki</option>
@@ -114,7 +114,7 @@ const FormDataDiri = ({
               name="status_nikah"
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Pilih Status
               </option>
               <option value="Belum Menikah">Belum Menikah</option>
@@ -155,7 +155,7 @@ const FormDataDiri = ({
               name="id_prov"
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Pilih Provinsi
               </option>
               {dataProv.map((item) => {
@@ -179,7 +179,7 @@ const FormDataDiri = ({
               name="id_kota"
               className="bg-white rounded text-black text-sm shadow w-full"
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Pilih Kota
               </option>
               {dataKota
@@ -211,7 +211,7 @@ const FormDataDiri = ({
               name="id_camat"
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled selected>
+              <option value="" disabled>
                 Pilih Kecamatan
               </option>
               {dataKec
@@ -241,7 +241,7 @@ const FormDataDiri = ({
               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
               placeholder="Kode Pos"
               onChange={changeHandle}
-              value={inputRegist.kodepos || object ? object.kodepos : null}
+              value={inputRegist.kodepos || object ? object.kodepos : ""}
               // required
             />
           </div>
@@ -261,7 +261,7 @@ const FormDataDiri = ({
           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           placeholder="Nomor Induk Kependudukan"
           onChange={changeHandle}
-          value={inputRegist.no_nik || object ? object.no_nik : null}
+          value={inputRegist.no_nik || object ? object.no_nik : ""}
           // required
         />
       </div>
@@ -279,7 +279,7 @@ const FormDataDiri = ({
           className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
           placeholder="Nomor Pokok Wajib Pajak"
           onChange={changeHandle}
-          value={inputRegist.no_npwp || object ? object.no_npwp : null}
+          value={inputRegist.no_npwp || object ? object.no_npwp : ""}
           // required
         />
       </div>

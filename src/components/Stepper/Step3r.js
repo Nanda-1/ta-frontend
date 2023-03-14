@@ -51,15 +51,14 @@ const Step3r = (provs) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (provs.currentStep !== 4) {
+  if (provs.currentStep !== 5) {
     return null;
   }
 
   return (
     <>
-      <p className="pt-10"></p>
       <FormGroup>
-        <div className="relative flex-col break-words w-800-d mb-6 mx-auto shadow-lg rounded-lg bg-white border-0">
+      <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
           <FormDataDiri
             changeHandle={changeHandle}
             inputRegist={inputRegist}

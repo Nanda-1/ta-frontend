@@ -13,10 +13,13 @@ export default function ModalVerif() {
   const getAnswer = () => {
     setLoad(true);
 
+    var userData = localStorage.getItem('user-info')
+  var object = JSON.parse(userData)
+
     fetch(
       process.env.REACT_APP_BACKEND_HOST_AUTH +
         "/api/auth/register/check-email-status?email=" +
-        cookies.get("email")
+        object.email
     )
       .then((res) => res.json())
       .then((res) => {
@@ -64,7 +67,8 @@ export default function ModalVerif() {
       redirect: "follow",
     };
     fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/verifikasi/email/send",
+      process.env.REACT_APP_BACKEND_HOST + "api/auth/register/resend-email",
+      // process.env.REACT_APP_BACKEND_HOST + "api/verifikasi/email/send",
       requestOptionsGet
     )
       .then((res) => res.json())

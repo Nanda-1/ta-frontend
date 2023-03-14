@@ -90,7 +90,7 @@ const MultiStepProgressBar = (props) => {
               {index + 1}
             </div>
             <div className="absolute mt-10 text-sm w-48 text-center text-blue">
-              <small> Data Diri</small>
+              <small> Swafoto</small>
             </div>
           </>
         )}
@@ -104,7 +104,7 @@ const MultiStepProgressBar = (props) => {
               {index + 1}
             </div>
             <div className="absolute mt-10 text-sm w-48 text-center text-blue">
-              <small> Swafoto</small>
+              <small> Data Diri</small>
             </div>
           </>
         )}

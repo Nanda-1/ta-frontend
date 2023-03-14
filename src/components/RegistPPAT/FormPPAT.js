@@ -40,12 +40,12 @@ const FormPPAT = ({
           Provinsi
         </label>
         <select
-          value={object ? object.ppat_prov : ""}
+          defaultValue={object ? object.ppat_prov : inputRegist.ppat_prov}
           onChange={changeHandle}
           name="ppat_prov"
           className="bg-white rounded text-sm shadow w-full"
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Pilih Provinsi
           </option>
           {dataProv.map((item) => {
@@ -62,12 +62,12 @@ const FormPPAT = ({
           Kota
         </label>
         <select
-          value={object ? object.ppat_kotkab : ""}
+          defaultValue={object ? object.ppat_kotkab : inputRegist.ppat_kotkab}
           onChange={changeHandle}
           name="ppat_kotkab"
           className="bg-white rounded text-black text-sm shadow w-full"
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Pilih Kota
           </option>
           {dataKota
@@ -86,12 +86,12 @@ const FormPPAT = ({
           Kecamatan
         </label>
         <select
-          value={object ? object.ppat_kecamatan : ""}
+          defaultValue={object ? object.ppat_kecamatan : inputRegist.ppat_kecamatan}
           onChange={changeHandle}
           name="ppat_kecamatan"
           className="bg-white rounded text-sm shadow w-full"
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Pilih Kecamatan
           </option>
           {dataKec

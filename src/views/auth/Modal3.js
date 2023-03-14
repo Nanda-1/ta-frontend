@@ -10,28 +10,36 @@ export default function Modal3() {
   let email = cookies.get("email");
   const [load, setLoad] = useState(false);
   const { refreshToken } = useContext(RegistContext);
+  var auth = localStorage.getItem("authentication");
+  var token = JSON.parse(auth);
 
   const getAnswer = async () => {
     let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
-    myHeaders.append("Content-Type", "application/json");
+    // myHeaders.append("Cookie", "REVEL_FLASH=");
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
+    // myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({
-      email: cookies.get("email"),
-    });
+    // let raw = JSON.stringify({
+    //   email: cookies.get("email"),
+    // });
 
-    let requestOptionsGet = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
+    // let requestOptionsGet = {
+    //   method: "POST",
+    //   headers: myHeaders,
+    //   // body: raw,
+    //   // redirect: "follow",
+    // };
 
     await fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/ca/getcert",
-      requestOptionsGet
-    )
+      process.env.REACT_APP_BACKEND_HOST_AUTH + "api/ca/check", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + token.access_token,
+        },
+        // body: JSON.stringify({
+        //   refresh_token: token.refresh_token,
+        // }),
+      })
       // .then((res) => res.json())
       .then((res) => {
         if (res.status === 401) {
@@ -151,14 +159,14 @@ export default function Modal3() {
             </div>
 
             <div className="text-center w-auto ml-12 mr-12 mx-auto">
-              <Link to="/admin/dashboard">
+              {/* <Link to="/admin/dashboard"> */}
                 <button
                   onClick={getAnswer}
                   className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                 >
                   Verifikasi
                 </button>
-              </Link>
+              {/* </Link> */}
             </div>
             <hr className="mt-8 border-0 pt-2" />
           </div>

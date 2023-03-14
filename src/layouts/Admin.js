@@ -49,7 +49,7 @@ import MeteraiConfirm from "components/Modals/MeteraiConfirm";
 import Cookies from "js-cookie";
 import AgoraRtc from "components/Agora/AgoraRtc";
 import { AgoraProvider } from "Context/AgoraContext";
-import Sidebar_v2 from "components/Sidebar/Sidebar_v2";
+import SidebarV2 from "components/Sidebar/Sidebar_v2";
 import { SuratKuasaProvider } from "Context/SuratKuasaContext";
 import UploadAjb from "views/admin/PTSL/UploadAjb";
 import UploadPbb from "views/admin/PTSL/UploadPbb";
@@ -81,7 +81,7 @@ export default function Admin() {
               <SidebarLive />
             </PexipProvider>
           ) : window.location.pathname === "/admin/topUp" ? null : (
-            <Sidebar_v2 />
+            <SidebarV2 />
           )}
 
           <div

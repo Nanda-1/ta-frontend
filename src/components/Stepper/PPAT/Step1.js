@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { RegistContext } from "views/auth/RegistContext";
 import swal from "sweetalert";
 
@@ -22,7 +22,9 @@ const Step1 = (props) => {
   useEffect(() => {
     if (props.currentStep === 1) {
       getUserFile("sk_pengangkatan");
-    }
+    } else if(props.currentStep === 2) {
+      getUserFile("ktp");
+    }  
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,7 +52,7 @@ const Step1 = (props) => {
     }
   }
 
-  console.log(fileLengkapiDiri);
+  // console.log(fileLengkapiDiri);
 
   if (props.currentStep !== 1) {
     return null;

@@ -10,8 +10,10 @@ import { Link } from "react-router-dom";
 import ModalDokumen from "components/Modals/ModalDokumen";
 
 export default function Sign() {
+  var auth = localStorage.getItem("authentication");
+  var token = JSON.parse(auth);
   // const history = useHistory();
-  const { inputRegist, setInputRegist, refreshToken,  functions } =
+  const { inputRegist, setInputRegist, refreshToken, functions } =
     useContext(RegistContext);
 
   const { getTTD } = functions;
@@ -41,7 +43,6 @@ export default function Sign() {
   const ref = useRef(null);
   //ttd image upload
   // const [ttd, setttd] = React.useState({ previewttd: "", rawttd: "" });
-
 
   // const uploadttdPreview = (e) => {
   //   let specimen_tdtgn_file = "specimen_tdtgn_file";
@@ -200,11 +201,12 @@ export default function Sign() {
     const blobUrl = URL.createObjectURL(blob);
     canvas.item.lockMovementX = true;
     canvas.item.lockMovementY = true;
-    var blobs = new Blob([blob], {
-      type: "image/png",
-    });
+
+    var blobs = new Blob([blob], { type: "image/png" });
+
     let nama = cookies.get("nama");
     var fileOfBlob = new File([blobs], "ttd_" + nama + ".png");
+    console.log(fileOfBlob);
     setInputRegist({ ...inputRegist, [specimen_tdtgn_file]: fileOfBlob });
 
     setLoad(true);
@@ -248,9 +250,9 @@ export default function Sign() {
       }
     });
     setTimeout(() => {
-      sendLengkapiDiri(fileOfBlob);
+      sendLengkapiDiri(blobs);
       setLoad(true);
-      sendRegistCA();
+      // sendRegistCA();
     }, 5000);
 
     let img = new Image();
@@ -313,12 +315,12 @@ export default function Sign() {
     // event.preventDefault();
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let formdata = new FormData();
-    formdata.append("uid", cookies.get("uid"));
-    formdata.append("specimen_tdtgn_file", fileOfBlob);
-    formdata.append("roles", "ppat");
+    // formdata.append("uid", cookies.get("uid"));
+    formdata.append("file", fileOfBlob);
+    // formdata.append("roles", "ppat");
     // formdata.append("roles", cookies.get("roles"));
 
     let requestOptions = {
@@ -329,7 +331,8 @@ export default function Sign() {
       redirect: "follow",
     };
     fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/lengkapidiri/update",
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/update-profile/send-speciment",
       requestOptions
     )
       // .then((res) => res.json())
@@ -366,7 +369,7 @@ export default function Sign() {
             text: "Spesimen Tanda Tangan Anda Tersimpan",
             icon: "success",
           });
-          getTTD();
+          // getTTD();
         }
       })
       .catch((error) => {
@@ -589,7 +592,7 @@ export default function Sign() {
             <div className="relative flex flex-wrap my-6 w-800-d mx-auto">
               <div className="w-1/2"></div>
               <div className="w-1/2 text-right">
-                <Link to="/modal3">
+                <Link to="/lengkapiDiri/modal3">
                   <button
                     // onClick={uploadSK}
                     className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"

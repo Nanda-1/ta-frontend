@@ -27,8 +27,8 @@ export const AjbProvider = (props) => {
 
   let history = useHistory();
 
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
+  // var val = localStorage.getItem("dataPPAT");
+  // var object = JSON.parse(val);
 
   var auth = localStorage.getItem("authentication");
   var token = JSON.parse(auth);

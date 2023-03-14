@@ -14,25 +14,18 @@ import cookies from "js-cookie";
 
 //1.Upload SK
 import Step1 from "./Step1";
-
 //2.Foto KTP
 import Step2 from "./Step2";
-
 //3.Foto NPWP
 import Step3 from "./Step2a";
-
 //4.Foto BPJS
 import Step4 from "./Step2b";
-
-//6.Swafoto
+//5.Swafoto
 import Step5 from "./Step3";
-
-//5.Data Diri
+//6.Data Diri
 import Step6 from "./Step3r";
-
 //7.Rekam Wajah
 import Step7 from "./Step4";
-
 //8.Tandatangan
 // import Step8 from "./Step5r";
 
@@ -94,8 +87,11 @@ class MasterForm extends Component {
       currentStep: currentStep,
     });
 
-    if (currentStep === 6) {
-      this.context.cekKTPPPAT();
+    if (currentStep === 7) {
+      // this.context.cekKTPPPAT();
+      this.context.sendLengkapiDiriUmum(); 
+      this.context.setLoading(true);
+      this.context.ppatDetail(); 
     }
     cookies.set('step', currentStep)
   }
@@ -135,6 +131,7 @@ class MasterForm extends Component {
         </>
       );
     }
+    return null;
   }
 
   // Trigger an alert on form submission

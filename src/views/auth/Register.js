@@ -213,7 +213,10 @@ export default function Register() {
                   } else {
                     swal("Berhasil", res.data.message, "success");
                     cookies.set("uid", res.data.user.user_id, { expires: 1 });
-
+                    const userObject = res.data.user;
+                    const lsValue = JSON.stringify(userObject);
+                    //simpan info akun dari respon google ke localstorage
+                    localStorage.setItem("user-info", lsValue);
                     // setInputRegist({ ...inputRegist, [id]: getID });
                     history.push("/modal2");
                     setStatus(true);
@@ -239,8 +242,8 @@ export default function Register() {
       <div className="container mx-auto h-screen">
         <div className="flex content-center items-center justify-center h-screen">
           <div className="w-full lg:w-4/12">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
-              <div className="rounded-t mb-0 px-6 py-6 ">
+            <div className=" bg-white relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
+              <div className="rounded-t mb-0 px-6 py-6">
                 <div className="text-center">
                   <h1 className="text-blue text-xxl font-bold mt-4 mb-4">
                     Registrasi Akun

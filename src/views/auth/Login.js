@@ -133,7 +133,7 @@ export default function Login() {
                     <input
                       type="text"
                       name="tlp"
-                      value={input.tlp || input.email}
+                      value={input.tlp || input.email || ""}
                       onChange={handleChange}
                       className="border-0 px-3 py-3 bg-white rounded text-sm shadow focus:outline-none w-full ease-linear transition-all duration-150"
                       required={true}
@@ -150,7 +150,7 @@ export default function Login() {
                       type={passwordShown ? "text" : "password"}
                       name="password"
                       className="border-0 px-3 py-3 bg-white rounded text-sm shadow focus:outline-none w-full ease-linear transition-all duration-150"
-                      value={input.password}
+                      value={input.password || ""}
                       min="6"
                       onChange={handleChange}
                       required={true}
