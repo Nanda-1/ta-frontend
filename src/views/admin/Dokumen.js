@@ -59,6 +59,7 @@ export default function Dokumen() {
   // console.log(cekKtp());
 
   const currentDoc = (id, statusDoc, typeDoc) => {
+    alert(statusDoc + " " + typeDoc);
     Cookies.set("id_transaksi", id, { expires: 1 });
     let ajb = "AktaJualBeli";
     let apht = "AktaPemberianHakTanggungan";

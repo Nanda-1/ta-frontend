@@ -36,7 +36,7 @@ export default function RiwayatPemohon() {
   }, []);
 
   const currentDoc = (id, statusDoc, typeDoc) => {
-    Cookies.set("id_transaksi", id, { expires: 1 });
+    Cookies.set("transaction_id", id, { expires: 1 });
     let ajb = "AktaJualBeli";
     let apht = "AktaPemberianHakTanggungan";
     if (statusDoc === "draft") {

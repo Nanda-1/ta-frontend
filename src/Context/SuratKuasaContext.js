@@ -91,7 +91,7 @@ export const SuratKuasaProvider = (props) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
-        Cookies.get("id_transaksi") +
+        Cookies.get("transaction_id") +
         "/document?doc_type=" +
         type,
       {
@@ -122,7 +122,7 @@ export const SuratKuasaProvider = (props) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
-        Cookies.get("id_transaksi"),
+        Cookies.get("transaction_id"),
       {
         method: "GET",
         headers: {
@@ -262,7 +262,7 @@ export const SuratKuasaProvider = (props) => {
           Authorization: "Bearer " + auth.access_token,
         },
         body: JSON.stringify({
-          transaction_id: Cookies.get("id_transaksi"),
+          transaction_id: Cookies.get("transaction_id"),
           actors: [],
           docs: [
             { doc_type: "sertipikat", base64_doc: dataPtsl.doc_sertipikat },
@@ -301,7 +301,7 @@ export const SuratKuasaProvider = (props) => {
           Authorization: "Bearer " + auth.access_token,
         },
         body: JSON.stringify({
-          transaction_id: Cookies.get("id_transaksi"),
+          transaction_id: Cookies.get("transaction_id"),
           doc_name: Cookies.get("doc_name"),
           doc_num: Cookies.get("doc_num"),
           price_value: Cookies.get("price_value"),
@@ -348,7 +348,7 @@ export const SuratKuasaProvider = (props) => {
           Authorization: "Bearer " + auth.access_token,
         },
         body: JSON.stringify({
-          transaction_id: Cookies.get("id_transaksi"),
+          transaction_id: Cookies.get("transaction_id"),
           doc_name: Cookies.get("doc_name"),
           doc_num: Cookies.get("doc_num"),
           price_value: "20000",
@@ -426,7 +426,7 @@ export const SuratKuasaProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("id_transaksi"),
+          transaction_id: Cookies.get("transaction_id"),
           llx: dataPtsl.llx.toString(),
           lly: dataPtsl.lly.toString(),
           urx: dataPtsl.urx.toString(),
@@ -464,7 +464,7 @@ export const SuratKuasaProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("id_transaksi"),
+          transaction_id: Cookies.get("transaction_id"),
           llx: dataPtsl.llx,
           lly: dataPtsl.lly,
           urx: dataPtsl.urx,
@@ -530,7 +530,7 @@ export const SuratKuasaProvider = (props) => {
         setLoading(false);
         setOtpModal(false);
         swal("Berhasil", "Pembubuhan tanda tangan berhasil", "success");
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
