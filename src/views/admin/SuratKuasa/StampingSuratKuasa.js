@@ -325,15 +325,18 @@ const StampingSuratKuasa = () => {
                     </canvas>
                   </div>
                   <div
-                    className="canvas-wrapper"
+                    className="canvas-wrapper border-black"
                     style={{ position: "absolute" }}
                   >
                     <canvas
                       id="canvasTtd"
                       className="z-2"
-                      style={{ zIndex: "2" }}
+                      style={{ zIndex: "4", }}
                     >
-                      <img src={ttdImage} id="ttd" className="z-2" alt="ttd" />
+                      <img src={ttdImage} id="ttd" className="z-2" alt="ttd"  style={{
+                          display: "none",
+                          position: "inherit"
+                        }}/>
                     </canvas>
                   </div>
                   <Document

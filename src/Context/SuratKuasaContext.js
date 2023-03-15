@@ -527,7 +527,7 @@ export const SuratKuasaProvider = (props) => {
         setLoading(false);
         setOtpModal(false);
         swal("Berhasil", "Pembubuhan tanda tangan berhasil", "success");
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);

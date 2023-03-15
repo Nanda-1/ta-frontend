@@ -20,12 +20,12 @@ export default function Dashboard() {
   cookies.remove("otp_sms");
   cookies.remove("phone");
   cookies.remove("tipe_otp");
-  localStorage.removeItem('dataDiri')
+  localStorage.removeItem("dataDiri");
 
   if (!object.user_detail) {
     setLengkapidiri(true);
   }
-
+  
   return (
     <>
       {loading ? <ModalDokumen /> : null}

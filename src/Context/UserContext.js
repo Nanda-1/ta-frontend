@@ -216,9 +216,11 @@ export const UserProvider = (props) => {
       }
     )
       .then((response) => {
+        console.log(response.status);
         if (response.status === 401) {
           refreshToken();
         } else if (response.status === 500) {
+          // return response.text()
           swal("Error", "Internal Server Error", "error");
         } else {
           return response.json();
