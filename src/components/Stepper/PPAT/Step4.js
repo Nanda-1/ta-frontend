@@ -83,7 +83,7 @@ const Step4 = (props) => {
         }, 10000);
       })
       .catch(function (err) {
-        console.log("Ada kesalahan! " + err);
+        console.log("Ada kesalahan!!! " + err);
       });
   };
 
