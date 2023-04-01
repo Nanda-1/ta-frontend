@@ -1,13 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RegistContext } from "views/auth/RegistContext";
 import { FormGroup } from "reactstrap";
-import FormDataDiri from "components/RegistPPAT/FormDataDiri";
+import FormDataDiriU from "./FormDataDiriU";
 
 const Step3r = (provs) => {
-  const { inputRegist, setInputRegist, dataProv, dataKota, dataKec, all } =
-    useContext(RegistContext);
+  const {
+    inputRegist,
+    setInputRegist,
+    dataProv,
+    dataKota,
+    dataKec,
+    dataKel,
+    setDataKel,
+    all,
+  } = useContext(RegistContext);
 
-  const { getDataProv, getDataKota, getDataKec } = all;
+  const { getDataProv, getDataKota, getDataKec, getDataKel } = all;
 
   const [filter, setFilter] = useState({});
 
@@ -18,10 +26,15 @@ const Step3r = (provs) => {
   const changeHandle = (e) => {
     let isian = e.target.value;
     let formIsian = e.target.name;
+    if (formIsian === "id_camat") {
+      setDataKel([]);
+    }
     if (
+      formIsian === "ppat_kelurahan" ||
       formIsian === "ppat_kecamatan" ||
       formIsian === "ppat_kotkab" ||
       formIsian === "ppat_prov" ||
+      formIsian === "id_lurah" ||
       formIsian === "id_camat" ||
       formIsian === "id_kota" ||
       formIsian === "id_prov"
@@ -44,6 +57,10 @@ const Step3r = (provs) => {
     }
   };
 
+  if (object.id_camat && dataKel.length === 0) {
+    getDataKel(object.id_camat);
+  }
+
   useEffect(() => {
     getDataProv();
     getDataKota();
@@ -58,10 +75,12 @@ const Step3r = (provs) => {
   return (
     <>
       <FormGroup>
-      <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
-          <FormDataDiri
+        <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
+          <FormDataDiriU
             changeHandle={changeHandle}
+            // changeHandleV={changeHandleV}
             inputRegist={inputRegist}
+            dataKel={dataKel}
             dataKec={dataKec}
             dataKota={dataKota}
             dataProv={dataProv}

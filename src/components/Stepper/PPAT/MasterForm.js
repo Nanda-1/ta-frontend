@@ -22,7 +22,7 @@ import Step3 from "./Step2a";
 import Step4 from "./Step2b";
 //5.Swafoto
 import Step5 from "./Step3";
-//6.Data Diri
+//6.KYC
 import Step6 from "./Step3r";
 //7.Rekam Wajah
 import Step7 from "./Step4";
@@ -89,7 +89,7 @@ class MasterForm extends Component {
 
     if (currentStep === 7) {
       // this.context.cekKTPPPAT();
-      this.context.sendLengkapiDiriUmum(); 
+      this.context.sendLengkapiDiriPPAT(); 
       this.context.setLoading(true);
       this.context.ppatDetail(); 
     }

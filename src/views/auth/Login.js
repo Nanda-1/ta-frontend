@@ -66,7 +66,8 @@ export default function Login() {
               setLoading(false);
             } else {
               setError(
-                "Nomor Handphone Tidak Terdaftar. Silahkan melakukan pendaftaran terlebih dahulu."
+                res.error
+                // "Nomor Handphone Tidak Terdaftar. Silahkan melakukan pendaftaran terlebih dahulu."
               );
               setLoading(false);
             }

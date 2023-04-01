@@ -33,9 +33,9 @@ const Step2 = (props) => {
 
     //capture with base64
     const imageSrc = webcamRef.current.getScreenshot();
-    // setFileLengkapiDiri(imageSrc);
     setImagess(imageSrc);
-
+    // setFileLengkapiDiri(imageSrc);
+   
     //convert base64 to image/jpg
     const contentType = "image/jpg";
     var base64result = imageSrc.substring(imageSrc.indexOf(",") + 1);
@@ -49,7 +49,8 @@ const Step2 = (props) => {
 
   const handleStopCaptureClick = () => {
     setCapturing(false);
-    setFileLengkapiDiri("");
+    setImagess(null);
+    // setFileLengkapiDiri("");
   };
 
   // useEffect(() => {

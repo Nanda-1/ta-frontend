@@ -85,7 +85,7 @@ class MasterForm extends Component {
     if (currentStep === 6) {
       // this.context.cekKTP();
       // this.context.setLoading(true);
-      // this.context.sendLengkapiDiriUmum(); 
+      this.context.sendLengkapiDiriUmum(); 
     }
     Cookies.set("step", this.state.currentStep);
   }
