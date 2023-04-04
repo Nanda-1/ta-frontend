@@ -35,12 +35,26 @@ const FormPPAT = ({
           // required
         />
       </div>
+      <div className="relative flex flex-wrap my-6 w-auto">
+        <label className="block text-blueGray-600 text-xs font-bold mb-2">
+          Alamat Kantor PPAT
+        </label>
+        <input
+          type="text"
+          name="ppat_alamat"
+          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+          placeholder="Alamat Kantor PPAT"
+          onChange={changeHandle}
+          value={inputRegist.ppat_alamat || object ? object.ppat_alamat : ""}
+          // required
+        />
+      </div>
       <div className="relative flex flex-wrap my-6 w-full">
         <label className="block text-blueGray-600 text-xs font-bold mb-2">
           Provinsi
         </label>
         <select
-          defaultValue={object ? object.ppat_prov : inputRegist.ppat_prov}
+          value={object ? object.ppat_prov : filter.ppat_prov}
           onChange={changeHandle}
           name="ppat_prov"
           className="bg-white rounded text-sm shadow w-full"
@@ -62,7 +76,7 @@ const FormPPAT = ({
           Kota
         </label>
         <select
-          defaultValue={object ? object.ppat_kotkab : inputRegist.ppat_kotkab}
+          value={object ? object.ppat_kotkab : ""}
           onChange={changeHandle}
           name="ppat_kotkab"
           className="bg-white rounded text-black text-sm shadow w-full"
@@ -71,7 +85,7 @@ const FormPPAT = ({
             Pilih Kota
           </option>
           {dataKota
-            .filter((el) => el.province_id === Number(filter.ppat_prov))
+            .filter((el) => el.province_id === Number(object ? object.ppat_prov : filter.ppat_prov))
             .map((item) => {
               return (
                 <option value={item.city_id} key={item.city_id}>
@@ -86,7 +100,7 @@ const FormPPAT = ({
           Kecamatan
         </label>
         <select
-          defaultValue={object ? object.ppat_kecamatan : inputRegist.ppat_kecamatan}
+          value={object ? object.ppat_kecamatan : ""}
           onChange={changeHandle}
           name="ppat_kecamatan"
           className="bg-white rounded text-sm shadow w-full"
@@ -95,7 +109,7 @@ const FormPPAT = ({
             Pilih Kecamatan
           </option>
           {dataKec
-            .filter((el) => el.city_id === Number(filter.ppat_kotkab))
+            .filter((el) => el.city_id === Number(object ? object.ppat_kotkab : filter.ppat_kotkab))
             .map((item) => {
               return (
                 <option value={item.district_id} key={item.district_id}>
@@ -105,19 +119,76 @@ const FormPPAT = ({
             })}
         </select>
       </div>
-      <div className="relative flex flex-wrap my-6 w-auto">
+      {/* <div className="relative flex flex-wrap my-6 w-full">
         <label className="block text-blueGray-600 text-xs font-bold mb-2">
-          Alamat Kantor PPAT
+          Kelurahan
         </label>
-        <input
-          type="text"
-          name="ppat_alamat"
-          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-          placeholder="Alamat Kantor PPAT"
+        <select
+          value={object ? object.ppat_kelurahan : ""}
           onChange={changeHandle}
-          value={inputRegist.ppat_alamat || object ? object.ppat_alamat : ""}
-          // required
-        />
+          name="ppat_kelurahan"
+          className="bg-white rounded text-sm shadow w-full"
+        >
+          <option value="" disabled>
+            Pilih Kelurahan
+          </option>
+          {dataKel
+            .filter((el) => el.district_id === Number(object ? object.ppat_kecamatan : filter.ppat_kecamatan))
+            .map((item) => {
+              return (
+                <option value={item.id} key={item.id}>
+                  {item.nama}
+                </option>
+              );
+            })}
+        </select>
+      </div> */}
+      <div className="relative flex flex-wrap my-6 w-auto">
+        <div className="relative w-auto mb-1 mr-2">
+          <label className="block text-blueGray-600 text-xs font-bold mb-2">
+            RT
+          </label>
+          <input
+            type="text"
+            id="rt"
+            name="rt"
+            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            placeholder="RT"
+            onChange={changeHandle}
+            value={inputRegist.rt || object ? object.rt : ""}
+            // required
+          />
+        </div>
+        <div className="relative w-auto mb-1 mr-2">
+          <label className="block text-blueGray-600 text-xs font-bold mb-2">
+            RW
+          </label>
+          <input
+            type="text"
+            id="rw"
+            name="rw"
+            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            placeholder="RW"
+            onChange={changeHandle}
+            value={inputRegist.rw || object ? object.rw : ""}
+            // required
+          />
+        </div>
+        <div className="relative w-auto mb-1 mr-2">
+          <label className="block text-blueGray-600 text-xs font-bold mb-2">
+            Kode Pos
+          </label>
+          <input
+            type="text"
+            id="kodepos"
+            name="kodepos"
+            className="border-0 px-4 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            placeholder="Kode Pos"
+            onChange={changeHandle}
+            value={inputRegist.kodepos || object ? object.kodepos : ""}
+            // required
+          />
+        </div>
       </div>
       <div className="relative flex flex-wrap my-6 w-auto">
         <div className="w-1/2">

@@ -23,10 +23,13 @@ export const RegistProvider = (props) => {
   const [dataProv, setDataProv] = useState([]);
   const [dataKota, setDataKota] = useState([]);
   const [dataKec, setDataKec] = useState([]);
+  const [dataKel, setDataKel] = useState([]);
   const [dataCityFilter1, setdataCityFilter1] = useState([]);
   const [dataDistrictFilter1, setdataDistrictFilter1] = useState([]);
+  const [dataLurahFilter1, setdataLurahFilter1] = useState([]);
   const [dataCityFilter, setdataCityFilter] = useState([]);
   const [dataDistrictFilter, setdataDistrictFilter] = useState([]);
+  const [dataLurahFilter, setdataLurahFilter] = useState([]);
   const [ttdImage, setTtdImage] = useState("");
   const [fileLengkapiDiri, setFileLengkapiDiri] = useState("");
   const [loading, setLoading] = useState(false);
@@ -301,7 +304,26 @@ export const RegistProvider = (props) => {
           return res.json();
         }
       })
-      .then((response) => setDataKec(response.data))
+      .then((response) => {
+        setDataKec(response.data)
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const getDataKel = (district_id) => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/loc/kelurahan?district_id="+ district_id, {
+      method: "GET",
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => {
+        setDataKel(response.data)
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -323,32 +345,52 @@ export const RegistProvider = (props) => {
   };
   // console.log(dataDistrictFilter);
 
-  const getCityFilter = (id_prov) => {
-    let id = Number(id_prov);
+  const getLurahFilter1 = (id_camat) => {
+    let id = Number(id_camat);
+    const filterData = dataKel.filter((e) => {
+      return e.id_camat === id;
+    });
+    setdataLurahFilter1(filterData);
+  };
+
+  const getCityFilter = (ppat_prov) => {
+    let id = Number(ppat_prov);
     const filterData = dataKota.filter((e) => {
-      return e.id_provinsi === id;
+      return e.province_id === id;
     });
     setdataCityFilter(filterData);
   };
   // console.log(dataCityFilter);
 
-  const getDistrictFilter = (id_kota) => {
-    let id = Number(id_kota);
+  const getDistrictFilter = (ppat_kotkab) => {
+    let id = Number(ppat_kotkab);
     const filterData = dataKec.filter((e) => {
-      return e.id_kota === id;
+      return e.city_id === id;
     });
     setdataDistrictFilter(filterData);
   };
   // console.log(dataDistrictFilter);
 
+  const getLurahFilter = (ppat_kecamatan) => {
+    let id = Number(ppat_kecamatan);
+    const filterData = dataKel.filter((e) => {
+      return e.ppat_kecamatan === id;
+    });
+    setdataLurahFilter(filterData);
+  };
   const all = {
     getDataProv,
     getDataKota,
     getDataKec,
+    getDataKel,
+
     getCityFilter1,
     getDistrictFilter1,
+    getLurahFilter1,
+
     getCityFilter,
     getDistrictFilter,
+    getLurahFilter,
   };
 
   const resendEmailRegist = async (event) => {
@@ -420,7 +462,7 @@ export const RegistProvider = (props) => {
         date_of_birth: tanggalan,
         gender: dataDiri.gender,
         marriage_status: dataDiri.status_nikah,
-        address: dataDiri.alamat,
+        address: dataDiri.alamat + ", Rukun Tetangga " + dataDiri.rt + ", Rukun Warga " + dataDiri.rw + ", Kelurahan " + dataDiri.id_lurah,
         province_id: dataDiri.id_prov,
         city_id: dataDiri.id_kota,
         district_id: dataDiri.id_camat,
@@ -813,28 +855,46 @@ export const RegistProvider = (props) => {
         setInputRegist,
         dataRegist,
         setDataRegist,
+
         dataProv,
         setDataProv,
         dataKota,
         setDataKota,
         dataKec,
         setDataKec,
+        dataKel,
+        setDataKel,
+
         getDataProv,
         getDataKota,
         getDataKec,
+        getDataKel,
+
         getUserFile,
+
         getCityFilter1,
         getDistrictFilter1,
+        getLurahFilter1,
+
         getCityFilter,
         getDistrictFilter,
+        getLurahFilter,
+
         dataCityFilter1,
         setdataCityFilter1,
         dataCityFilter,
         setdataCityFilter,
+
         dataDistrictFilter1,
         setdataDistrictFilter1,
         dataDistrictFilter,
         setdataDistrictFilter,
+
+        dataLurahFilter1,
+        setdataLurahFilter1,
+        dataLurahFilter,
+        setdataLurahFilter,
+
         all,
         resendEmailRegist,
         sendMailLengkapiDiri,

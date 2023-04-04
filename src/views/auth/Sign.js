@@ -316,7 +316,8 @@ export default function Sign() {
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
     myHeaders.append("Authorization", "Bearer " + token.access_token);
-
+    // myHeaders.append("Content-Type", "multipart/form-data");
+    
     let formdata = new FormData();
     // formdata.append("uid", cookies.get("uid"));
     formdata.append("file", fileOfBlob);

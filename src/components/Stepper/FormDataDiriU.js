@@ -1,8 +1,9 @@
 import React from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
-const FormDataDiri = ({
+const FormDataDiriU = ({
   changeHandle,
+  changeHandleV,
   inputRegist,
   dataKel,
   dataKec,
@@ -211,7 +212,6 @@ const FormDataDiri = ({
                   (el) =>
                     el.city_id ===
                     Number(object ? object.id_kota : filter.id_kota)
-                    
                 )
                 .map((item) => {
                   return (
@@ -237,14 +237,13 @@ const FormDataDiri = ({
               <option value="" disabled>
                 Pilih Kelurahan
               </option>
-              {dataKel
-                .map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.nama}
-                    </option>
-                  );
-                })}
+              {dataKel?.map((item) => {
+                return (
+                  <option value={item.id} key={item.id}>
+                    {item.nama}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
@@ -330,4 +329,4 @@ const FormDataDiri = ({
   );
 };
 
-export default FormDataDiri;
+export default FormDataDiriU;

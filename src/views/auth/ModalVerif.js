@@ -24,10 +24,10 @@ export default function ModalVerif() {
       .then((res) => res.json())
       .then((res) => {
         setLoad(false);
-        if (res.success === true) {
+        if (res.data.is_email_verified === true) {
           swal({
             title: "Berhasil",
-            text: "Email Anda sudah aktif",
+            text: "Email Anda sudah terverifikasi",
             icon: "success",
           });
           setDisable(false);
@@ -37,7 +37,7 @@ export default function ModalVerif() {
           }, 5000);
           swal({
             title: "Gagal",
-            text: "Verifikasi email gagal. Silahkan coba lagi",
+            text: "Email belum terverifikasi. Silahkan cek email",
             icon: "error",
           });
         }

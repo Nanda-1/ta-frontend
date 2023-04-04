@@ -52,7 +52,7 @@ const Step2b = (props) => {
       <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
           <div className="rounded-t px-6 py-10">
             <div className="text-center mb-2">
-              <h1 className="text-blue text-xl font-bold">Unggah BPJS Anda</h1>
+              <h1 className="text-blue text-xl font-bold">Unggah BPJS Kesehatan Anda</h1>
             </div>
             <div className="text-coolGray-900 text-center">
               <small>

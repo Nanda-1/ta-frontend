@@ -13,42 +13,23 @@ export default function Modal3() {
   var auth = localStorage.getItem("authentication");
   var token = JSON.parse(auth);
 
-  const getAnswer = async () => {
-    let myHeaders = new Headers();
-    // myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + token.access_token);
-    // myHeaders.append("Content-Type", "application/json");
-
-    // let raw = JSON.stringify({
-    //   email: cookies.get("email"),
-    // });
-
-    // let requestOptionsGet = {
-    //   method: "POST",
-    //   headers: myHeaders,
-    //   // body: raw,
-    //   // redirect: "follow",
-    // };
-
-    await fetch(
-      process.env.REACT_APP_BACKEND_HOST_AUTH + "api/ca/check", {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token.access_token,
-        },
-        // body: JSON.stringify({
-        //   refresh_token: token.refresh_token,
-        // }),
-      })
-      // .then((res) => res.json())
-      .then((res) => {
-        if (res.status === 401) {
+  const getAnswer = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/users/check-ca", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + token.access_token,
+      },
+    })
+      .then((response) => {
+        // alert(response)
+        if (response.status === 401) {
           refreshToken();
         } else {
-          return res.json();
+          return response.json();
         }
       })
       .then((res) => {
+        // console.log(res)
         setLoad(true);
         setTimeout(5000);
 
@@ -60,29 +41,36 @@ export default function Modal3() {
               icon: "error",
             });
           }
-          history.push("/modal3");
+          // history.push("/modal3");
           // if (res.success === true)
         } else if (res.success === true) {
+          swal({
+            title: "Perhatian",
+            text: res.data.result_description,
+            icon: "Info",
+          });
+          // history.push("/modal3");
           /** Get Cert with PDS **/
-          if (res.data.ca_status === "unregistered") {
-            swal({
-              title: "Perhatian",
-              text: res.data.ca_status_description,
-              icon: "warning",
-            });
-          } else if (res.data.ca_status === "active") {
-            swal({
-              title: "Perhatian",
-              text: res.data.ca_status_description,
-              icon: "warning",
-            });
-          } else if (res.data.ca_status === "expired") {
-            swal({
-              title: "Perhatian",
-              text: res.data.ca_status_description,
-              icon: "warning",
-            });
-          }
+          // if (res.data.ca_status === "unregistered") {
+          //   swal({
+          //     title: "Perhatian",
+          //     text: res.data.ca_status_description,
+          //     icon: "warning",
+          //   });
+          // } else if (res.data.ca_status === "active") {
+          //   swal({
+          //     title: "Perhatian",
+          //     text: res.data.ca_status_description,
+          //     icon: "warning",
+          //   });
+          // } else if (res.data.ca_status === "expired") {
+          //   swal({
+          //     title: "Perhatian",
+          //     text: res.data.ca_status_description,
+          //     icon: "warning",
+          //   });
+          // }
+
           /** Get Cert with Raintek **/
           // if (res.data.cert_code === "undefined") {
           //   setLoad(false);
@@ -160,12 +148,12 @@ export default function Modal3() {
 
             <div className="text-center w-auto ml-12 mr-12 mx-auto">
               {/* <Link to="/admin/dashboard"> */}
-                <button
-                  onClick={getAnswer}
-                  className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-                >
-                  Verifikasi
-                </button>
+              <button
+                onClick={getAnswer}
+                className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+              >
+                Verifikasi
+              </button>
               {/* </Link> */}
             </div>
             <hr className="mt-8 border-0 pt-2" />
