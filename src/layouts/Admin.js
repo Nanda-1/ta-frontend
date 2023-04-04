@@ -60,9 +60,14 @@ import Stamping from "views/admin/PTSL/Stamping";
 import UploadSertipikat from "views/admin/SuratKuasa/UploadSertipikat";
 import DokumenSuratKuasa from "views/admin/SuratKuasa/DokumenSuratKuasa";
 import StampingSuratKuasa from "views/admin/SuratKuasa/StampingSuratKuasa";
+import { ifft } from "@tensorflow/tfjs";
 
 export default function Admin() {
   const { sidebar } = useContext(UserContext);
+
+  if (window.location.pathname.includes("call")) {
+    Cookies.set("channelName", "testing");
+  }
   return (
     <>
       {window.location.pathname === "/admin/BuatDokumen" ? (
@@ -74,8 +79,10 @@ export default function Admin() {
           {window.location.pathname === "/admin/step6/call" ||
           (window.location.pathname === "/admin/AktaJualBeli" &&
             Cookies.get("step") === "8") ||
+          Cookies.get("step") === "stamping" ||
           (window.location.pathname === "/admin/AktaPemberianHakTanggungan" &&
             Cookies.get("step") === "8") ||
+          Cookies.get("step") === "stamping" ||
           window.location.pathname === "/admin/agoraRTC" ? (
             <PexipProvider>
               <SidebarLive />

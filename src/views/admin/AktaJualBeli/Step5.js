@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { MyAjbContext } from "Context/AjbContext";
@@ -7,12 +7,18 @@ import InputDataDokumen from "components/AJB/InputDataDokumen";
 // import { connect } from "socket.io-client";
 
 const Step5 = (props) => {
-  const { inputAjb, dokTemplate, functions } = useContext(MyAjbContext);
+  const { inputAjb, functions } = useContext(MyAjbContext);
 
-  const { dokumenAjb } = functions;
+  const { getDokumenAjb, detailAjb } = functions;
 
-  if (!dokTemplate && !inputAjb.doc) {
-    dokumenAjb("akta_jual_beli");
+  useEffect(() => {
+    detailAjb();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!inputAjb.doc && props.currentStep === "dokumen") {
+    getDokumenAjb();
   }
 
   const [numPages, setNumPages] = useState(null);
@@ -54,7 +60,7 @@ const Step5 = (props) => {
           <div className="flex w-full lg:w-12/12 px-1">
             {/* <form onSubmit={addDokumen}> */}
             <div className="relative bg-white flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
-              <div className="Example__container_pdf">
+              <div className="Example__container_pdf text-sm">
                 <div className="flex w-full justify-center py-2 ">
                   {pageNumber === 1 ? (
                     <>
@@ -141,7 +147,7 @@ const Step5 = (props) => {
                 </div>
                 <div>
                   <Document
-                    file={inputAjb.doc ? inputAjb.doc : dokTemplate}
+                    file={inputAjb.doc}
                     // file={b64}
                     onLoadSuccess={onDocumentLoadSuccess}
                   >

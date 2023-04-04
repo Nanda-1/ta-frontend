@@ -26,24 +26,28 @@ export const DokumenProvider = (props) => {
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
+  var auth = localStorage.getItem("authentication");
+  var token = JSON.parse(auth);
+
   const refreshToken = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/auth/refresh", {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        refresh_token: object.refresh_token,
+        refresh_token: token.refresh_token,
       }),
     })
       .then((response) => response.json())
       .then((result) => {
         if (result.success === true) {
-          object.token = result.data.token;
-          localStorage.setItem("dataPPAT", JSON.stringify(object));
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
+          token.access_token = result.data.access_token;
+          localStorage.setItem("authentication", JSON.stringify(token));
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
+          localStorage.removeItem("authentication");
           localStorage.removeItem("dataPPAT");
           setTimeout(() => {
             history.push("/login");
@@ -252,15 +256,13 @@ export const DokumenProvider = (props) => {
 
   const getTtdImage = () => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "/api/lengkapidiri/download/" +
-        object.uid +
-        "/specimen_tdtgn_file",
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/users/get-file?file_type=ttd",
       {
         method: "GET",
         redirect: "follow",
         headers: {
-          Authorization: "Bearer " + object.token,
+          Authorization: "Bearer " + token.access_token,
         },
       }
     )
@@ -292,9 +294,9 @@ export const DokumenProvider = (props) => {
         transaction_id: id,
         llx: doc.llx,
         lly: doc.lly,
+        urx: doc.urx,
+        ury: doc.ury,
         page_num: doc.meteraiPage,
-        // "is_fixed_position": true,
-        doc_type: type,
       }),
       redirect: "follow",
     })

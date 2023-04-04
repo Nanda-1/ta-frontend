@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 // components
 import UserInfo from "components/Cards/UserInfo.js";
@@ -12,8 +12,24 @@ import RiwayatPemohon from "components/Cards/RiwayatPemohon";
 export default function Dashboard() {
   const { setLengkapidiri, loading } = useContext(UserContext);
 
+  const [userFiles, setUserFiles] = useState(false);
+
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
+
+ useEffect(() =>{
+  if (
+    object.user_files.bpjs &&
+    object.user_files.ktp &&
+    object.user_files.npwp &&
+    object.user_files.self_video &&
+    object.user_files.selfie_photo &&
+    object.user_files.sk_pengangkatan &&
+    object.user_files.ttd
+  ) {
+    setUserFiles(true);
+  }
+ },[])
 
   cookies.remove("id_transaksi");
   cookies.remove("step");
@@ -22,10 +38,10 @@ export default function Dashboard() {
   cookies.remove("tipe_otp");
   localStorage.removeItem("dataDiri");
 
-  if (!object.user_detail) {
+  if (!object.user_detail && userFiles === false) {
     setLengkapidiri(true);
   }
-  
+
   return (
     <>
       {loading ? <ModalDokumen /> : null}

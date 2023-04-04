@@ -162,8 +162,8 @@ export const UserProvider = (props) => {
       })
       .then((result) => {
         // console.log(result)
-        let id_transaksi = result.data.transaction_id;
-        cookies.set("id_transaksi", id_transaksi, { expires: 1 });
+        let transaction_id = result.data.transaction_id;
+        cookies.set("transaction_id", transaction_id, { expires: 1 });
         history.push(`/admin/AktaJualBeli`);
         window.location.reload();
       })
@@ -216,7 +216,6 @@ export const UserProvider = (props) => {
       }
     )
       .then((response) => {
-        console.log(response.status);
         if (response.status === 401) {
           refreshToken();
         } else if (response.status === 500) {

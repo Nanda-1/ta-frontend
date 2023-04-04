@@ -15,6 +15,8 @@ export default function ListProduk() {
 
   const { topUp } = functions;
 
+  console.log(item)
+
   const pesanItem = () => {
     topUp(item);
     setLoadingFile(true);
@@ -38,12 +40,8 @@ export default function ListProduk() {
           <div className="rounded-lg p-4 text-sm">
             <div className="font-bold font-700 mb-6">Ringkasan Pemesanan</div>
             <div className="mb-5 text-xs text-grey">
-              Total Harga :
+              Total Harga {item.length !== 0 ? `(${item.length} Produk)` : ''}
               <span className="float-right">{formatHarga(total.harga)}</span>
-            </div>
-            <div className="mb-5 text-xs text-grey">
-              Pajak :
-              <span className="float-right">{formatHarga(total.pajak)}</span>
             </div>
             <hr className="my-3 mx-auto total-line" />
             <div className="font-bold">

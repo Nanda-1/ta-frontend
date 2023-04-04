@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 
 const appId = "15ade710d3de457bbd2ddc96f487c621"; //ENTER APP ID HERE
 const token =
-  "007eJxTYGC2P+H46EPg3htiC2TmzTOY6n/91FOHMx8sNz/nNCm6GX5agcHQNDEl1dzQIMU4JdXE1DwpKcUoJSXZ0izNxMI82czIcJvD+eSGQEaGhnmvWBkZIBDE52bITCmOL0ktLsnMS2dgAADpOyUL";
+  "007eJxTYJhRdeyzwnEJ1aRVy9hYdXc76vXWb4isaWbROr1q8/0zXxkVGAxNE1NSzQ0NUoxTUk1MzZOSUoxSUpItzdJMLMyTzYwMhXdopzQEMjJkTFjOwAiFID47Q0lqcUlmXjoDAwB8TSAW";
 
 const AgoraVideoCall = () => {
   const [inCall, setInCall] = useState(true);
@@ -16,7 +16,7 @@ const AgoraVideoCall = () => {
   return (
     <div>
       <h1 className="heading" style={{ marginTop: "20px" }}>
-        Agora RTC NG SDK React Wrapper
+        {/* Agora RTC NG SDK React Wrapper */}
       </h1>
       <VideoCall setInCall={setInCall} channelName={channel} />
     </div>
@@ -89,7 +89,11 @@ const Videos = (props) => {
   return (
     <div>
       <div id="videos">
-        <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
+        <AgoraVideoPlayer
+          className="vid"
+          videoTrack={tracks[1]}
+          // style={{ width: "47%", height: "70%" }}
+        />
         {users.length > 0 &&
           users.map((user) => {
             if (user.videoTrack) {
@@ -154,7 +158,12 @@ export const Controls = (props) => {
           <i className={"fa fa-video-slash"} style={{ color: "white" }}></i>
         )}
       </p>
-      {<p onClick={() => leaveChannel()}> <i className={"fa fa-phone-slash"} style={{ color: "white" }}></i></p>}
+      {
+        <p onClick={() => leaveChannel()}>
+          {" "}
+          <i className={"fa fa-phone-slash"} style={{ color: "white" }}></i>
+        </p>
+      }
     </div>
   );
 };

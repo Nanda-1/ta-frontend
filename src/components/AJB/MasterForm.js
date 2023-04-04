@@ -131,6 +131,9 @@ class MasterFormAjb extends Component {
       } else {
         this.context.functions.addPenjual();
         this.context.setLoadingFile(true);
+        this.setState({
+          currentStep: "input_data_pembeli",
+        });
       }
     } else if (this.state.currentStep === "input_data_pembeli") {
       if (this.context.inputAjb.status_pembeli === "menikah") {
@@ -156,8 +159,11 @@ class MasterFormAjb extends Component {
           currentStep: "dokumen",
         });
       } else {
-        this.context.functions.addPembeli();
         this.context.setLoadingFile(true);
+        this.setState({
+          currentStep: "dokumen",
+        });
+        this.context.functions.addDokumenAjb();
       }
     } else if (this.state.currentStep === "dokumen") {
       this.setState({

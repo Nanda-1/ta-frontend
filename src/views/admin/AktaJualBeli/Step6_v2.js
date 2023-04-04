@@ -9,6 +9,7 @@ import { fabric } from "fabric";
 import { FormGroup } from "reactstrap";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import OtpModal from "components/Modals/OTP";
+import Cookies from "js-cookie";
 
 const Step6 = (props) => {
   const {
@@ -33,9 +34,14 @@ const Step6 = (props) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
-  if (ttdImage === "") {
+  if (ttdImage === "" && props.currentStep === "stamping") {
     getTtdImage();
+    Cookies.set("step", "stamping");
+    Cookies.set("channelName", "testing");
   }
+
+  // if (props.currentStep === "stamping") {
+  // }
 
   const onDocumentLoadSuccess = async ({ numPages }) => {
     setNumPages(numPages);
@@ -44,7 +50,7 @@ const Step6 = (props) => {
 
   const dokumenAjb = (type) => {
     setLoadingFile(true);
-    getDokumenAjb(type);
+    getDokumenAjb();
   };
 
   function changePage(offset) {
@@ -101,8 +107,8 @@ const Step6 = (props) => {
     var imgMeterai = new fabric.Image(eMeterai, {
       hasControls: false,
       hasBorders: false,
-      scaleX: 0.88,
-      scaleY: 0.88,
+      scaleX: 0.8,
+      scaleY: 0.8,
     });
 
     if (data !== "cancel") {
@@ -409,11 +415,7 @@ const Step6 = (props) => {
                           </Document>
                         ) : (
                           <Document
-                            file={
-                              inputAjb.doc
-                                ? inputAjb.doc
-                                : dokumenAjb("akta_jual_beli")
-                            }
+                            file={inputAjb.doc ? inputAjb.doc : dokumenAjb()}
                             // file={b64}
                             onLoadSuccess={onDocumentLoadSuccess}
                           >

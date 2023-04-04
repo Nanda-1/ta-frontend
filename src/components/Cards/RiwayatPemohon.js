@@ -45,8 +45,6 @@ export default function RiwayatPemohon() {
       url = "AktaPemberianHakTanggungan";
     }
 
-    console.log(id)
-
     if (statusDoc === "draft") {
       Cookies.set("step", "input_data_penjual");
       history.push("/admin/" + url);
@@ -64,19 +62,30 @@ export default function RiwayatPemohon() {
       history.push("/admin/" + typeDoc + "/pembubuhan");
     } else if (statusDoc === "generate_document") {
       Cookies.set("transaction_id", id);
-      history.push("/admin/" + typeDoc + "/inputDataForm");
+      if (typeDoc === "akta_jual_beli") {
+        Cookies.set("step", "dokumen");
+
+        history.push("/admin/" + url);
+      } else if (typeDoc === "akta_pemberian_hak_tanggunan") {
+        Cookies.set("step", "dokumen");
+        history.push("/admin/" + url);
+      } else {
+        history.push("/admin/" + typeDoc + "/inputDataForm");
+      }
     } else {
       history.push(`/admin/preview_dokumen/transaction_id=${id}`);
     }
     window.location.reload();
   };
 
-  const getDataUmum = (data, kategori) => {
-    let obj = eval("(" + data + ")");
+  const getDataUmum = (data) => {
+    let hasil = data.replace(/'/g, '"');
+    let hasil2 = hasil.replace(/None/g, "null");
 
-    if (kategori === "nama") {
-      return obj.nama || obj.name;
-    }
+    let obj = JSON.parse(hasil2);
+    console.log(obj);
+
+    return obj.name;
   };
 
   const getType = (data) => {
@@ -142,17 +151,18 @@ export default function RiwayatPemohon() {
                       return (
                         <tr key={index}>
                           <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
-                            {item.actors.length === 0 ||
-                            item.eform_json_data.length === 0 ? (
-                              <div className="italic">Belum diinput</div>
-                            ) : item.eform_json_data.length !== null ? (
-                              getDataUmum(item.eform_json_data, "nama")
-                            ) : (
+                            {item.eform_json_data !== null ? (
+                              getDataUmum(item.eform_json_data)
+                            ) : // 'sadas'
+                            item.actors.length !== 0 ? (
                               item.actors[0].user_name
+                            ) : (
+                              // 'dfsd'
+                              <div className="italic">Belum diinput</div>
                             )}
                           </td>
                           <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
-                            {item.actors && item.actors.length === 0 ? (
+                            {item.actors || !item.actors[0].user_email ? (
                               <div className="italic">Belum diinput</div>
                             ) : (
                               item.actors[0].user_email

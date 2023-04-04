@@ -10,10 +10,11 @@ export default function ListBlanko() {
   const { createDocumentAJB, createDocumentAPHT, createSuratKuasa } = functions;
 
   const pilihDok = (num) => {
+    // alert(num)
     if (num === 0) {
-      createSuratKuasa('pendaftaran_tanah_sistematis_lengkap');
+      createSuratKuasa("pendaftaran_tanah_sistematis_lengkap");
     } else if (num === 1) {
-      createSuratKuasa('surat_kuasa');
+      createSuratKuasa("surat_kuasa");
     } else if (num === 2) {
       createDocumentAJB();
     } else if (num === 3) {
@@ -76,7 +77,11 @@ export default function ListBlanko() {
         className="list-akta-btn mx-auto w-full focus:outline-none"
         onClick={() => setActive(!active)}
       >
-        <img src={!active ? ArrowDown : ArrowUp} className="mx-auto" alt="arrow" />
+        <img
+          src={!active ? ArrowDown : ArrowUp}
+          className="mx-auto"
+          alt="arrow"
+        />
       </button>
     </>
   );

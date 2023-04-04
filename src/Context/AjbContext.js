@@ -7,7 +7,11 @@ export const MyAjbContext = createContext();
 
 export const AjbProvider = (props) => {
   const [ajb, setAjb] = useState([""]);
-  const [inputAjb, setInputAjb] = useState([""]);
+  const [inputAjb, setInputAjb] = useState([]);
+  const [dataProv, setDataProv] = useState([]);
+  const [dataKota, setDataKota] = useState([]);
+  const [dataKec, setDataKec] = useState([]);
+  const [dataKel, setDataKel] = useState([]);
   const [dataNik, setDataNik] = useState();
   const [ttdDigital, setTtdDigital] = useState(false);
   const [meterai, setMeterai] = useState(false);
@@ -19,7 +23,6 @@ export const AjbProvider = (props) => {
   const [btnConfirmTtd, setBtnConfirmTtd] = useState(false);
   const [loadingFile, setLoadingFile] = useState(false);
   const [warning, setWarning] = useState();
-  const [dokTemplate, setDokTemplate] = useState();
   const [penjual, setPenjual] = useState(false);
   const [pembeli, setPembeli] = useState(false);
   const [nextStep, setNextStep] = useState(false);
@@ -63,61 +66,72 @@ export const AjbProvider = (props) => {
 
   const addPenjual = () => {
     setLoadingFile(true);
-    let id = Number(inputAjb.id_transaksi);
+    let id = Number(Cookies.get("transaction_id"));
 
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/transaction/pihakpertama", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token.access_token,
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        transaction_id: id,
-        actors: [
-          {
-            nik: inputAjb.nik_penjual,
-            email: inputAjb.email_penjual,
-            phone: inputAjb.tlp_penjual,
-            status: inputAjb.status_penjual,
-            actor_type: "penjual",
-            actor_role: inputAjb.tipe_penjual,
-          },
-          {
-            nik: inputAjb.nik_saksi_penjual,
-            email: inputAjb.email_saksi_penjual,
-            phone: inputAjb.tlp_saksi_penjual,
-            actor_type: "saksi _penjual",
-            actor_role: "umum",
-          },
-        ],
-        docs: [
-          { tipe: "surat_nikah_penjual", base64: inputAjb.surat_nikah_penjual },
-          {
-            tipe: "kartu_keluarga_penjual",
-            base64: inputAjb.kartu_keluarga_penjual,
-          },
-          { tipe: "sertifikat_tanah", base64: inputAjb.sertifikat_tanah },
-          { tipe: "pbb_tahun_terakhir", base64: inputAjb.pbb_tahun_terakhir },
-          { tipe: "stts", base64: inputAjb.stts },
-          { tipe: "npwp_penjual", base64: inputAjb.npwp_penjual },
-          {
-            tipe: "akta_pendirian_penjual",
-            base64: inputAjb.akta_pendirian_penjual,
-          },
-          {
-            tipe: "sk_pengangkatan_penjual",
-            base64: inputAjb.sk_pengangkatan_penjual,
-          },
-        ],
-      }),
-      redirect: "follow",
-    })
+    console.log(Cookies.get("transaction_id"));
+
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/add-data",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token.access_token,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          transaction_id: Cookies.get("transaction_id"),
+          actors: [
+            {
+              no_nik: inputAjb.nik_penjual,
+              email: inputAjb.email_penjual,
+              phone_number: inputAjb.tlp_penjual,
+              status: inputAjb.status_penjual,
+              actor_type: "penjual",
+              // actor_role: inputAjb.tipe_penjual,
+            },
+            {
+              no_nik: inputAjb.nik_saksi_penjual,
+              email: inputAjb.email_saksi_penjual,
+              phone_number: inputAjb.tlp_saksi_penjual,
+              actor_type: "saksi _penjual",
+              // actor_role: "umum",
+            },
+          ],
+          docs: [
+            {
+              tipe: "surat_nikah_penjual",
+              base64: inputAjb.surat_nikah_penjual,
+            },
+            {
+              tipe: "kartu_keluarga_penjual",
+              base64: inputAjb.kartu_keluarga_penjual,
+            },
+            { tipe: "sertifikat_tanah", base64: inputAjb.sertifikat_tanah },
+            { tipe: "pbb_tahun_terakhir", base64: inputAjb.pbb_tahun_terakhir },
+            { tipe: "stts", base64: inputAjb.stts },
+            { tipe: "npwp_penjual", base64: inputAjb.npwp_penjual },
+            {
+              tipe: "akta_pendirian_penjual",
+              base64: inputAjb.akta_pendirian_penjual,
+            },
+            {
+              tipe: "sk_pengangkatan_penjual",
+              base64: inputAjb.sk_pengangkatan_penjual,
+            },
+          ],
+        }),
+        redirect: "follow",
+      }
+    )
       .then((response) => {
+        console.log(response);
         if (response.status === 401) {
           refreshToken();
-        } else if (response.status === 500) {
+        } else if (response.status === "500 INTERNAL SERVER ERROR") {
           swal("Error", "Internal Server Error", "error");
+          setLoadingFile(false);
         } else {
           return response.json();
         }
@@ -129,59 +143,66 @@ export const AjbProvider = (props) => {
           swal("Gagal", result.error, "error");
         }
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        console.log("error", error);
+      });
   };
 
   const addPembeli = () => {
     setLoadingFile(true);
-    let id = Number(inputAjb.id_transaksi);
 
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/transaction/pihakkedua", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token.access_token,
-        // 'Access-Control-Allow-Origin' : '*'
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        transaction_id: id,
-        actors: [
-          {
-            nik: inputAjb.nik_pembeli,
-            email: inputAjb.email_pembeli,
-            phone: inputAjb.tlp_pembeli,
-            status: inputAjb.status_pembeli,
-            actor_type: "Pembeli",
-            actor_role: inputAjb.tipe_pembeli,
-          },
-          {
-            nik: inputAjb.nik_saksi_pembeli,
-            email: inputAjb.email_saksi_pembeli,
-            phone: inputAjb.tlp_saksi_pembeli,
-            actor_type: "Saksi Pembeli",
-            actor_role: "umum",
-          },
-        ],
-        docs: [
-          { tipe: "surat_nikah_pembeli", base64: inputAjb.surat_nikah_pembeli },
-          {
-            tipe: "kartu_keluarga_pembeli",
-            base64: inputAjb.kartu_keluarga_pembeli,
-          },
-          { tipe: "npwp_photo_pembeli", base64: inputAjb.npwp_pembeli },
-          {
-            tipe: "akta_pendirian_pembeli",
-            base64: inputAjb.akta_pendirian_pembeli,
-          },
-          {
-            tipe: "sk_pengangkatan_pembeli",
-            base64: inputAjb.sk_pengangkatan_pembeli,
-          },
-        ],
-      }),
-      redirect: "follow",
-    })
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/add-data",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token.access_token,
+          // 'Access-Control-Allow-Origin' : '*'
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          transaction_id: Cookies.get("transaction_id"),
+          actors: [
+            {
+              no_nik: inputAjb.nik_pembeli,
+              email: inputAjb.email_pembeli,
+              phone_number: inputAjb.tlp_pembeli,
+              status: inputAjb.status_pembeli,
+              actor_type: "Pembeli",
+              // actor_role: inputAjb.tipe_pembeli,
+            },
+            {
+              no_nik: inputAjb.nik_saksi_pembeli,
+              email: inputAjb.email_saksi_pembeli,
+              phone_number: inputAjb.tlp_saksi_pembeli,
+              actor_type: "Saksi Pembeli",
+            },
+          ],
+          docs: [
+            {
+              tipe: "surat_nikah_pembeli",
+              base64: inputAjb.surat_nikah_pembeli,
+            },
+            {
+              tipe: "kartu_keluarga_pembeli",
+              base64: inputAjb.kartu_keluarga_pembeli,
+            },
+            { tipe: "npwp_photo_pembeli", base64: inputAjb.npwp_pembeli },
+            {
+              tipe: "akta_pendirian_pembeli",
+              base64: inputAjb.akta_pendirian_pembeli,
+            },
+            {
+              tipe: "sk_pengangkatan_pembeli",
+              base64: inputAjb.sk_pengangkatan_pembeli,
+            },
+          ],
+        }),
+        redirect: "follow",
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -209,7 +230,7 @@ export const AjbProvider = (props) => {
 
   const uploadDokumen = () => {
     var formdata = new FormData();
-    formdata.append("transaction_id", Cookies.get("id_transaksi"));
+    formdata.append("transaction_id", Cookies.get("transaction_id"));
     formdata.append("doc_name", inputAjb.nama_dokumen);
     formdata.append("doc_num", inputAjb.nomor_dokumen);
     formdata.append("is_new_version", "0");
@@ -244,43 +265,10 @@ export const AjbProvider = (props) => {
       .catch((err) => console.log(err));
   };
 
-  const template = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/webform/template/ajb", {
-      method: "GET",
-      // body: formdata,
-      redirect: "follow",
-    })
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else if (response.status === 500) {
-          swal("Error", "Internal Server Error", "error");
-        } else {
-          return response.blob();
-        }
-      })
-      .then((result) => {
-        setDokTemplate(result);
-      })
-      .catch(() => getDokumenAjb("akta_jual_beli"));
-  };
-
   const addDokumenAjb = async () => {
-    let id = inputAjb.id_transaksi
-      ? Number(inputAjb.id_transaksi)
-      : Number(Cookies.get("id_transaksi"));
-
-    let dataTransaksi = Number(inputAjb.nilai_transaksi);
-
-    const tgl = new Date();
-
-    const date = new Date().getDate();
-    const month = tgl.toLocaleString("id", { month: "long" });
-    const year = new Date().getFullYear();
-    const day = tgl.toLocaleString("id", { weekday: "long" });
-
     await fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/transaction/dokumen",
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/generate-document",
       {
         method: "POST",
         headers: {
@@ -289,21 +277,35 @@ export const AjbProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: id,
-          doc_name: inputAjb.nama_dokumen,
-          doc_num: inputAjb.nomor_dokumen,
-          price_value: dataTransaksi,
-          data: [
-            { var_ppat_name: inputAjb.ppat_name },
-            { var_kota: inputAjb.kota },
-            // {"var_gelar_notaris": inputAjb.ppat_gelar},
-            { var_hari: day },
-            { var_tanggal: date },
-            { var_bulan: month },
-            { var_tahun: year },
-            { var_alamat: inputAjb.alamat },
-            { var_nomor: "7/2022" },
-          ],
+          transaction_id: Cookies.get("transaction_id"),
+          doc_name: inputAjb.nama_dokumen || "ajb",
+          doc_num: inputAjb.nomor_dokumen || "4234234",
+          price_value: inputAjb.harga_jual || 10000000,
+          data: {
+            no_ajb: inputAjb.no_ajb,
+            gelar: inputAjb.gelar,
+            pekerjaan: inputAjb.pekerjaan,
+            kel_ktp_pihak_pertama: inputAjb.kel_ktp_pihak_pertama,
+            tgl_keluar_ktp_pihak_pertama: inputAjb.tgl_keluar_ktp_pihak_pertama,
+            berlaku_ktp_pihak_pertama: inputAjb.berlaku_ktp_pihak_pertama,
+            pekerjaan_pihak_kedua: inputAjb.pekerjaan_pihak_kedua,
+            kel_ktp_pihak_kedua: inputAjb.kel_ktp_pihak_kedua,
+            tgl_keluar_ktp_pihak_kedua: inputAjb.tgl_keluar_ktp_pihak_kedua,
+            berlaku_ktp_pihak_kedua: inputAjb.berlaku_ktp_pihak_kedua,
+            no_hak_milik: inputAjb.no_hak_milik,
+            tgl_surat_ukur: inputAjb.tgl_surat_ukur,
+            no_surat_ukur: inputAjb.no_surat_ukur,
+            hasil_luas_ukur: Number(inputAjb.hasil_luas_ukur),
+            nib: inputAjb.nib,
+            nop: inputAjb.nop,
+            provinsi_hak_milik: inputAjb.provinsi_hak_milik,
+            kota_administrasi_hak_milik: inputAjb.kota_administrasi_hak_milik,
+            kec_hak_milik: inputAjb.kec_hak_milik,
+            kel_hak_milik: inputAjb.kel_hak_milik,
+            jalan_hak_milik: inputAjb.jalan_hak_milik,
+            alamat_lengkap: inputAjb.alamat_lengkap,
+            harga_jual: Number(inputAjb.harga_jual),
+          },
         }),
         redirect: "follow",
       }
@@ -322,7 +324,7 @@ export const AjbProvider = (props) => {
         if (!result.success) {
           swal("Gagal", result.error, "error");
         } else {
-          dokumenAjb("akta_jual_beli");
+          getDokumenAjb("akta_jual_beli");
         }
         setLoadingFile(false);
       })
@@ -333,7 +335,7 @@ export const AjbProvider = (props) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
-        Cookies.get("id_transaksi") +
+        Cookies.get("transaction_id") +
         "/document?doc_type=akta_jual_beli",
       {
         method: "GET",
@@ -357,20 +359,17 @@ export const AjbProvider = (props) => {
       .then((result) => {
         if (result.success === false) {
           setLoadingFile(false);
-          // swal("Gagal", result.error, "error");
-          template();
-        } else {
           getDokumenAjb("akta_jual_beli");
         }
       })
-      .catch(() => getDokumenAjb("akta_jual_beli"));
+      .catch((err) => console.log(err));
   };
 
   const getDokumenAjb = (doc) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
-        Cookies.get("id_transaksi") +
+        Cookies.get("transaction_id") +
         "/document?doc_type=akta_jual_beli",
       {
         method: "GET",
@@ -399,10 +398,46 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+  const detailAjb = () => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/" +
+        Cookies.get("transaction_id"),
+      {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          Authorization: "Bearer " + token.access_token,
+        },
+      }
+    )
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        let nomor_dokumen = result.data.doc_num;
+        let nama_dokumen = result.data.doc_name;
+        let data = result.data.eform_json_data;
+        let hasil = data.replace(/'/g, '"');
+        let hasil2 = hasil.replace(/None/g, "null");
+
+        let obj = JSON.parse(hasil2);
+        setInputAjb({ ...obj, nomor_dokumen, nama_dokumen });
+        setLoadingFile(false);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   const getDokumenAjbStamp = (doc) => {
     let id = inputAjb.id_transaksi
       ? Number(inputAjb.id_transaksi)
-      : Number(Cookies.get("id_transaksi"));
+      : Number(Cookies.get("transaction_id"));
 
     fetch(
       process.env.REACT_APP_BACKEND_HOST +
@@ -440,28 +475,30 @@ export const AjbProvider = (props) => {
   const addMeterai = () => {
     let id = inputAjb.id_transaksi
       ? Number(inputAjb.id_transaksi)
-      : Number(Cookies.get("id_transaksi"));
+      : Number(Cookies.get("transaction_id"));
 
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/transaction/stampmaterai", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token.access_token,
-        // 'Access-Control-Allow-Origin' : '*'
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        transaction_id: id,
-        llx: inputAjb.llx,
-        lly: inputAjb.lly,
-        urx: inputAjb.urx,
-        ury: inputAjb.ury,
-        page_num: inputAjb.meteraiPage,
-        // "is_fixed_position": true,
-        doc_type: "akta_jual_beli",
-      }),
-      redirect: "follow",
-    })
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/stamp-emeterai",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token.access_token,
+          // 'Access-Control-Allow-Origin' : '*'
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          transaction_id: Cookies.get("transaction_id"),
+          llx: inputAjb.llx,
+          lly: inputAjb.lly,
+          urx: inputAjb.urx,
+          ury: inputAjb.ury,
+          page: inputAjb.meteraiPage,
+        }),
+        redirect: "follow",
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -488,19 +525,19 @@ export const AjbProvider = (props) => {
             setMeterai(false);
           }
         } else {
-          getDokumenAjbStamp("akta_jual_beli");
+          getDokumenAjb();
         }
       })
       .catch((error) => {
-        getDokumenAjbStamp("akta_jual_beli");
+        getDokumenAjb();
         console.log("error", error);
       });
   };
 
   const getTtdImage = () => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/users/get-file?file_type=specimen_tdtgn_file",
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/users/get-file?file_type=ttd",
       {
         method: "GET",
         redirect: "follow",
@@ -534,7 +571,7 @@ export const AjbProvider = (props) => {
       },
       credentials: "same-origin",
       body: JSON.stringify({
-        transaction_id: Number(Cookies.get("id_transaksi")),
+        transaction_id: Cookies.get("transaction_id"),
         llx: inputAjb.llx,
         lly: inputAjb.lly,
         urx: inputAjb.urx,
@@ -572,7 +609,7 @@ export const AjbProvider = (props) => {
       },
       credentials: "same-origin",
       body: JSON.stringify({
-        transaction_id: Number(Cookies.get("id_transaksi")),
+        transaction_id: Number(Cookies.get("transaction_id")),
         sign_doc_id: Cookies.get("sign_doc_id"),
         otp_code: otp,
       }),
@@ -602,7 +639,7 @@ export const AjbProvider = (props) => {
 
   const cekKtp = (nik, type) => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST +
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
         "api/users/get-profile?no_nik=" +
         nik,
       {
@@ -646,10 +683,78 @@ export const AjbProvider = (props) => {
           setInputAjb({
             ...inputAjb,
             [email]: result.data.email,
-            [tlp]: result.data.phone,
+            [tlp]: result.data.phone_number,
           });
         }
       })
+      .catch((error) => console.log("error", error));
+  };
+
+  const getDataProv = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/loc/provinces", {
+      method: "GET",
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => {
+        setDataProv(response.data);
+        console.log(inputAjb.provinsi_hak_milik);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const getDataKota = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/loc/cities", {
+      method: "GET",
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => setDataKota(response.data))
+      .catch((error) => console.log("error", error));
+  };
+
+  const getDataKec = () => {
+    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/loc/districts", {
+      method: "GET",
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => setDataKec(response.data))
+      .catch((error) => console.log("error", error));
+  };
+
+  const getDataKel = (id_kota) => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/loc/kelurahan?district_id=" +
+        id_kota,
+      {
+        method: "GET",
+      }
+    )
+      .then((res) => {
+        if (res.status === 401) {
+          refreshToken();
+        } else {
+          return res.json();
+        }
+      })
+      .then((response) => setDataKel(response.data))
       .catch((error) => console.log("error", error));
   };
 
@@ -665,7 +770,11 @@ export const AjbProvider = (props) => {
     getTtdImage,
     uploadDokumen,
     otpTandaTangan,
-    template,
+    detailAjb,
+    getDataKec,
+    getDataKota,
+    getDataProv,
+    getDataKel,
   };
 
   return (
@@ -695,8 +804,6 @@ export const AjbProvider = (props) => {
         setDataNik,
         warning,
         setWarning,
-        dokTemplate,
-        setDokTemplate,
         penjual,
         setPenjual,
         pembeli,
@@ -709,6 +816,14 @@ export const AjbProvider = (props) => {
         setStepper,
         nextStep,
         setNextStep,
+        dataKec,
+        setDataKec,
+        dataKota,
+        setDataKota,
+        dataProv,
+        setDataProv,
+        dataKel,
+        setDataKel,
       }}
     >
       {props.children}

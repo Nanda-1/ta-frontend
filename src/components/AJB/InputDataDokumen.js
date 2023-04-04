@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { MyAjbContext } from "Context/AjbContext";
 import ModalDokumen from "components/Modals/ModalDokumen";
+import FormData from "./FormData";
 // import { connect } from "socket.io-client";
 
 const InputDataDokumen = () => {
@@ -11,16 +12,25 @@ const InputDataDokumen = () => {
     setLoadingFile,
     loadingFile,
     functions,
+    dataKec,
+    dataKota,
+    dataProv,
+    dataKel,
   } = useContext(MyAjbContext);
 
   const { addDokumenAjb } = functions;
 
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
+  const { getDataKec, getDataKota, getDataProv, getDataKel } = functions;
 
-  if (inputAjb.ppat_name === undefined) {
-    setInputAjb({ ...inputAjb, ppat_name: object.nama });
-  }
+  let wilayah_id = localStorage.getItem("wilayah");
+  let wilayah_obj = JSON.parse(wilayah_id);
+
+  useEffect(() => {
+    getDataKec();
+    getDataKota();
+    getDataProv();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const dokReview = (e) => {
     e.preventDefault();
@@ -32,108 +42,76 @@ const InputDataDokumen = () => {
     let inputValue = event.target.value;
     let formInput = event.target.name;
     setInputAjb({ ...inputAjb, [formInput]: inputValue });
+
+    let data1 = dataProv.filter((el) => el.name === inputValue);
+    let data2 = dataKota.filter((el) => el.name === inputValue);
+    let data3 = dataKec.filter((el) => el.name === inputValue);
+    let data4 = dataKel.filter((el) => el.nama === inputValue);
+
+    if (formInput === "provinsi_hak_milik") {
+      let data = { [formInput]: data1[0].province_id };
+
+      if (wilayah_id) {
+        if (wilayah_obj.prov) {
+          wilayah_obj.prov = data1[0].province_id;
+        } else {
+          wilayah_obj = { ...wilayah_obj, ...data };
+        }
+        localStorage.setItem("wilayah", JSON.stringify(wilayah_obj));
+      } else {
+        localStorage.setItem("wilayah", JSON.stringify(data));
+      }
+    } else if (formInput === "kota_administrasi_hak_milik") {
+      let hasil = { [formInput]: data2[0].city_id };
+
+      if (wilayah_obj.kota) {
+        wilayah_obj.kota = data2[0].city_id;
+      } else {
+        wilayah_obj = { ...wilayah_obj, ...hasil };
+      }
+      localStorage.setItem("wilayah", JSON.stringify(wilayah_obj));
+    } else if (formInput === "kec_hak_milik") {
+      // setWilayah({ ...wilayah, kec: data3[0].district_id });
+      let hasil = { [formInput]: data3[0].district_id };
+
+      if (wilayah_obj.kota) {
+        wilayah_obj.kota = data3[0].district_id;
+      } else {
+        wilayah_obj = { ...wilayah_obj, ...hasil };
+      }
+      localStorage.setItem("wilayah", JSON.stringify(wilayah_obj));
+
+      getDataKel(data3[0].district_id);
+    } else if (formInput === "kel_hak_milik") {
+      // setWilayah({ ...wilayah, kel: data4[0].district_id });
+      let hasil = { [formInput]: data4[0].district_id };
+
+      if (wilayah_obj.kota) {
+        wilayah_obj.kota = data4[0].district_id;
+      } else {
+        wilayah_obj = { ...wilayah_obj, ...hasil };
+      }
+      localStorage.setItem("wilayah", JSON.stringify(wilayah_obj));
+    }
   };
+
+  if (dataKel.length === 0 && wilayah_obj !== undefined) {
+    getDataKel(wilayah_obj.kec_hak_milik);
+  }
 
   return (
     <>
       {loadingFile ? <ModalDokumen /> : null}
-      <div className="rounded-t mb-0 px-6 text-grey py-6">
-        <div className="relative w-full mb-3">
-          <label
-            className="block text-xs font-bold mb-2"
-            htmlFor="grid-password"
-          >
-            Nama Dokumen
-          </label>
-          <input
-            className="border-0 px-3 py-2 border-grey rounded text-sm shadow-md focus:outline-none w-full ease-linear transition-all duration-150"
-            name="nama_dokumen"
-            value={inputAjb.nama_dokumen}
-            onChange={handleChange}
-            // required
-          />
-        </div>
-        <div className="relative w-full mb-3">
-          <label
-            className="block text-xs pt-6 font-bold mb-2"
-            htmlFor="grid-password"
-          >
-            Nomor Dokumen
-          </label>
-          <input
-            type="text"
-            className="border-0 px-3 py-2 border-grey rounded text-sm shadow-md focus:outline-none w-full ease-linear transition-all duration-150"
-            name="nomor_dokumen"
-            value={inputAjb.nomor_dokumen}
-            onChange={handleChange}
-            // required
-          />
-        </div>
-        <div className="relative w-full mb-3">
-          <label
-            className="block text-xs pt-6 font-bold mb-2"
-            htmlFor="grid-password"
-          >
-            Nama Notaris
-          </label>
-          <input
-            type="text"
-            className="border-0 px-3 py-2 border-grey rounded disabled-2 text-sm shadow-md focus:outline-none w-full ease-linear transition-all duration-150"
-            name="ppat_name"
-            value={inputAjb.ppat_name}
-            onChange={handleChange}
-            // required
-            disabled
-          />
-        </div>
-        <div className="relative w-full mb-3">
-          <label
-            className="block text-xs pt-6 font-bold mb-2"
-            htmlFor="grid-password"
-          >
-            Alamat
-          </label>
-          <input
-            type="text"
-            className="border-0 px-3 py-2 border-grey rounded text-sm shadow-md focus:outline-none w-full ease-linear transition-all duration-150"
-            name="alamat"
-            value={inputAjb.alamat}
-            onChange={handleChange}
-            // required
-          />
-        </div>
-        <div className="relative w-full mb-3">
-          <label
-            className="block text-xs pt-6 font-bold mb-2"
-            htmlFor="grid-password"
-          >
-            Kota
-          </label>
-          <input
-            type="text"
-            className="border-0 px-3 py-2 border-grey rounded text-sm shadow-md focus:outline-none w-full ease-linear transition-all duration-150"
-            name="kota"
-            value={inputAjb.kota}
-            onChange={handleChange}
-            // required
-          />
-        </div>
-        <div className="relative w-full mb-3">
-          <label
-            className="block text-xs pt-6 font-bold mb-2"
-            htmlFor="grid-password"
-          >
-            Nilai Transaksi
-          </label>
-          <input
-            type="number"
-            className="border-0 px-3 py-2 border-grey rounded text-sm shadow-md focus:outline-none w-full ease-linear transition-all duration-150"
-            name="nilai_transaksi"
-            value={inputAjb.nilai_transaksi}
-            onChange={handleChange}
-            // required
-          />
-        </div>
+      <div className="rounded-t mb-0 px-2 text-grey py-6 change-scroll ">
+        <FormData
+          dataKec={dataKec}
+          dataKota={dataKota}
+          dataProv={dataProv}
+          dataKel={dataKel}
+          handleChange={handleChange}
+          wilayah_obj={wilayah_obj}
+          inputAjb={inputAjb}
+        />
         <button
           className="bg-green-2 text-white w-full py-2 rounded-md"
           onClick={dokReview}

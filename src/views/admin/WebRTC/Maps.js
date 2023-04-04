@@ -25,7 +25,7 @@ export default function Maps() {
     ttdImage
   } = useContext(DokumenContext);
 
-  const { addTandaTangan, getTtdImage } = functions;
+  const {addMeterai, addTandaTangan, getTtdImage } = functions;
 
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -80,7 +80,7 @@ export default function Maps() {
     setDoc({ ...doc, [name]: pageNumber });
     // setAjb({ ...doc });
 
-    addMeterai("cancel");
+    addMeterai();
   };
 
   const handlePembubuhanTtd = () => {
@@ -92,7 +92,7 @@ export default function Maps() {
     addTandaTangan();
   };
 
-  const addMeterai = (data) => {
+  const addMeterai2 = (data) => {
     setBtnConfirm(true);
 
     var canvas = new fabric.Canvas("canvasMeterai", {
@@ -122,14 +122,18 @@ export default function Maps() {
     canvas.on("object:moving", function (e) {
       var obj = e.target;
       // console.log(obj.setCoords().aCoords.bl)
-
-      let llx = "llx";
-      let lly = "lly";
-      let x_coord = obj.setCoords().oCoords.bl.x;
-      let y_coord = ref.current.clientHeight - obj.setCoords().oCoords.bl.y;
-      // console.log(obj.setCoords());
-
-      setDoc({ ...doc, [llx]: x_coord, [lly]: y_coord });
+      let lower_x_coord = obj.setCoords().oCoords.bl.x;
+      let lower_y_coord = canvas.height - obj.setCoords().oCoords.bl.y;
+      let upper_x_coord = obj.setCoords().oCoords.tr.x;
+      let upper_y_coord = canvas.height - obj.setCoords().oCoords.tr.y;
+      
+      setDoc({
+        ...doc,
+        llx: lower_x_coord,
+        lly: lower_y_coord,
+        urx: upper_x_coord,
+        ury: upper_y_coord,
+      });
 
       if (
         obj.currentHeight > obj.canvas.height ||
@@ -272,7 +276,7 @@ export default function Maps() {
                   {meterai !== true ? (
                     <button
                       className="bg-blue px-10 py-2 rounded-md"
-                      onClick={() => addMeterai("addMeterai")}
+                      onClick={() => addMeterai2("addMeterai")}
                     >
                       E-Meterai
                     </button>
@@ -503,7 +507,7 @@ export default function Maps() {
                           </button>
                           <button
                             className="bg-red-400 text-white w-full rounded-md text-center py-2 m-2"
-                            onClick={() => addMeterai("cancel")}
+                            onClick={() => addMeterai2("cancel")}
                           >
                             Cancel
                           </button>
