@@ -44,6 +44,22 @@ const FormData = ({
           className="block text-xs pt-6 font-bold mb-1"
           htmlFor="grid-password"
         >
+          Harga Jual
+        </label>
+        <input
+          type="number"
+          className="border-1 px-3 py-2 border-gray-400 rounded text-sm shadow-md focus:outline-none w-full"
+          name="price_value"
+          value={inputAjb.price_value}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="relative w-full">
+        <label
+          className="block text-xs pt-6 font-bold mb-1"
+          htmlFor="grid-password"
+        >
           Gelar
         </label>
         <input
@@ -340,7 +356,7 @@ const FormData = ({
         <select
           className="border-1 px-3 py-2 border-gray-400 rounded text-sm shadow-md focus:outline-none w-full"
           name="kec_hak_milik"
-          value={inputAjb.kec_hak_milik}
+          value={inputAjb.kec_hak_milik || ''}
           onChange={handleChange}
           required
         >
@@ -416,7 +432,7 @@ const FormData = ({
           required
         />
       </div>
-      <div className="relative w-full mb-3">
+      {/* <div className="relative w-full mb-3">
         <label
           className="block text-xs pt-6 font-bold mb-1"
           htmlFor="grid-password"
@@ -431,7 +447,7 @@ const FormData = ({
           onChange={handleChange}
           required
         />
-      </div>
+      </div> */}
     </div>
   );
 };

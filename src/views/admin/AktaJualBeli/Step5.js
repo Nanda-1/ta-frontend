@@ -17,9 +17,9 @@ const Step5 = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!inputAjb.doc && props.currentStep === "dokumen") {
-    getDokumenAjb();
-  }
+  // if (!inputAjb.doc && props.currentStep === "dokumen") {
+  //   getDokumenAjb();
+  // }
 
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);

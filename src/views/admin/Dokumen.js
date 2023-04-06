@@ -9,7 +9,7 @@ import NextIcon from "../../assets/img/next-light.png";
 import PrevIcon from "../../assets/img/prev.png";
 
 export default function Dokumen() {
-  const { functions, listTransaction, cekKtp, dataNik } =
+  const { functions, listTransaction, getUserName, dataNik } =
     useContext(UserContext);
 
   var val = localStorage.getItem("dataPPAT");
@@ -65,38 +65,50 @@ export default function Dokumen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log(cekKtp());
-
   const currentDoc = (id, statusDoc, typeDoc) => {
-    Cookies.set("id_transaksi", id, { expires: 1 });
-    let ajb = "AktaJualBeli";
-    let apht = "AktaPemberianHakTanggungan";
+    Cookies.set("transaction_id", id, { expires: 1 });
+    let url = "";
+
+    if (typeDoc === "akta_jual_beli") {
+      url = "AktaJualBeli";
+    } else {
+      url = "AktaPemberianHakTanggungan";
+    }
+
     if (statusDoc === "draft") {
-      Cookies.set("step", 1);
-      history.push("/admin/" + typeDoc === "akta_jual_beli" ? ajb : apht);
+      Cookies.set("step", "input_data_penjual");
+      history.push("/admin/" + url);
     } else if (statusDoc === "pihak_pertama") {
-      Cookies.set("step", 4);
-      history.push("/admin/" + typeDoc === "akta_jual_beli" ? ajb : apht);
+      Cookies.set("step", "input_data_pembeli");
+      history.push("/admin/" + url);
+    } else if (statusDoc === "add_data") {
+      Cookies.set("step", "input_data_pembeli");
+      history.push("/admin/" + url);
     } else if (statusDoc === "pihak_kedua") {
-      Cookies.set("step", 7);
-      history.push("/admin/" + typeDoc === "akta_jual_beli" ? ajb : apht);
+      Cookies.set("step", "dokumen");
+      history.push("/admin/" + url);
     } else if (statusDoc === "submit_dokumen") {
-      Cookies.set("step", 8);
-      history.push("/admin/" + typeDoc === "akta_jual_beli" ? ajb : apht);
+      Cookies.set("step", "stamping");
+      history.push("/admin/" + url);
+    } else if (statusDoc === "stamp_emeterai") {
+      Cookies.set("transaction_id", id);
+      history.push("/admin/" + typeDoc + "/pembubuhan");
+    } else if (statusDoc === "generate_document") {
+      Cookies.set("transaction_id", id);
+      if (typeDoc === "akta_jual_beli") {
+        Cookies.set("step", "dokumen");
+
+        history.push("/admin/" + url);
+      } else if (typeDoc === "akta_pemberian_hak_tanggunan") {
+        Cookies.set("step", "dokumen");
+        history.push("/admin/" + url);
+      } else {
+        history.push("/admin/" + typeDoc + "/inputDataForm");
+      }
     } else {
       history.push(`/admin/preview_dokumen/transaction_id=${id}`);
     }
     window.location.reload();
-  };
-
-  const getDataUmum = (data) => {
-    let hasil = data.replace(/'/g, '"');
-    let hasil2 = hasil.replace(/None/g, "null");
-
-    let obj = JSON.parse(hasil2);
-    console.log(obj)
-
-      return obj.name;
   };
 
   return (
@@ -105,60 +117,59 @@ export default function Dokumen() {
         Daftar Dokumen
       </div>
       <div className="relative font-bold box-content bg-white px-3 py-2 history-shadow rounded-lg mb-2">
-        <div className="block overflow-x-auto doc-list">
+        <div className="block  doc-list">
           {/* Projects table */}
           <table
-            className={`items-center bg-transparent border-collapse ${
-              listTransaction.length !== 0 ? "w-100" : "w-full"
-            }`}
+            className={`items-center bg-transparent border-collapse w-full
+            `}
           >
             <thead>
               <tr>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
+                    "px-1 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
                   }
                 >
                   Nama Pemohon
                 </th>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
+                    "px-1 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
                   }
                 >
                   E-Mail
                 </th>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
+                    "px-1 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
                   }
                 >
                   Nama Dokumen
                 </th>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-center "
+                    "px-1 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
                   }
                 >
                   Nomor Dokumen
                 </th>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-center "
+                    "px-1 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
                   }
                 >
                   Kategori
                 </th>
                 <th
                   className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-center "
+                    "px-1 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold text-left "
                   }
                 >
                   Status
                 </th>
                 <th
                   className={
-                    "px-6 text-center align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold "
+                    "px-1 text-left align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 border-t-0 font-bold "
                   }
                 >
                   Aksi
@@ -169,7 +180,7 @@ export default function Dokumen() {
               {listTransaction.length === 0 || listTransaction === "" ? (
                 <tr>
                   <td
-                    className="px-6 text-center border-l-0 border-r-0 text-xxs text-gray p-6"
+                    className="px-1 text-center border-l-0 border-r-0 text-xxs text-gray p-6"
                     colSpan={7}
                   >
                     Anda belum membuat dokumen
@@ -183,31 +194,27 @@ export default function Dokumen() {
                       return (
                         <tr key={index}>
                           <td
-                            className="px-6 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                            className="px-1 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
                             width={"18%"}
                           >
-                            {item.actors.length === 0 ? (
-                              <div className="italic">Belum diinput</div>
-                            ) : item.actors[0].user_name ? (
+                            {item.actors[0] ? (
                               item.actors[0].user_name
                             ) : (
-                              getDataUmum(item.eform_json_data)
+                              <div className="italic">Belum diinput</div>
                             )}
                           </td>
                           <td
-                            className="px-6 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                            className="px-1 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
                             width={"18%"}
                           >
-                            {item.actors.length === 0 ? (
-                              <div className="italic">Belum diinput</div>
-                            ) : item.actors[0].user_email ? (
+                            {item.actors[0] ? (
                               item.actors[0].user_email
                             ) : (
-                              getDataUmum(item.eform_json_data, "email")
+                              <div className="italic">Belum diinput</div>
                             )}
                           </td>
                           <td
-                            className="px-6 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                            className="px-1 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
                             width={"18%"}
                           >
                             {item.doc_name ? (
@@ -217,7 +224,7 @@ export default function Dokumen() {
                             )}
                           </td>
                           <td
-                            className="px-6 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                            className="px-1 text-left text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
                             width={"18%"}
                           >
                             {item.doc_num ? (
@@ -227,15 +234,21 @@ export default function Dokumen() {
                             )}
                           </td>
                           <td
-                            className="px-6 text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
-                            width={"20%"}
+                            className="px-1 text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                            width={"18%"}
                           >
                             {getType(item.doc_type)}
                           </td>
-                          <td className="px-6 text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0">
+                          <td
+                            className="px-1 text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                            width={"18%"}
+                          >
                             {item.doc_status}
                           </td>
-                          <td className="px-6 text-center text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0">
+                          <td
+                            className="px-1 text-center text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
+                            width={"18%"}
+                          >
                             {item.doc_status === "selesai" ? (
                               <Link
                                 className="bg-blue text-white py-2 px-3 rounded-md cursor-pointer"
@@ -248,7 +261,7 @@ export default function Dokumen() {
                                 <button
                                   onClick={() =>
                                     currentDoc(
-                                      item.id,
+                                      item.transaction_id,
                                       item.doc_status,
                                       item.doc_type
                                     )

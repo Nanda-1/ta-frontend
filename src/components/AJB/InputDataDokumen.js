@@ -49,13 +49,19 @@ const InputDataDokumen = () => {
     let data4 = dataKel.filter((el) => el.nama === inputValue);
 
     if (formInput === "provinsi_hak_milik") {
-      let data = { [formInput]: data1[0].province_id };
+      let data = {
+        [formInput]: data1[0].province_id,
+        id: inputAjb.transaction_id,
+      };
 
       if (wilayah_id) {
         if (wilayah_obj.prov) {
           wilayah_obj.prov = data1[0].province_id;
         } else {
-          wilayah_obj = { ...wilayah_obj, ...data };
+          wilayah_obj = {
+            ...wilayah_obj,
+            ...data,
+          };
         }
         localStorage.setItem("wilayah", JSON.stringify(wilayah_obj));
       } else {
@@ -95,7 +101,9 @@ const InputDataDokumen = () => {
     }
   };
 
-  if (dataKel.length === 0 && wilayah_obj !== undefined) {
+  console.log(inputAjb)
+
+  if (dataKel.length === 0 && wilayah_obj?.kec_hak_mili) {
     getDataKel(wilayah_obj.kec_hak_milik);
   }
 

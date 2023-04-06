@@ -59,7 +59,7 @@ export const DokumenProvider = (props) => {
 
   const fetchDataTransaksi = (id) => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/transaction/" + id + "/detail",
+      process.env.REACT_APP_BACKEND_HOST_AUTH + "api/transaction/" + id + "/detail",
       {
         method: "GET",
         redirect: "follow",

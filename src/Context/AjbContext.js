@@ -66,9 +66,6 @@ export const AjbProvider = (props) => {
 
   const addPenjual = () => {
     setLoadingFile(true);
-    let id = Number(Cookies.get("transaction_id"));
-
-    console.log(Cookies.get("transaction_id"));
 
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
@@ -95,7 +92,7 @@ export const AjbProvider = (props) => {
               no_nik: inputAjb.nik_saksi_penjual,
               email: inputAjb.email_saksi_penjual,
               phone_number: inputAjb.tlp_saksi_penjual,
-              actor_type: "saksi _penjual",
+              actor_type: "saksi penjual",
               // actor_role: "umum",
             },
           ],
@@ -170,14 +167,14 @@ export const AjbProvider = (props) => {
               email: inputAjb.email_pembeli,
               phone_number: inputAjb.tlp_pembeli,
               status: inputAjb.status_pembeli,
-              actor_type: "Pembeli",
+              actor_type: "pembeli",
               // actor_role: inputAjb.tipe_pembeli,
             },
             {
               no_nik: inputAjb.nik_saksi_pembeli,
               email: inputAjb.email_saksi_pembeli,
               phone_number: inputAjb.tlp_saksi_pembeli,
-              actor_type: "Saksi Pembeli",
+              actor_type: "saksi pembeli",
             },
           ],
           docs: [
@@ -214,55 +211,21 @@ export const AjbProvider = (props) => {
       })
 
       .then((result) => {
-        setLoadingFile(false);
         setNextStep(true);
         if (result.data) {
           if (result.data.total_pending_invitation > 0) {
+            setLoadingFile(false);
             history.push("/admin/dashboard");
             swal("Berhasil Membuat Draf", "Menunggu Registrasi", "success");
+          }else{
+            addDokumenAjb()
           }
         } else if (result.success !== true) {
+          setLoadingFile(false);
           swal("Gagal", result.error, "error");
         }
       })
       .catch((error) => console.log("error", error));
-  };
-
-  const uploadDokumen = () => {
-    var formdata = new FormData();
-    formdata.append("transaction_id", Cookies.get("transaction_id"));
-    formdata.append("doc_name", inputAjb.nama_dokumen);
-    formdata.append("doc_num", inputAjb.nomor_dokumen);
-    formdata.append("is_new_version", "0");
-    formdata.append("price_value", inputAjb.harga);
-    formdata.append("doc", inputAjb.dokumen_ajb);
-
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/transaction/upload-dokumen",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: "Bearer " + token.access_token,
-        },
-        credentials: "same-origin",
-        body: formdata,
-        redirect: "follow",
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else if (response.status === 500) {
-          swal("Error", "Internal Server Error", "error");
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => console.log(err));
   };
 
   const addDokumenAjb = async () => {
@@ -278,9 +241,9 @@ export const AjbProvider = (props) => {
         credentials: "same-origin",
         body: JSON.stringify({
           transaction_id: Cookies.get("transaction_id"),
-          doc_name: inputAjb.nama_dokumen || "ajb",
-          doc_num: inputAjb.nomor_dokumen || "4234234",
-          price_value: inputAjb.harga_jual || 10000000,
+          doc_name: inputAjb.nama_dokumen,
+          doc_num: inputAjb.nomor_dokumen,
+          price_value: inputAjb.price_value,
           data: {
             no_ajb: inputAjb.no_ajb,
             gelar: inputAjb.gelar,
@@ -304,7 +267,6 @@ export const AjbProvider = (props) => {
             kel_hak_milik: inputAjb.kel_hak_milik,
             jalan_hak_milik: inputAjb.jalan_hak_milik,
             alamat_lengkap: inputAjb.alamat_lengkap,
-            harga_jual: Number(inputAjb.harga_jual),
           },
         }),
         redirect: "follow",
@@ -320,18 +282,17 @@ export const AjbProvider = (props) => {
         }
       })
       .then((result) => {
-        console.log(result);
         if (!result.success) {
           swal("Gagal", result.error, "error");
+          setLoadingFile(false);
         } else {
-          getDokumenAjb("akta_jual_beli");
+          getDokumenAjb();
         }
-        setLoadingFile(false);
       })
       .catch((error) => console.log("error", error));
   };
 
-  const dokumenAjb = (doc) => {
+  const dokumenAjb = () => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
@@ -359,13 +320,13 @@ export const AjbProvider = (props) => {
       .then((result) => {
         if (result.success === false) {
           setLoadingFile(false);
-          getDokumenAjb("akta_jual_beli");
+          getDokumenAjb();
         }
       })
       .catch((err) => console.log(err));
   };
 
-  const getDokumenAjb = (doc) => {
+  const getDokumenAjb = () => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
@@ -423,13 +384,14 @@ export const AjbProvider = (props) => {
       .then((result) => {
         let nomor_dokumen = result.data.doc_num;
         let nama_dokumen = result.data.doc_name;
+        let id = result.data.transaction_id;
         let data = result.data.eform_json_data;
         let hasil = data.replace(/'/g, '"');
         let hasil2 = hasil.replace(/None/g, "null");
 
         let obj = JSON.parse(hasil2);
-        setInputAjb({ ...obj, nomor_dokumen, nama_dokumen });
-        setLoadingFile(false);
+        setInputAjb({ ...inputAjb, ...obj, nomor_dokumen, nama_dokumen, id });
+        getDokumenAjb()
       })
       .catch((error) => console.log("error", error));
   };
@@ -768,7 +730,6 @@ export const AjbProvider = (props) => {
     dokumenAjb,
     getDokumenAjbStamp,
     getTtdImage,
-    uploadDokumen,
     otpTandaTangan,
     detailAjb,
     getDataKec,

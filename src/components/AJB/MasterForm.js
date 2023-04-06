@@ -159,11 +159,12 @@ class MasterFormAjb extends Component {
           currentStep: "dokumen",
         });
       } else {
+        this.context.functions.addPembeli();
         this.context.setLoadingFile(true);
         this.setState({
           currentStep: "dokumen",
         });
-        this.context.functions.addDokumenAjb();
+        // this.context.functions.addDokumenAjb();
       }
     } else if (this.state.currentStep === "dokumen") {
       this.setState({

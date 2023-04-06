@@ -78,16 +78,6 @@ export default function RiwayatPemohon() {
     window.location.reload();
   };
 
-  const getDataUmum = (data) => {
-    let hasil = data.replace(/'/g, '"');
-    let hasil2 = hasil.replace(/None/g, "null");
-
-    let obj = JSON.parse(hasil2);
-    console.log(obj);
-
-    return obj.name;
-  };
-
   const getType = (data) => {
     let result = data.replace(/_/g, " ");
     var splitStr = result.toLowerCase().split(" ");
@@ -151,21 +141,17 @@ export default function RiwayatPemohon() {
                       return (
                         <tr key={index}>
                           <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
-                            {item.eform_json_data !== null ? (
-                              getDataUmum(item.eform_json_data)
-                            ) : // 'sadas'
-                            item.actors.length !== 0 ? (
+                            {item.actors[0] ? (
                               item.actors[0].user_name
                             ) : (
-                              // 'dfsd'
                               <div className="italic">Belum diinput</div>
                             )}
                           </td>
                           <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
-                            {item.actors || !item.actors[0].user_email ? (
-                              <div className="italic">Belum diinput</div>
-                            ) : (
+                            {item.actors[0] ? (
                               item.actors[0].user_email
+                            ) : (
+                              <div className="italic">Belum diinput</div>
                             )}
                           </td>
                           <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
