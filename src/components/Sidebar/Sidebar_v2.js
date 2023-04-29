@@ -35,7 +35,7 @@ export default function Sidebar_v2() {
     setLoginStatus(false);
     localStorage.removeItem("dataPPAT");
     localStorage.removeItem("authentication");
-    history.push("/login");
+    window.location.reload()
   };
 
   return (

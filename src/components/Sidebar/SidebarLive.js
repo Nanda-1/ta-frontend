@@ -21,8 +21,6 @@ export default function SidebarLive() {
     history.push("/login");
   };
 
-  let channel = cookies.get("channelName");
-
   return (
     <>
        <nav className="fixed sidebar-scroll md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden sidebar bg-white flex flex-wrap items-center justify-between md:w-46 z-40 py-4 font-roboto sidebar-open">
