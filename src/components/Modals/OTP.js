@@ -40,7 +40,7 @@ export default function OtpModal() {
                     Bubuhkan Dokumen
                   </label>
                   <label className="text-md text-black block text-center py-10">
-                    Saya {object.nama}, Saya Menyetujui Dokumen Ini
+                    Saya {object.ppat_detail.name}, Saya Menyetujui Dokumen Ini
                   </label>
                   <OtpInput
                     inputStyle="otpInput"
