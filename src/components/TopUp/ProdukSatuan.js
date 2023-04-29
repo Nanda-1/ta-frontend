@@ -100,7 +100,7 @@ export default function ProdukSatuan() {
                 <div className="flex justify-between mt-2">
                   <div className="font-bold mt-2 w-full text-blue text-sm">
                     {formatHarga(Number(el.product_price))} <br />
-                    <label className="text-xs text-black font-light">
+                    <label className="text-xxs text-grey font-light">
                       Pajak {formatHarga(Number(el.product_tax))}
                     </label>
                   </div>
