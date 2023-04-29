@@ -2,6 +2,9 @@ import React, { useContext, useEffect } from "react";
 import { TopUpContext } from "Context/TopUpContext";
 import Cookies from "js-cookie";
 import PaymentMethod from "components/Payment/PaymentMethod";
+import Secure from "../../assets/img/security.png";
+import PaymentList from "components/Payment/PaymentList";
+import OtherPayment from "components/Payment/OtherPayment";
 
 export default function Payment() {
   const {
@@ -13,6 +16,9 @@ export default function Payment() {
     listItem,
     listPaketQuota,
     produkSatuan,
+    listPayment,
+    otherPayment,
+    setOtherPayment,
   } = useContext(TopUpContext);
 
   const { topUpDetail } = functions;
@@ -24,6 +30,15 @@ export default function Payment() {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return "Rp" + parts.join(",");
   };
+
+  const totalHarga = midtrans
+    ? midtrans.gross_amount
+    : checkout.sub_total_fee + checkout.tax_fee + checkout.admin_fee;
+
+  const biaya_transaksi =
+    listPayment.payment_type !== "gopay" ? 4000 : totalHarga * (2 / 100);
+
+  const pajak = biaya_transaksi * (10 / 100);
 
   useEffect(() => {
     if (paymentModal) {
@@ -56,7 +71,10 @@ export default function Payment() {
           <div className="justify-center cursor-default font-sans items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-2 mx-auto font-roboto">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-700-d bg-white outline-none focus:outline-none">
+              <div
+                className="border-0 rounded-lg shadow-lg relative flex flex-col w-700-d bg-white outline-none focus:outline-none"
+                style={{ filter: otherPayment ? "brightness(0.9)" : "" }}
+              >
                 {/*body*/}
                 <div className="px-4">
                   <div className="flex ">
@@ -71,8 +89,12 @@ export default function Payment() {
                       Pembayaran
                     </h2>
                   </div>
-                  <PaymentMethod midtrans={midtrans} checkout={checkout} />
-                  <hr className="mt-3 border-t-4" />
+                  <PaymentMethod
+                    midtrans={midtrans}
+                    checkout={checkout}
+                    setOtherPayment={setOtherPayment}
+                  />
+                  <hr className="border-t-4" />
                   <div className="text-black">
                     <h3 className="font-700 mt-1">Rincian Pembelian</h3>
                     {listItem.map(({ package_name }, index) => {
@@ -86,16 +108,32 @@ export default function Payment() {
                         </div>
                       );
                     })}
-                    <div className="text-grey flex text-xs py-1">
-                      <label>Pajak</label>
-                      <label className="ppat-1 w-full">
-                        {formatHarga(Number(checkout.tax_fee))}
-                      </label>
-                    </div>
-                    <div className="text-grey flex text-xs py-1">
-                      <label className="w-full">Biaya Admin</label>
+                    {listPayment.length !== 0 || midtrans !== null ? (
+                      <>
+                        <div className="text-grey flex text-xs py-1">
+                          <label style={{ width: "100px" }}>PPN 10%</label>
+                          <label className="ppat-1 w-full">
+                            {formatHarga(Number(checkout.tax_fee || pajak))}
+                          </label>
+                        </div>
+                        <div className="text-grey flex text-xs py-1">
+                          <label className="w-full">Biaya Transaksi</label>
+                          <label className="ppat-1">
+                            {formatHarga(biaya_transaksi)}
+                          </label>
+                        </div>
+                      </>
+                    ) : null}
+                    <div className="text-grey flex text-xs py-1 font-bold">
+                      <label className="w-full">Total Belanja</label>
                       <label className="ppat-1">
-                        {formatHarga(Number(checkout.admin_fee))}
+                        {midtrans
+                          ? formatHarga(Number(midtrans.gross_amount))
+                          : formatHarga(
+                              checkout.sub_total_fee +
+                                (listPayment.length !== 0 ? pajak : 0) +
+                                (listPayment.length !== 0 ? biaya_transaksi : 0)
+                            )}
                       </label>
                     </div>
                   </div>
@@ -105,19 +143,19 @@ export default function Payment() {
                   style={{ boxShadow: " 0px -2px 10px rgba(0, 0, 0, 0.12)" }}
                 >
                   <div className=" w-80">
-                    Total Tagihan <br />
+                    Total Belanja <br />
                     <label className="font-700">
                       {midtrans
                         ? formatHarga(Number(midtrans.gross_amount))
                         : formatHarga(
                             checkout.sub_total_fee +
-                              checkout.tax_fee +
-                              checkout.admin_fee
+                              (listPayment.length !== 0 ? pajak : 0) +
+                              (listPayment.length !== 0 ? biaya_transaksi : 0)
                           )}
                     </label>
                   </div>
-                  {/* <button
-                    className="bg-blue text-white flex rounded-lg px-16 py-2 text-sm"
+                  <button
+                    className="bg-blue text-white flex rounded-lg px-8 py-2 text-sm"
                     style={{ alignSelf: "center" }}
                   >
                     <img
@@ -126,10 +164,15 @@ export default function Payment() {
                       className="mr-2"
                     />
                     Bayar
-                  </button> */}
+                  </button>
                   {/* </div> */}
                 </div>
               </div>
+              {otherPayment ? (
+                <div className="z-50 p-1 px-4 bg-white absolute bottom-0 w-full rounded-lg shadow-lg">
+                  <OtherPayment />
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
