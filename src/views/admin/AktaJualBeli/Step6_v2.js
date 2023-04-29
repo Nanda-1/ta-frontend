@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import meteraiImg from "assets/img/signature/meterai.png";
@@ -9,13 +9,12 @@ import { fabric } from "fabric";
 import { FormGroup } from "reactstrap";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import OtpModal from "components/Modals/OTP";
-import Cookies from "js-cookie";
 
 const Step6 = (props) => {
   const {
     inputAjb,
     setInputAjb,
-    setAjb,
+    ajbDoc,
     meterai,
     setConfirmModal,
     setBtnConfirm,
@@ -25,32 +24,23 @@ const Step6 = (props) => {
     otpModal,
     ttdImage,
     functions,
-    btnConfirmTtd,
-    setBtnConfirmTtd,
   } = useContext(MyAjbContext);
 
-  const { getDokumenAjb, getTtdImage, addTandaTangan } = functions;
+  const { getDokumenAjb } = functions;
 
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
-  if (ttdImage === "" && props.currentStep === "stamping") {
-    getTtdImage();
-    Cookies.set("step", "stamping");
-    Cookies.set("channelName", "testing");
-  }
-
-  // if (props.currentStep === "stamping") {
-  // }
+  useEffect(() => {
+    if (props.currentStep === "stamping") {
+      getDokumenAjb();
+      setLoadingFile(true);
+    }
+  }, []);
 
   const onDocumentLoadSuccess = async ({ numPages }) => {
     setNumPages(numPages);
     setPageNumber(1);
-  };
-
-  const dokumenAjb = (type) => {
-    setLoadingFile(true);
-    getDokumenAjb();
   };
 
   function changePage(offset) {
@@ -74,21 +64,8 @@ const Step6 = (props) => {
   }
 
   const handlePembubuhan = () => {
+    setInputAjb({ ...inputAjb, page: pageNumber });
     setConfirmModal(true);
-    let name = "meteraiPage";
-    setInputAjb({ ...inputAjb, [name]: pageNumber });
-    setAjb({ ...inputAjb });
-
-    addMeterai("cancel");
-  };
-
-  const handlePembubuhanTtd = () => {
-    setBtnConfirmTtd(false);
-    // let name = "page";
-    // setInputAjb({ ...inputAjb, [name]: pageNumber.toString() });
-    // setAjb({ ...inputAjb });
-    setLoadingFile(true);
-    addTandaTangan();
   };
 
   const addMeterai = (data) => {
@@ -133,7 +110,6 @@ const Step6 = (props) => {
         urx: upper_x_coord,
         ury: upper_y_coord,
       });
-      // setInputAjb({ ...inputAjb, [llx]: x_coord, [lly]: y_coord });
 
       if (
         obj.currentHeight > obj.canvas.height ||
@@ -172,90 +148,6 @@ const Step6 = (props) => {
     });
   };
 
-  const addTtd = (data) => {
-    // setMeterai(true)
-    setBtnConfirmTtd(true);
-
-    var canvas = new fabric.Canvas("canvasTtd", {
-      preserveObjectStacking: true,
-    });
-    canvas.setDimensions({
-      width: ref.current.clientWidth,
-      height: ref.current.clientHeight,
-    });
-
-    var eTtd = document.getElementById("ttd");
-
-    var imgTtd = new fabric.Image(eTtd, {
-      hasControls: false,
-      hasBorders: false,
-      scaleX: 0.45,
-      scaleY: 0.7,
-    });
-
-    if (data !== "cancel") {
-      canvas.add(imgTtd);
-    } else {
-      canvas.clear();
-      canvas.dispose();
-      setBtnConfirmTtd(false);
-    }
-
-    canvas.on("object:moving", function (e) {
-      var obj = e.target;
-
-      let lower_x_coord = obj.setCoords().oCoords.bl.x;
-      let lower_y_coord =
-        ref.current.clientHeight - obj.setCoords().oCoords.bl.y;
-      let upper_x_coord = obj.setCoords().oCoords.tr.x;
-      let upper_y_coord =
-        ref.current.clientHeight - obj.setCoords().oCoords.tr.y;
-
-      setInputAjb({
-        ...inputAjb,
-        llx: Number(lower_x_coord).toString(),
-        lly: Number(lower_y_coord).toString(),
-        urx: Number(upper_x_coord).toString(),
-        ury: Number(upper_y_coord).toString(),
-        page: pageNumber.toString(),
-      });
-
-      if (
-        obj.currentHeight > obj.canvas.height ||
-        obj.currentWidth > obj.canvas.width
-      ) {
-        return;
-      }
-      obj.setCoords();
-      // top-left  corner
-      if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
-        obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
-        obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
-      }
-      // bot-right corner
-      if (
-        obj.getBoundingRect().top + obj.getBoundingRect().height >
-          obj.canvas.height ||
-        obj.getBoundingRect().left + obj.getBoundingRect().width >
-          obj.canvas.width
-      ) {
-        obj.top = Math.min(
-          obj.top,
-          obj.canvas.height -
-            obj.getBoundingRect().height +
-            obj.top -
-            obj.getBoundingRect().top
-        );
-        obj.left = Math.min(
-          obj.left,
-          obj.canvas.width -
-            obj.getBoundingRect().width +
-            obj.left -
-            obj.getBoundingRect().left
-        );
-      }
-    });
-  };
   const ref = useRef(null);
 
   if (props.currentStep !== "stamping") {
@@ -285,16 +177,6 @@ const Step6 = (props) => {
                     onClick={() => addMeterai("addMeterai")}
                   >
                     E-Meterai
-                  </button>
-                  <button
-                    className={` ml-4 ${
-                      !meterai
-                        ? "bg-green-2 px-10 py-2 rounded-md"
-                        : "bg-darkgray-2 text-white px-10 py-2 mx-4 pembubuhan rounded-md cursor-not-allowed"
-                    }`}
-                    onClick={() => addTtd("addTtd")}
-                  >
-                    Tanda Tangan
                   </button>
                 </div>
                 <div className="bg-darkgray-2 text-xs shadow-md text-black pembubuhan-2">
@@ -405,23 +287,13 @@ const Step6 = (props) => {
                             />
                           </canvas>
                         </div>
-                        {inputAjb.doc2 ? (
-                          <Document
-                            file={inputAjb.doc2}
-                            // file={b64}
-                            onLoadSuccess={onDocumentLoadSuccess}
-                          >
-                            <Page pageNumber={pageNumber}></Page>
-                          </Document>
-                        ) : (
-                          <Document
-                            file={inputAjb.doc ? inputAjb.doc : dokumenAjb()}
-                            // file={b64}
-                            onLoadSuccess={onDocumentLoadSuccess}
-                          >
-                            <Page pageNumber={pageNumber}></Page>
-                          </Document>
-                        )}
+                        <Document
+                          file={ajbDoc}
+                          // file={b64}
+                          onLoadSuccess={onDocumentLoadSuccess}
+                        >
+                          <Page pageNumber={pageNumber}></Page>
+                        </Document>
                       </div>
                       {btnConfirm ? (
                         <div className="flex min-w-full mb-4">
@@ -434,22 +306,6 @@ const Step6 = (props) => {
                           <button
                             className="bg-red-400 text-white w-full rounded-md text-center py-2 m-2 mr-6"
                             onClick={() => addMeterai("cancel")}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : null}
-                      {btnConfirmTtd ? (
-                        <div className="flex min-w-full bg-white">
-                          <button
-                            className="bg-blue text-white w-full rounded-md text-center py-2 m-2 ml-6"
-                            onClick={handlePembubuhanTtd}
-                          >
-                            Bubuhkan
-                          </button>
-                          <button
-                            className="bg-red-400 text-white w-full rounded-md text-center py-2 m-2 mr-6"
-                            onClick={() => addTtd("cancel")}
                           >
                             Cancel
                           </button>
