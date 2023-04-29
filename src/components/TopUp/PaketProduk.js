@@ -19,7 +19,6 @@ export default function PaketProduk() {
   }, []);
 
   const addPaket = (nilai, kode) => {
-    console.log(nilai, kode);
     if (nilai > 0) {
       const arr = item.filter((item) => item.package_id !== kode);
       setItem(arr);
@@ -88,9 +87,7 @@ export default function PaketProduk() {
   const tooltipDesc = (name) => {
     const indexOfSpace = name.indexOf(" ");
     let data = [
-      { name: "100 e-Meterai" },
-      { name: "100 Tanda Tangan" },
-      { name: "100 Form" },
+      { name: "100 e-Meterai", name2: "100 Tanda Tangan", name3: "100 Form" },
     ];
 
     if (indexOfSpace === -1) {
@@ -99,7 +96,12 @@ export default function PaketProduk() {
 
     return `Anda Mendapatkan ${
       name.substring(indexOfSpace + 1) === "Hemat"
-        ? data.map((el) => el.name)
+        ? data.map((el) => "<br />" + el.name + "<br />" + el.name2 + "<br />" + el.name3)
+        : name
+            .substring(indexOfSpace + 1)
+            .toLowerCase()
+            .includes("ttd")
+        ? "100 Tanda Tangan"
         : name.substring(indexOfSpace + 1)
     }`;
   };
@@ -107,13 +109,13 @@ export default function PaketProduk() {
   return (
     <div className="font-sans">
       <p className="font-bold mt-6 text-lg">Produk Paketan</p>
-      {listPaketQuota.length === 0 ? (
+      {listPaketQuota?.length === 0 ? (
         <div className="text-center my-3 text-sm text-grey">
           Tidak Ada Produk
         </div>
       ) : (
         <div className="grid grid-cols-3 mt-2 text-grey w-full">
-          {listPaketQuota.map((el, index) => {
+          {listPaketQuota?.map((el, index) => {
             return (
               <div
                 className={`card-shadow border-grey-3 rounded-lg px-6 py-4 ${
@@ -129,7 +131,7 @@ export default function PaketProduk() {
                     : "100 e-Meterai"}
                   <a
                     data-tip={tooltipDesc(el.package_name)}
-                    className="package-tooltip text-blue mx-2 rounded-full text-2xs"
+                    className="package-tooltip text-blue mx-2 rounded-full text-xxs"
                   >
                     i
                   </a>
@@ -139,12 +141,13 @@ export default function PaketProduk() {
                     type="dark"
                     effect="solid"
                     className="rounded-full"
+                    multiline={true}
                   />
                 </div>
                 <div className="flex justify-between mt-2">
                   <div className="font-bold mt-2 w-full text-blue text-sm">
                     {formatHarga(Number(el.price))} <br />
-                    <label className="text-xs text-black font-light">
+                    <label className="text-xxs text-grey font-light">
                       Pajak {formatHarga(Number(el.tax))}
                     </label>
                   </div>
