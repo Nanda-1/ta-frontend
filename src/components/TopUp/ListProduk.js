@@ -5,17 +5,10 @@ import ProdukSatuan from "./ProdukSatuan";
 import Payment from "components/Modals/Payment";
 
 export default function ListProduk() {
-  const {
-    total,
-    setLoadingFile,
-    item,
-    functions,
-    paymentModal,
-  } = useContext(TopUpContext);
+  const { total, setLoadingFile, item, functions, paymentModal } =
+    useContext(TopUpContext);
 
   const { topUp } = functions;
-
-  console.log(item)
 
   const pesanItem = () => {
     topUp(item);
@@ -28,6 +21,14 @@ export default function ListProduk() {
     return "Rp" + parts.join(",");
   };
 
+  const totalItem = () => {
+    let total = 0;
+
+    item.map((el) => (total += el.quota_quantity || el.package_quantity));
+
+    return "(" + total + " barang)";
+  };
+
   return (
     <>
       {paymentModal ? <Payment /> : null}
@@ -38,9 +39,9 @@ export default function ListProduk() {
         </div>
         <div className="text-black mt-9 card-shadow border-grey-3 rounded-lg font-sans">
           <div className="rounded-lg p-4 text-sm">
-            <div className="font-bold font-700 mb-6">Ringkasan Pemesanan</div>
-            <div className="mb-5 text-xs text-grey">
-              Total Harga {item.length !== 0 ? `(${item.length} Produk)` : ''}
+            <div className="font-bold font-700 mb-4">Detail Pesanan</div>
+            <div className="mb-3 text-xs text-grey">
+              Total Harga {item.length !== 0 ? totalItem() : ""}
               <span className="float-right">{formatHarga(total.harga)}</span>
             </div>
             <hr className="my-3 mx-auto total-line" />
@@ -50,12 +51,16 @@ export default function ListProduk() {
                 {formatHarga(total.pajak + total.harga)}
               </span>
             </div>
+            <div className="text-xs text-grey mt-6">
+              Dengan ini, Anda setuju bahwa semua data yang berhubungan dengan
+              order Anda akan diproses oleh saluran pembayaran.
+            </div>
             <button
-              className="checkout-button text-white bg-blue mt-8 w-full font-bold py-2 rounded-lg"
+              className="checkout-button text-white bg-blue mt-3 w-full font-bold py-2 rounded-lg"
               onClick={pesanItem}
               disabled={total.harga === 0 ? true : false}
             >
-              Bayar
+              Beli
             </button>
           </div>
         </div>
