@@ -1,7 +1,7 @@
 import React from "react";
 import PaymentList from "./PaymentList";
 
-export default function PaymentMethod({ midtrans, checkout }) {
+export default function PaymentMethod({ midtrans, checkout, setOtherPayment }) {
   const hurufKapital = (str) => {
     if (str) {
       if (str === "bank_transfer") {
@@ -28,7 +28,7 @@ export default function PaymentMethod({ midtrans, checkout }) {
       barcode(data);
     }
   };
-  
+
   const copyText = (data) => {
     return navigator.clipboard.writeText(data);
   };
@@ -37,9 +37,17 @@ export default function PaymentMethod({ midtrans, checkout }) {
     <>
       {midtrans === null ? (
         <>
-          <h2 className="font-bold font-700 text-black">Metode Pembayaran</h2>
+          <div className="flex w-full justify-between">
+            <h2 className="font-bold font-700 text-black">Metode Pembayaran</h2>
+            <button
+              className="text-blue font-bold text-sm focus:outline-none"
+              onClick={() => setOtherPayment(true)}
+            >
+              Lihat Lainnya
+            </button>
+          </div>
           <div className="relative flex-col overflow-x-auto modal">
-            <div className="flex-row" style={{ height: "300px" }}>
+            <div className="flex-row">
               <PaymentList />
             </div>
           </div>
