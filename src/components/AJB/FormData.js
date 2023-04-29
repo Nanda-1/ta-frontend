@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const FormData = ({
   inputAjb,
@@ -9,8 +9,34 @@ const FormData = ({
   dataProv,
   wilayah_obj,
 }) => {
+  const [hasil, sethasil] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      let formHeigth = document.querySelector(".change-scroll")?.offsetTop;
+      let formHeigth3 = document.querySelector(".change-scroll")?.clientHeight;
+      let top = window.pageYOffset || document.documentElement.scrollTop;
+
+      let result = formHeigth3 - top + 70;
+
+      if (top >= formHeigth) {
+        sethasil(result);
+      } else {
+        sethasil(document.querySelector(".change-scroll")?.clientHeight);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      sethasil(document.querySelector(".change-scroll")?.clientHeight)
+    };
+  }, []);
+
   return (
-    <div className="overflow-y-auto h-650-px px-3">
+    <div className="overflow-y-auto px-3 form-scroll" style={{ height: hasil !== 0 ? hasil : 'auto' }}>
+        <form>
       <div className="relative w-full">
         <label className="block text-xs font-bold mb-1" htmlFor="grid-password">
           Nama Dokumen
@@ -50,7 +76,7 @@ const FormData = ({
           type="number"
           className="border-1 px-3 py-2 border-gray-400 rounded text-sm shadow-md focus:outline-none w-full"
           name="price_value"
-          value={inputAjb.price_value}
+          value={inputAjb.price_value|| inputAjb.harga_jual}
           onChange={handleChange}
           required
         />
@@ -76,13 +102,13 @@ const FormData = ({
           className="block text-xs pt-6 font-bold mb-1"
           htmlFor="grid-password"
         >
-          Pekerjaan
+          Pekerjaan Pihak Pertama
         </label>
         <input
           type="text"
           className="border-1 px-3 py-2 border-gray-400 rounded text-sm shadow-md focus:outline-none w-full"
           name="pekerjaan"
-          value={inputAjb.pekerjaan}
+          value={inputAjb.pekerjaan || inputAjb.pekerjaan_pihak_pertama}
           onChange={handleChange}
           required
         />
@@ -310,7 +336,9 @@ const FormData = ({
           onChange={handleChange}
           required
         >
-          <option disabled>Pilih Provinsi</option>
+          <option disabled selected>
+            Pilih Provinsi
+          </option>
           {dataProv.map((item) => {
             return (
               <option value={item.name} key={item.province_id}>
@@ -334,7 +362,9 @@ const FormData = ({
           onChange={handleChange}
           required
         >
-          <option disabled>Pilih Kota Administrasi</option>
+          <option disabled selected>
+            Pilih Kota Administrasi
+          </option>
           {dataKota
             .filter((el) => el.province_id === wilayah_obj?.provinsi_hak_milik)
             .map((item) => {
@@ -356,16 +386,16 @@ const FormData = ({
         <select
           className="border-1 px-3 py-2 border-gray-400 rounded text-sm shadow-md focus:outline-none w-full"
           name="kec_hak_milik"
-          value={inputAjb.kec_hak_milik || ''}
+          value={inputAjb.kec_hak_milik}
           onChange={handleChange}
           required
         >
-          <option disabled>Pilih Kecamatan</option>
+          <option disabled selected>
+            Pilih Kecamatan
+          </option>
           {dataKec
             .filter(
-              (el) =>
-                el.city_id ===
-                 wilayah_obj?.kota_administrasi_hak_milik
+              (el) => el.city_id === wilayah_obj?.kota_administrasi_hak_milik
             )
             .map((item) => {
               return (
@@ -390,7 +420,9 @@ const FormData = ({
           onChange={handleChange}
           required
         >
-          <option disabled>Pilih Keluarahan</option>
+          <option disabled selected>
+            Pilih Keluarahan
+          </option>
           {dataKel?.map((item) => {
             return (
               <option value={item.nama} key={item.id}>
@@ -416,7 +448,7 @@ const FormData = ({
           required
         />
       </div>
-      <div className="relative w-full">
+      <div className="relative w-full mb-3">
         <label
           className="block text-xs pt-6 font-bold mb-1"
           htmlFor="grid-password"
@@ -448,6 +480,7 @@ const FormData = ({
           required
         />
       </div> */}
+      </form>
     </div>
   );
 };
