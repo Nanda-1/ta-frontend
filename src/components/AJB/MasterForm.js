@@ -38,6 +38,7 @@ import { MyAjbContext } from "Context/AjbContext";
 import Cookies from "js-cookie";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import swal from "sweetalert";
+import { useHistory } from "react-router";
 
 class MasterFormAjb extends Component {
   static contextType = MyAjbContext;
@@ -154,7 +155,9 @@ class MasterFormAjb extends Component {
         currentStep: "npwp_pembeli",
       });
     } else if (this.state.currentStep === "npwp_pembeli") {
+      Cookies.set("step", "dokumen");
       if (this.context.nextStep) {
+        this.context.functions.addPembeli();
         this.setState({
           currentStep: "dokumen",
         });
@@ -167,9 +170,13 @@ class MasterFormAjb extends Component {
         // this.context.functions.addDokumenAjb();
       }
     } else if (this.state.currentStep === "dokumen") {
+      Cookies.set("step", "stamping");
       this.setState({
         currentStep: "stamping",
       });
+      window.location.reload()
+    } else if (this.state.currentStep === "stamping") {
+      this.context.rtcPage();
     }
   }
 
@@ -241,9 +248,8 @@ class MasterFormAjb extends Component {
         currentStep: "npwp_pembeli",
       });
     } else if (this.state.currentStep === "stamping") {
-      this.setState({
-        currentStep: "dokumen",
-      });
+      this.context.functions.getDokumenAjb();
+      this.context.setLoadingFile(true);
     }
   }
 
@@ -283,30 +289,16 @@ class MasterFormAjb extends Component {
     return null;
   }
 
-  get nextButton() {
-    let currentStep = this.state.currentStep;
-    // If the current step is not 3, then render the "next" button
-    if (currentStep < 20) {
-      return (
-        <Button
-          color="primary float-right bg-blue text-white px-6 py-1 rounded-md"
-          onClick={this._next}
-        >
-          Next
-        </Button>
-      );
-    }
-    // ...else render nothing
-    return null;
-  }
-
   get submitButton() {
     let currentStep = this.state.currentStep;
 
     // If the current step is the last step, then render the "submit" button
-    if (currentStep > 20) {
+    if (currentStep === "selesai") {
       return (
-        <Button className="primary float-right bg-blue text-white cursor-pointer px-6 py-1 rounded-md">
+        <Button
+          className="primary float-right bg-blue text-white cursor-pointer px-6 py-1 rounded-md"
+          // onClick={this.handleClick}
+        >
           Submit
         </Button>
       );
@@ -319,7 +311,7 @@ class MasterFormAjb extends Component {
     let currentStep = this.state.currentStep;
 
     // If the current step is the last step, then render the "submit" button
-    if (currentStep > 20) {
+    if (currentStep === "selesai") {
       return (
         <button
           className="primary float-right bg-darkgray-2 text-white cursor-not-allowed px-6 py-1 rounded-md"
@@ -341,7 +333,13 @@ class MasterFormAjb extends Component {
           <Card>
             {/* <CardHeader>Create an Account</CardHeader> */}
             <CardBody className={"pb-16"}>
-              <CardTitle className="lg:w-8/12 mx-auto">
+              <CardTitle
+                className={` mx-auto ${
+                  this.state.currentStep === "dokumen"
+                    ? "lg:w-5/12"
+                    : "lg:w-8/12"
+                }`}
+              >
                 <MultiStepProgressBar currentStep={this.state.currentStep} />
               </CardTitle>
               {/* <CardText /> */}
@@ -423,7 +421,7 @@ class MasterFormAjb extends Component {
                 <>{this.previousButton}</>
               )}
               {this.handleButton}
-              {this.context.meterai === true ? (
+              {this.state.currentStep === "stamping" ? (
                 <>{this.submitButton}</>
               ) : (
                 <>{this.submitButtonDisabled}</>
