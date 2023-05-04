@@ -52,7 +52,7 @@ export default function KuotaCard_v2() {
               key={index}
             >
               <div className="p-4">
-                <label>{item.name} Digital</label>
+                <label>{item.name === 'E-Meterai'? 'Meterai':item.name} Digital</label>
                 <h3 className="text-black text-xl mb-4 font-bold">
                   {item.name.includes("meterai")
                     ? meteraiQuota

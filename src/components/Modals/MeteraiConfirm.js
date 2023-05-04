@@ -6,11 +6,9 @@ import Meterai from "assets/img/signature/meterai.png";
 
 export default function MeteraiConfirm() {
   const {
-    // meterai,
     setBtnConfirm,
     confirmModal,
     setConfirmModal,
-    // setMeterai,
     functions,
     setLoadingFile,
   } = useContext(DokumenContext);
@@ -20,7 +18,6 @@ export default function MeteraiConfirm() {
   const ppatConfirm = () => {
     setConfirmModal(false);
     setBtnConfirm(false);
-    // setMeterai(true);
     addMeterai('akta_pemberian_hak_tanggungan');
     setLoadingFile(true);
   };

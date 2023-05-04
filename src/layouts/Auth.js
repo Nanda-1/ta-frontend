@@ -32,13 +32,13 @@ import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 
 export default function Auth() {
-  var val = localStorage.getItem("dataPPAT");
+  var val = localStorage.getItem("authentication");
 
   const LoginRoute = ({ ...props }) => {
-    if (val) {
-      return <Redirect to="/admin/dashboard" />;
-    } else {
+    if (val === undefined) {
       return <Route {...props} />;
+    } else {
+      return <Redirect to="/admin/dashboard" />;
     }
   };
 

@@ -4,22 +4,20 @@ import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { MyAjbContext } from "Context/AjbContext";
 import { FormGroup } from "reactstrap";
 import InputDataDokumen from "components/AJB/InputDataDokumen";
-// import { connect } from "socket.io-client";
 
 const Step5 = (props) => {
-  const { inputAjb, functions } = useContext(MyAjbContext);
+  const { functions, ajbDoc } = useContext(MyAjbContext);
 
-  const { getDokumenAjb, detailAjb } = functions;
+  const { detailAjb } = functions;
+
+  const [isFixed, setIsFixed] = useState(false);
 
   useEffect(() => {
-    detailAjb();
-
+    if (props.currentStep === "dokumen") {
+      detailAjb();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // if (!inputAjb.doc && props.currentStep === "dokumen") {
-  //   getDokumenAjb();
-  // }
 
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -48,6 +46,29 @@ const Step5 = (props) => {
     changePage(+1);
   }
 
+  useEffect(() => {
+    if (props.currentStep === "dokumen") {
+      function handleScroll() {
+        const card = document.querySelector(".change-scroll");
+        const cardTop = card.offsetTop;
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop >= cardTop) {
+          setIsFixed(true);
+        } else {
+          setIsFixed(false);
+        }
+      }
+
+      window.addEventListener("scroll", handleScroll);
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+
   if (props.currentStep !== "dokumen") {
     return null;
   }
@@ -59,7 +80,7 @@ const Step5 = (props) => {
         <div className="flex content-center items-center justify-center h-full mt-20">
           <div className="flex w-full lg:w-12/12 px-1">
             {/* <form onSubmit={addDokumen}> */}
-            <div className="relative bg-white flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
+            <div className="relative bg-white flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0 mr-4 change-scroll">
               <div className="Example__container_pdf text-sm">
                 <div className="flex w-full justify-center py-2 ">
                   {pageNumber === 1 ? (
@@ -146,11 +167,7 @@ const Step5 = (props) => {
                   )}
                 </div>
                 <div>
-                  <Document
-                    file={inputAjb.doc}
-                    // file={b64}
-                    onLoadSuccess={onDocumentLoadSuccess}
-                  >
+                  <Document file={ajbDoc} onLoadSuccess={onDocumentLoadSuccess}>
                     <Page pageNumber={pageNumber}></Page>
                   </Document>
                 </div>
@@ -241,7 +258,11 @@ const Step5 = (props) => {
               </div>
             </div>
             <div className="w-full lg:w-6/12 px-1">
-              <div className="relative bg-white flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
+              <div
+                className={`bg-white flex flex-col min-w-0 break-words mb-6 shadow-lg rounded-lg border-0 ${
+                  isFixed ? "fixed-form mt-2" : "scroll-form w-full"
+                }`}
+              >
                 <InputDataDokumen />
               </div>
             </div>

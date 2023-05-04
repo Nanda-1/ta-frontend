@@ -9,15 +9,13 @@ import NextIcon from "../../assets/img/next-light.png";
 import PrevIcon from "../../assets/img/prev.png";
 
 export default function Dokumen() {
-  const { functions, listTransaction, getUserName, dataNik } =
-    useContext(UserContext);
+  const { functions, listTransaction } = useContext(UserContext);
 
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
   const { transactionList } = functions;
 
-  const [listNik, setListNik] = useState([]);
   const [page, setPage] = useState(0);
   let history = useHistory();
 
@@ -44,16 +42,14 @@ export default function Dokumen() {
       return <div className="text-red-500">Menunggu pembubuhan meterai</div>;
     } else if (data === "draft") {
       return <div className="text-blue">Menunggu pengisian pihak 1</div>;
-    } else if (data === "stamp_materai") {
-      return <div className="text-teal-500">Menunggu tanda tangan</div>;
-    } else if (data === "pihak_pertama") {
-      return <div className="text-yellow">Menunggu pengisian pihak 2</div>;
-    } else if (data === "pihak_kedua") {
-      return (
-        <div className="text-orange-500">Menunggu pengisian data akta</div>
-      );
+    } else if (data === "add_data") {
+      return <div className="text-teal-500">Proses melengkapi dokumen</div>;
+    } else if (data === "generate_document") {
+      return <div className="text-orange-500">Membuat dokumen</div>;
     } else if (data === "stamp_emeterai") {
-      return <div className="text-orange-500">Menunggu Tanda Tangan</div>;
+      return <div className="text-yellow">Menunggu pembubuhan e-Meterai</div>;
+    } else if (data === "sign_ttd") {
+      return <div className="text-red-500">Menunggu tanda tangan</div>;
     } else {
       return "Selesai";
     }
@@ -61,7 +57,6 @@ export default function Dokumen() {
 
   useEffect(() => {
     transactionList(object.uid);
-    // cekKtp()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -92,7 +87,10 @@ export default function Dokumen() {
       history.push("/admin/" + url);
     } else if (statusDoc === "stamp_emeterai") {
       Cookies.set("transaction_id", id);
-      history.push("/admin/" + typeDoc + "/pembubuhan");
+      Cookies.set("step", "stamping");
+      history.push("/admin/" + url);
+    } else if (statusDoc === "sign_ttd") {
+      history.push("/ruang_virtual=testing");
     } else if (statusDoc === "generate_document") {
       Cookies.set("transaction_id", id);
       if (typeDoc === "akta_jual_beli") {
@@ -243,7 +241,7 @@ export default function Dokumen() {
                             className="px-1 text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
                             width={"18%"}
                           >
-                            {item.doc_status}
+                            {getStatus(item.doc_status)}
                           </td>
                           <td
                             className="px-1 text-center text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"

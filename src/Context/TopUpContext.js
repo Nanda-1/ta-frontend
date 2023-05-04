@@ -30,6 +30,8 @@ export const TopUpProvider = (props) => {
   const [listItem, setListItem] = useState([]);
   const [listPayment, setListPayment] = useState([]);
   const [paymentModal, setPaymentModal] = useState(false);
+  const [otherPayment, setOtherPayment] = useState(false);
+  const [backModal, setBackModal] = useState(false);
   const [item, setItem] = useState([]);
 
   let history = useHistory();
@@ -47,7 +49,6 @@ export const TopUpProvider = (props) => {
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         if (result.success === true) {
           getToken.access_token = result.data.access_token;
           localStorage.setItem("authentication", JSON.stringify(getToken));
@@ -271,6 +272,10 @@ export const TopUpProvider = (props) => {
         setListPayment,
         item,
         setItem,
+        backModal,
+        setBackModal,
+        otherPayment,
+        setOtherPayment,
       }}
     >
       {props.children}

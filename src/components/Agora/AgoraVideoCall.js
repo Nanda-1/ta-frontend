@@ -4,20 +4,19 @@ import {
   createClient,
   createMicrophoneAndCameraTracks,
 } from "agora-rtc-react";
-import Cookies from "js-cookie";
+import { useParams } from "react-router";
 
 const appId = "15ade710d3de457bbd2ddc96f487c621"; //ENTER APP ID HERE
 const token =
-  "007eJxTYHCcwuxTLDc3ysDj3Lx9Pw8eTVWcnbTqnvaK4z0zw082TLukwGBompiSam5okGKckmpiap6UlGKUkpJsaZZmYmGebGZk+EVDL6UhkJEhoc6QiZEBAkF8doaS1OKSzLx0BgYA7OEhbQ==";
+  "007eJxTYJg4UZ5x/cPHbRWJPtLSu5kFSk/rKslV3dsqy7tv5r4iRy0FBkPTxJRUc0ODFOOUVBNT86SkFKOUlGRLszQTC/NkMyNDpuU2KQ2BjAyPpjxjYmSAQBCfnaEktbgkMy+dgQEA/yAe8A==";
 
 const AgoraVideoCall = () => {
   const [inCall, setInCall] = useState(true);
-  let channel = Cookies.get("channelName");
+
+  let { channelName } = useParams();
+  let channel = channelName;
   return (
-    <div>
-      <h1 className="heading" style={{ marginTop: "20px" }}>
-        {/* Agora RTC NG SDK React Wrapper */}
-      </h1>
+    <div className="px-4 h-screen">
       <VideoCall setInCall={setInCall} channelName={channel} />
     </div>
   );
@@ -75,38 +74,45 @@ const VideoCall = (props) => {
 
   return (
     <div className="App">
-      {ready && tracks && (
-        <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
+      {start && tracks && (
+        <Videos
+          users={users}
+          tracks={tracks}
+          ready={ready}
+          setStart={setStart}
+          setInCall={setInCall}
+        />
       )}
-      {start && tracks && <Videos users={users} tracks={tracks} />}
     </div>
   );
 };
 
 const Videos = (props) => {
-  const { users, tracks } = props;
+  const { users, tracks, ready, setInCall, setStart } = props;
 
   return (
     <div>
-      <div id="videos">
-        <AgoraVideoPlayer
-          className="vid"
-          videoTrack={tracks[1]}
-          // style={{ width: "47%", height: "70%" }}
-        />
-        {users.length > 0 &&
-          users.map((user) => {
-            if (user.videoTrack) {
-              return (
-                <AgoraVideoPlayer
-                  className="vid"
-                  videoTrack={user.videoTrack}
-                  key={user.uid}
-                />
-              );
-            } else return null;
-          })}
+      <div>
+        <div id="videos" className="grid grid-cols-2">
+          {/* <div id="videos" className={users.length > 2 ? "grid grid-cols-2" : ""}> */}
+          <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
+          {users.length > 0 &&
+            users.map((user) => {
+              if (user.videoTrack) {
+                return (
+                  <AgoraVideoPlayer
+                    className="vid"
+                    videoTrack={user.videoTrack}
+                    key={user.uid}
+                  />
+                );
+              } else return null;
+            })}
+        </div>
       </div>
+      {ready && tracks && (
+        <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
+      )}
     </div>
   );
 };
@@ -136,34 +142,33 @@ export const Controls = (props) => {
     tracks[1].close();
     setStart(false);
     setInCall(false);
-    Cookies.remove("channelName");
     window.location.reload();
   };
   return (
-    <div className="controls">
-      <p onClick={() => mute("audio")}>
+    <div className="controls w-full bg-white rounded-lg mt-2">
+      <p onClick={() => mute("audio")} className="my-2">
         {trackState.audio ? (
-          <i className={"fa fa-microphone"} style={{ color: "white" }}></i>
+          <i
+            className={"fa fa-microphone fa-lg"}
+            style={{ color: "black", width: "16.62px" }}
+          ></i>
         ) : (
           <i
-            className={"fa fa-microphone-slash"}
-            style={{ color: "white" }}
+            className={"fa fa-microphone-slash fa-lg"}
+            style={{ color: "black" }}
           ></i>
         )}
       </p>
       <p onClick={() => mute("video")}>
         {trackState.video ? (
-          <i className={"fa fa-video"} style={{ color: "white" }}></i>
+          <i className={"fa fa-video fa-lg"} style={{ color: "black" }}></i>
         ) : (
-          <i className={"fa fa-video-slash"} style={{ color: "white" }}></i>
+          <i
+            className={"fa fa-video-slash fa-lg"}
+            style={{ color: "black" }}
+          ></i>
         )}
       </p>
-      {
-        <p onClick={() => leaveChannel()}>
-          {" "}
-          <i className={"fa fa-phone-slash"} style={{ color: "white" }}></i>
-        </p>
-      }
     </div>
   );
 };

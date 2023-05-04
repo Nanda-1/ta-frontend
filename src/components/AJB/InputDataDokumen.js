@@ -3,7 +3,6 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { MyAjbContext } from "Context/AjbContext";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import FormData from "./FormData";
-// import { connect } from "socket.io-client";
 
 const InputDataDokumen = () => {
   const {
@@ -101,8 +100,6 @@ const InputDataDokumen = () => {
     }
   };
 
-  console.log(inputAjb)
-
   if (dataKel.length === 0 && wilayah_obj?.kec_hak_mili) {
     getDataKel(wilayah_obj.kec_hak_milik);
   }
@@ -110,7 +107,7 @@ const InputDataDokumen = () => {
   return (
     <>
       {loadingFile ? <ModalDokumen /> : null}
-      <div className="rounded-t mb-0 px-2 text-grey py-6 change-scroll ">
+      <div className="rounded-t mb-0 px-2 text-grey py-6 change-scroll">
         <FormData
           dataKec={dataKec}
           dataKota={dataKota}

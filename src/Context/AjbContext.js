@@ -7,6 +7,7 @@ export const MyAjbContext = createContext();
 
 export const AjbProvider = (props) => {
   const [ajb, setAjb] = useState([""]);
+  const [ajbDoc, setAjbDoc] = useState([""]);
   const [inputAjb, setInputAjb] = useState([]);
   const [dataProv, setDataProv] = useState([]);
   const [dataKota, setDataKota] = useState([]);
@@ -36,7 +37,7 @@ export const AjbProvider = (props) => {
   var auth = localStorage.getItem("authentication");
   var token = JSON.parse(auth);
 
-  const refreshToken = () => {
+  const refreshToken = (lastFunc) => {
     fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -217,8 +218,8 @@ export const AjbProvider = (props) => {
             setLoadingFile(false);
             history.push("/admin/dashboard");
             swal("Berhasil Membuat Draf", "Menunggu Registrasi", "success");
-          }else{
-            addDokumenAjb()
+          } else {
+            addDokumenAjb();
           }
         } else if (result.success !== true) {
           setLoadingFile(false);
@@ -243,11 +244,11 @@ export const AjbProvider = (props) => {
           transaction_id: Cookies.get("transaction_id"),
           doc_name: inputAjb.nama_dokumen,
           doc_num: inputAjb.nomor_dokumen,
-          price_value: inputAjb.price_value,
+          price_value: Number(inputAjb.price_value || inputAjb.harga_jual),
           data: {
             no_ajb: inputAjb.no_ajb,
             gelar: inputAjb.gelar,
-            pekerjaan: inputAjb.pekerjaan,
+            pekerjaan_pihak_pertama: inputAjb.pekerjaan,
             kel_ktp_pihak_pertama: inputAjb.kel_ktp_pihak_pertama,
             tgl_keluar_ktp_pihak_pertama: inputAjb.tgl_keluar_ktp_pihak_pertama,
             berlaku_ktp_pihak_pertama: inputAjb.berlaku_ktp_pihak_pertama,
@@ -286,44 +287,10 @@ export const AjbProvider = (props) => {
           swal("Gagal", result.error, "error");
           setLoadingFile(false);
         } else {
-          getDokumenAjb();
+          window.location.reload();
         }
       })
       .catch((error) => console.log("error", error));
-  };
-
-  const dokumenAjb = () => {
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
-        "/api/transactions/" +
-        Cookies.get("transaction_id") +
-        "/document?doc_type=akta_jual_beli",
-      {
-        method: "GET",
-        // body: formdata,
-        redirect: "follow",
-        headers: {
-          // "Content-Type": "application/pdf",
-          Authorization: "Bearer " + token.access_token,
-        },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else if (response.status === 500) {
-          swal("Error", "Internal Server Error", "error");
-        } else {
-          return response.json();
-        }
-      })
-      .then((result) => {
-        if (result.success === false) {
-          setLoadingFile(false);
-          getDokumenAjb();
-        }
-      })
-      .catch((err) => console.log(err));
   };
 
   const getDokumenAjb = () => {
@@ -352,14 +319,14 @@ export const AjbProvider = (props) => {
         }
       })
       .then((result) => {
-        let name = "doc";
-        setInputAjb({ ...inputAjb, [name]: result });
+        setAjbDoc(result);
         setLoadingFile(false);
       })
       .catch((error) => console.log("error", error));
   };
 
   const detailAjb = () => {
+    setLoadingFile(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
@@ -391,54 +358,12 @@ export const AjbProvider = (props) => {
 
         let obj = JSON.parse(hasil2);
         setInputAjb({ ...inputAjb, ...obj, nomor_dokumen, nama_dokumen, id });
-        getDokumenAjb()
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const getDokumenAjbStamp = (doc) => {
-    let id = inputAjb.id_transaksi
-      ? Number(inputAjb.id_transaksi)
-      : Number(Cookies.get("transaction_id"));
-
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST +
-        "api/transaction/getdocument?transaction_id=" +
-        id +
-        "&doc_type=" +
-        doc,
-      {
-        method: "GET",
-        // body: formdata,
-        redirect: "follow",
-        headers: {
-          "Content-Type": "application/pdf",
-          Authorization: "Bearer " + token.access_token,
-        },
-      }
-    )
-      .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else if (response.status === 500) {
-          swal("Error", "Internal Server Error", "error");
-        } else {
-          return response.blob();
-        }
-      })
-      .then((result) => {
-        let name = "doc2";
-        setInputAjb({ ...inputAjb, [name]: result });
-        setLoadingFile(false);
+        getDokumenAjb();
       })
       .catch((error) => console.log("error", error));
   };
 
   const addMeterai = () => {
-    let id = inputAjb.id_transaksi
-      ? Number(inputAjb.id_transaksi)
-      : Number(Cookies.get("transaction_id"));
-
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/stamp-emeterai",
@@ -456,7 +381,7 @@ export const AjbProvider = (props) => {
           lly: inputAjb.lly,
           urx: inputAjb.urx,
           ury: inputAjb.ury,
-          page: inputAjb.meteraiPage,
+          page: inputAjb.page,
         }),
         redirect: "follow",
       }
@@ -523,25 +448,28 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const addTandaTangan = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/transaction/ttd/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token.access_token,
-        // 'Access-Control-Allow-Origin' : '*'
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        transaction_id: Cookies.get("transaction_id"),
-        llx: inputAjb.llx,
-        lly: inputAjb.lly,
-        urx: inputAjb.urx,
-        ury: inputAjb.ury,
-        page: inputAjb.page,
-      }),
-      redirect: "follow",
-    })
+  const addTandaTangan = (pageNumber) => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/sign-doc/step-1",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token.access_token,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          transaction_id: Cookies.get("transaction_id"),
+          llx: inputAjb.llx,
+          lly: inputAjb.lly,
+          urx: inputAjb.urx,
+          ury: inputAjb.ury,
+          page: pageNumber,
+        }),
+        redirect: "follow",
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -553,7 +481,6 @@ export const AjbProvider = (props) => {
       })
       .then((result) => {
         setLoadingFile(false);
-        console.log(result);
         Cookies.set("sign_doc_id", result.data.sign_doc_id);
         setOtpModal(true);
       })
@@ -561,22 +488,25 @@ export const AjbProvider = (props) => {
   };
 
   const otpTandaTangan = (otp) => {
-    alert(otp);
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/transaction/ttd/sign", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token.access_token,
-        // 'Access-Control-Allow-Origin' : '*'
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        transaction_id: Number(Cookies.get("transaction_id")),
-        sign_doc_id: Cookies.get("sign_doc_id"),
-        otp_code: otp,
-      }),
-      redirect: "follow",
-    })
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/sign-doc/step-2",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token.access_token,
+          // 'Access-Control-Allow-Origin' : '*'
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          transaction_id: Cookies.get("transaction_id"),
+          sign_doc_id: Cookies.get("sign_doc_id"),
+          otp_code: otp,
+        }),
+        redirect: "follow",
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -587,15 +517,13 @@ export const AjbProvider = (props) => {
         }
       })
       .then((result) => {
-        alert("berhasil D" + result);
         setLoadingFile(false);
         setInputAjb({ ...inputAjb, doc2: result });
         setOtpModal(false);
-        swal("Berhasil", "Pembubuhan tanda tangan berhasil", "success");
+        window.location.reload()
       })
       .catch((error) => {
-        console.log(error);
-        alert("error " + error);
+        console.log("error " + error);
       });
   };
 
@@ -665,7 +593,6 @@ export const AjbProvider = (props) => {
       })
       .then((response) => {
         setDataProv(response.data);
-        console.log(inputAjb.provinsi_hak_milik);
       })
       .catch((error) => console.log("error", error));
   };
@@ -720,6 +647,10 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+  const rtcPage = () => {
+    history.push("/ruang_virtual=" + "testing");
+  };
+
   const functions = {
     addPenjual,
     addPembeli,
@@ -727,8 +658,6 @@ export const AjbProvider = (props) => {
     addMeterai,
     addTandaTangan,
     getDokumenAjb,
-    dokumenAjb,
-    getDokumenAjbStamp,
     getTtdImage,
     otpTandaTangan,
     detailAjb,
@@ -785,6 +714,9 @@ export const AjbProvider = (props) => {
         setDataProv,
         dataKel,
         setDataKel,
+        ajbDoc,
+        setAjbDoc,
+        rtcPage,
       }}
     >
       {props.children}

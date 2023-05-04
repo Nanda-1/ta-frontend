@@ -29,7 +29,7 @@ export default function Dashboard() {
   ) {
     setUserFiles(true);
   }
- },[])
+ },[object])
 
   cookies.remove("id_transaksi");
   cookies.remove("step");

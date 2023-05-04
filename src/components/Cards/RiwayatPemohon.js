@@ -51,6 +51,9 @@ export default function RiwayatPemohon() {
     } else if (statusDoc === "pihak_pertama") {
       Cookies.set("step", "input_data_pembeli");
       history.push("/admin/" + url);
+    } else if (statusDoc === "add_data") {
+      Cookies.set("step", "input_data_pembeli");
+      history.push("/admin/" + url);
     } else if (statusDoc === "pihak_kedua") {
       Cookies.set("step", "dokumen");
       history.push("/admin/" + url);
@@ -59,7 +62,10 @@ export default function RiwayatPemohon() {
       history.push("/admin/" + url);
     } else if (statusDoc === "stamp_emeterai") {
       Cookies.set("transaction_id", id);
-      history.push("/admin/" + typeDoc + "/pembubuhan");
+      Cookies.set("step", "stamping");
+      history.push("/admin/" + url);
+    } else if (statusDoc === "sign_ttd") {
+      history.push("/ruang_virtual=testing");
     } else if (statusDoc === "generate_document") {
       Cookies.set("transaction_id", id);
       if (typeDoc === "akta_jual_beli") {
