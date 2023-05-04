@@ -17,7 +17,7 @@ const Step1 = (props) => {
   return (
     <>
       <FormGroup>
-        {loadingFile ? <ModalDokumen /> : null}
+        {loadingFile && <ModalDokumen />}
         <div className="flex content-center items-center justify-center h-full mt-16">
           <div className="w-full lg:w-8/12 px-1">
             <div className="relative bg-white flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
@@ -35,7 +35,7 @@ const Step1 = (props) => {
                     ) : null}
                   </>
                 )}
-                {apht.nik_saksi_debitor ? (
+                {apht.nik_saksi_debitor && (
                   <div className="py-6">
                     <img
                       src={Success}
@@ -47,7 +47,7 @@ const Step1 = (props) => {
                       Berhasil membuat data debitor!
                     </div>
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
           </div>

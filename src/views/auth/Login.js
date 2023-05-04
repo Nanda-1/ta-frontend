@@ -101,7 +101,7 @@ export default function Login() {
 
   return (
     <>
-      {loading ? <ModalDokumen /> : null}
+      {loading && <ModalDokumen />}
       <div className="container mx-auto h-screen">
         <div className="flex content-center items-center justify-center h-screen">
           <div className="w-full lg:w-4/12 px-1">
@@ -114,7 +114,7 @@ export default function Login() {
                   {" "}
                   Masukkan nomor handphone dan password akun Anda
                 </div>
-                {error ? (
+                {error && (
                   <div
                     className="my-2 text-sm text-left text-red-600 bg-red-200 bg-opacity-10 border border-red-400 h-12 flex items-center p-4 rounded-md
                     "
@@ -122,7 +122,7 @@ export default function Login() {
                   >
                     {error}
                   </div>
-                ) : null}
+                )}
                 <form onSubmit={handleSubmit}>
                   <div className="relative w-full mb-3">
                     <label

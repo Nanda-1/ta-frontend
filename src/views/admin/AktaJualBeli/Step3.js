@@ -17,7 +17,7 @@ const Step3 = (props) => {
   return (
     <>
       <FormGroup>
-        {loadingFile ? <ModalDokumen /> : null}
+        {loadingFile && <ModalDokumen />}
         <div className="flex content-center items-center justify-center h-full mt-16">
           <div className="w-full lg:w-8/12 px-1">
             <div className="relative bg-white flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">

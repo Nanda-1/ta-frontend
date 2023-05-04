@@ -11,8 +11,14 @@ import PrevIcon from "../../../assets/img/prev.png";
 import DisableTopUp from "components/Modals/DisabledTopUp";
 
 export default function TopUp() {
-  const { historiList, loadingFile, functions, setPaymentModal, backModal, setBackModal } =
-    useContext(TopUpContext);
+  const {
+    historiList,
+    loadingFile,
+    functions,
+    setPaymentModal,
+    backModal,
+    setBackModal,
+  } = useContext(TopUpContext);
   const { historiTopUp } = functions;
 
   const [page, setPage] = useState(0);
@@ -35,7 +41,7 @@ export default function TopUp() {
 
     window.history.pushState(null, document.title, window.location.href);
     window.addEventListener("popstate", function (event) {
-      setBackModal(true)
+      setBackModal(true);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,13 +61,13 @@ export default function TopUp() {
 
   return (
     <div className="px-32 pt-16 bg-white font-sans pb-6">
-      {loadingFile ? <ModalDokumen /> : null}
-      {backModal ? <DisableTopUp /> : null}
+      {loadingFile && <ModalDokumen />}
+      {backModal && <DisableTopUp />}
       <h1 className="text-xl font-bold flex items-center">
         <img
           alt=""
           src={BackBtn}
-          className="p-1 pr-3 cursor-pointer"
+          className="p-1 pr-3 cursor-pointer z-40"
           onClick={() => histori.goBack()}
           style={{ height: "fit-content" }}
         />
@@ -71,7 +77,7 @@ export default function TopUp() {
       <ListProduk />
       <div className="mt-8 text-xl font-bold">Riwayat Top Up</div>
       <div className="card-shadow border-grey-3 w-9/12 rounded-lg my-4">
-        <table className="items-center w-full overflow-x-auto mb-6">
+        <table className="items-center w-full overflow-x-auto">
           <thead>
             <tr>
               <th className="px-4 align-middle py-4 text-grey text-sm font-bold border-grey-2 border-l-0 border-r-0 border-t-0 text-left">

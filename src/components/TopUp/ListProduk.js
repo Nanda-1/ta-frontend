@@ -31,7 +31,7 @@ export default function ListProduk() {
 
   return (
     <>
-      {paymentModal ? <Payment /> : null}
+      {paymentModal && <Payment />}
       <div className="w-full grid grid-cols-4 relative break-words font-montserrat cursor-default">
         <div className="col-span-3">
           <ProdukSatuan />

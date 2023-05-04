@@ -17,19 +17,19 @@ export default function Dashboard() {
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
- useEffect(() =>{
-  if (
-    object.user_files.bpjs &&
-    object.user_files.ktp &&
-    object.user_files.npwp &&
-    object.user_files.self_video &&
-    object.user_files.selfie_photo &&
-    object.user_files.sk_pengangkatan &&
-    object.user_files.ttd
-  ) {
-    setUserFiles(true);
-  }
- },[object])
+  useEffect(() => {
+    if (
+      object.user_files.bpjs &&
+      object.user_files.ktp &&
+      object.user_files.npwp &&
+      object.user_files.self_video &&
+      object.user_files.selfie_photo &&
+      object.user_files.sk_pengangkatan &&
+      object.user_files.ttd
+    ) {
+      setUserFiles(true);
+    }
+  }, [object]);
 
   cookies.remove("id_transaksi");
   cookies.remove("step");
@@ -44,7 +44,7 @@ export default function Dashboard() {
 
   return (
     <>
-      {loading ? <ModalDokumen /> : null}
+      {loading && <ModalDokumen />}
       <div className="flex flex-wrap cursor-default">
         <div className="w-full xl:w-12/12 mb-8 xl:mb-2 px-1">
           <UserInfo dataUser={object} />

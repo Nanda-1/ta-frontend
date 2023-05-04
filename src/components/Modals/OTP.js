@@ -3,12 +3,15 @@ import OtpInput from "react-otp-input";
 
 // Context
 import { MyAjbContext } from "Context/AjbContext";
+import { useEffect } from "react";
 
 export default function OtpModal() {
   const { otpModal, functions, setLoadingFile } = useContext(MyAjbContext);
 
   const { otpTandaTangan } = functions;
   const [kodeOtp, setKodeOtp] = useState("");
+  const [getMinute, setGetMinute] = useState(0);
+  const [getSecond, setGetSecond] = useState(0);
 
   const handleChange = (event) => {
     setKodeOtp(event);
@@ -22,9 +25,34 @@ export default function OtpModal() {
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
+  // Set the date we're counting down to
+  var countDownDate = new Date().getTime() + 15 * 60 * 1000;
+
+  useEffect(() => {
+    setInterval(() => {
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the result in the element with id="demo"
+      if (minutes >= 0) {
+        setGetMinute(minutes);
+      }
+
+      if (seconds >= 0) {
+        setGetSecond(seconds);
+      }
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
-      {otpModal ? (
+      {otpModal && (
         <>
           <div
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none"
@@ -51,6 +79,12 @@ export default function OtpModal() {
                     name="otp"
                   />
                 </div>
+                <p className="text-blueGray-500 text-xs text-center mb-8">
+                  Mohon menunggu {getMinute < 10 ? "0" + getMinute : getMinute}{" "}
+                  : {getSecond < 10 ? "0" + getSecond : getSecond} untuk
+                  melakukan
+                  <br /> generate ulang kode OTP yang baru.
+                </p>
               </div>
               <button
                 onClick={handleSubmit}
@@ -63,7 +97,7 @@ export default function OtpModal() {
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
-      ) : null}
+      )}
     </>
   );
 }

@@ -19,7 +19,7 @@ export default function OtherPayment() {
   //   topUpPay(checkout.top_up_transaction_id, "");
   // }
   return (
-    <div className="font-roboto z-50 font-bold text-black ">
+    <div className="font-roboto z-50 font-bold text-black">
       <div className="flex mb-2">
         <button
           className="focus:outline-none pr-3 mt-1"

@@ -206,9 +206,11 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const transactionList = () => {
+  const transactionList = (page) => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST_TRANSACTION + "/api/transactions",
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions" +
+        (page === "dashboard" ? "?limit=5" : ""),
       {
         method: "GET",
         redirect: "follow",

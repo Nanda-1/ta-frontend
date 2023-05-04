@@ -56,7 +56,7 @@ export default function Dokumen() {
   };
 
   useEffect(() => {
-    transactionList(object.uid);
+    transactionList('doc');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -286,7 +286,7 @@ export default function Dokumen() {
           setCurrentPage={handlePageChange}
           totalPages={Math.ceil(listTransaction.length / 10)}
           edgePageCount={2}
-          middlePagesSiblingCount={3}
+          middlePagesSiblingCount={1}
           className="pagination mt-5"
           truncableText="..."
           truncableClassName=""

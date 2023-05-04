@@ -35,12 +35,12 @@ export default function Sidebar_v2() {
     setLoginStatus(false);
     localStorage.removeItem("dataPPAT");
     localStorage.removeItem("authentication");
-    window.location.reload()
+    window.location.reload();
   };
 
   return (
     <>
-      {sidebar ? (
+      {sidebar && (
         <nav className="fixed sidebar-scroll md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden sidebar bg-white flex flex-wrap items-center justify-between md:w-46 z-40 py-4 font-roboto sidebar-open">
           <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
             {/* Toggler */}
@@ -51,14 +51,14 @@ export default function Sidebar_v2() {
             >
               <i className="fas fa-bars"></i>
             </button>
-            {window.screen.width > 500 ? (
+            {window.screen.width > 500 && (
               <img
                 src={LogoIppat}
                 alt="logo_ippat"
                 className="mx-auto"
                 width={80}
               />
-            ) : null}
+            )}
             <ul className="md:hidden items-center flex flex-wrap list-none">
               <li className="inline-block relative">
                 <NotificationDropdown />
@@ -108,7 +108,7 @@ export default function Sidebar_v2() {
                       />
                     </td>
                     <td className="font-bold text-sm">
-                      {object.user_detail?.name}
+                      {object.ppat_detail?.name}
                     </td>
                   </tr>
                   <tr>
@@ -135,9 +135,9 @@ export default function Sidebar_v2() {
 
               <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                 <li className="items-center mt-2">
-                  {window.location.pathname.includes("dashboard") ? (
+                  {window.location.pathname.includes("dashboard") && (
                     <div className="sidebar-active"></div>
-                  ) : null}
+                  )}
                   <Link
                     className={
                       "text-md py-2 ml-6 block focus:outline-none" +
@@ -153,9 +153,9 @@ export default function Sidebar_v2() {
                 </li>
 
                 <li className="items-center mt-2">
-                  {window.location.pathname.includes("ppat") ? (
+                  {window.location.pathname.includes("ppat") && (
                     <div className="sidebar-active"></div>
-                  ) : null}
+                  )}
                   <Link
                     className={
                       "text-md py-2 ml-6 block focus:outline-none" +
@@ -175,14 +175,14 @@ export default function Sidebar_v2() {
                 </li>
 
                 <li className="items-center mt-2">
-                  {window.location.pathname.includes("dokumen") ? (
+                  {window.location.pathname.includes("dokumen") && (
                     <div className="sidebar-active"></div>
-                  ) : null}
+                  )}
                   <Link
                     className={
                       "text-md py-2 ml-6 block focus:outline-none" +
                       (window.location.pathname.includes("dokumen")
-                        ? "text-blue-500 hover:text-blue-500"
+                        ? "text-sky-500 hover:text-sky-600"
                         : "text-blueGray-700 hover:text-blueGray-500")
                     }
                     to="/admin/dokumen"
@@ -193,9 +193,9 @@ export default function Sidebar_v2() {
                 </li>
 
                 <li className="items-center mt-2">
-                  {window.location.pathname.includes("karyawan") ? (
+                  {window.location.pathname.includes("karyawan") && (
                     <div className="sidebar-active"></div>
-                  ) : null}
+                  )}
                   <Link
                     className={
                       "text-md py-2 ml-6 block focus:outline-none" +
@@ -215,9 +215,9 @@ export default function Sidebar_v2() {
                 </li>
 
                 <li className="items-center mt-2">
-                  {window.location.pathname.includes("histori") ? (
+                  {window.location.pathname.includes("histori") && (
                     <div className="sidebar-active"></div>
-                  ) : null}
+                  )}
                   <Link
                     className={
                       "text-md py-2 ml-6 block focus:outline-none" +
@@ -250,7 +250,7 @@ export default function Sidebar_v2() {
             </div>
           </div>
         </nav>
-      ) : null}
+      )}
     </>
   );
 }

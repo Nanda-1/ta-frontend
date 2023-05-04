@@ -18,13 +18,13 @@ export default function MeteraiConfirm() {
   const ppatConfirm = () => {
     setConfirmModal(false);
     setBtnConfirm(false);
-    addMeterai('akta_pemberian_hak_tanggungan');
+    addMeterai("akta_pemberian_hak_tanggungan");
     setLoadingFile(true);
   };
 
   return (
     <>
-      {confirmModal ? (
+      {confirmModal && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none">
             <div className="relative w-auto my-2 mx-auto font-roboto">
@@ -66,7 +66,7 @@ export default function MeteraiConfirm() {
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
-      ) : null}
+      )}
     </>
   );
 }

@@ -38,7 +38,7 @@ export default function Payment() {
   const biaya_transaksi =
     listPayment.payment_type !== "gopay" ? 4000 : totalHarga * (2 / 100);
 
-  const pajak = biaya_transaksi * (10 / 100);
+  const pajak = Math.ceil(biaya_transaksi * (10 / 100));
 
   useEffect(() => {
     if (paymentModal) {
@@ -89,12 +89,16 @@ export default function Payment() {
                       Pembayaran
                     </h2>
                   </div>
-                  <PaymentMethod
-                    midtrans={midtrans}
-                    checkout={checkout}
-                    setOtherPayment={setOtherPayment}
-                  />
-                  <hr className="border-t-4" />
+                  {checkout.payment_status !== "success" ? (
+                    <>
+                      <PaymentMethod
+                        midtrans={midtrans}
+                        checkout={checkout}
+                        setOtherPayment={setOtherPayment}
+                      />
+                      <hr className="border-t-4" />
+                    </>
+                  ) : null}
                   <div className="text-black">
                     <h3 className="font-700 mt-1">Rincian Pembelian</h3>
                     {listItem.map(({ package_name }, index) => {
@@ -168,11 +172,11 @@ export default function Payment() {
                   {/* </div> */}
                 </div>
               </div>
-              {otherPayment ? (
-                <div className="z-50 p-1 px-4 bg-white absolute bottom-0 w-full rounded-lg shadow-lg">
+              {otherPayment && (
+                <div className="z-50 p-1 px-4 bg-white absolute bottom-0 w-full rounded-lg shadow-lg animate fadeInUp">
                   <OtherPayment />
                 </div>
-              ) : null}
+              )}
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>

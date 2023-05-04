@@ -174,7 +174,7 @@ class MasterFormAjb extends Component {
       this.setState({
         currentStep: "stamping",
       });
-      window.location.reload()
+      window.location.reload();
     } else if (this.state.currentStep === "stamping") {
       this.context.rtcPage();
     }
@@ -328,7 +328,7 @@ class MasterFormAjb extends Component {
   render() {
     return (
       <>
-        {this.context.loadingFile ? <ModalDokumen /> : null}
+        {this.context.loadingFile && <ModalDokumen />}
         <Form onSubmit={this.handleSubmit}>
           <Card>
             {/* <CardHeader>Create an Account</CardHeader> */}
@@ -336,7 +336,7 @@ class MasterFormAjb extends Component {
               <CardTitle
                 className={` mx-auto ${
                   this.state.currentStep === "dokumen"
-                    ? "lg:w-5/12"
+                    ? "lg:w-6/12"
                     : "lg:w-8/12"
                 }`}
               >

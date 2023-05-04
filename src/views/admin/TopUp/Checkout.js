@@ -43,7 +43,7 @@ export default function Checkout() {
 
   return (
     <>
-      {paymentModal ? <Payment /> : null}
+      {paymentModal && <Payment />}
       <div className="w-full relative break-words font-montserrat cursor-default">
         <div className="col-span-3">
           <div className="font-bold text-3xl text-center">Detail Pesanan</div>
@@ -110,7 +110,7 @@ export default function Checkout() {
                     {formatHarga(pajak ? pajak : 0)}
                   </span>
                 </div>
-                {midtrans ? (
+                {midtrans && (
                   <div className="mb-5">
                     Biaya Admin :
                     <span className="float-right">
@@ -119,7 +119,7 @@ export default function Checkout() {
                       )}
                     </span>
                   </div>
-                ) : null}
+                )}
                 <div className="horizontal-line"></div>
                 <div className="font-bold mt-4">
                   Total Pesanan
@@ -129,14 +129,14 @@ export default function Checkout() {
                 </div>
                 <div className="text-right text-lg font-bold"></div>
               </div>
-              {statusPayment !== "success" ? (
+              {statusPayment !== "success" && (
                 <button
                   className="checkout-button align-bottom text-white bg-green-2 text-sm mt-4 w-full font-bold py-2 rounded-md"
                   onClick={() => setPaymentModal(true)}
                 >
                   <i className="fas fa-arrow-right mr-2"></i>Pilih Pembayaran
                 </button>
-              ) : null}
+              )}
             </div>
           </div>
         </div>

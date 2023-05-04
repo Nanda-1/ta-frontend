@@ -17,21 +17,21 @@ export default function RiwayatPemohon() {
       return <div className="text-red-500">Menunggu pembubuhan meterai</div>;
     } else if (data === "draft") {
       return <div className="text-blue">Menunggu pengisian pihak 1</div>;
-    } else if (data === "stamp_materai") {
-      return <div className="text-teal-500">Menunggu tanda tangan</div>;
-    } else if (data === "pihak_pertama") {
-      return <div className="text-pink-400">Menunggu pengisian pihak 2</div>;
-    } else if (data === "pihak_kedua") {
-      return (
-        <div className="text-orange-500">Menunggu pengisian data akta</div>
-      );
+    } else if (data === "add_data") {
+      return <div className="text-teal-500">Proses melengkapi dokumen</div>;
+    } else if (data === "generate_document") {
+      return <div className="text-orange-500">Membuat dokumen</div>;
+    } else if (data === "stamp_emeterai") {
+      return <div className="text-yellow">Menunggu pembubuhan e-Meterai</div>;
+    } else if (data === "sign_ttd") {
+      return <div className="text-red-500">Menunggu tanda tangan</div>;
     } else {
       return "Selesai";
     }
   };
 
   useEffect(() => {
-    transactionList();
+    transactionList("dashboard");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -178,7 +178,7 @@ export default function RiwayatPemohon() {
                             {getType(item.doc_type)}
                           </td>
                           <td className="px-3 text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
-                            {item.doc_status}
+                            {getStatus(item.doc_status)}
                           </td>
                           <td className="px-3 text-center text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
                             {item.doc_status === "selesai" ? (
@@ -211,7 +211,7 @@ export default function RiwayatPemohon() {
               </tbody>
             </table>
           </div>
-          {listTransaction.length > 5 ? (
+          {/* {listTransaction.length > 5 && (
             <div className="w-full my-3 text-center">
               <button
                 className="text-xs border font-bold px-6 py-2 rounded shadow focus:outline-none"
@@ -220,10 +220,9 @@ export default function RiwayatPemohon() {
                 Lihat Semua
               </button>
             </div>
-          ) : null}
+          )} */}
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 }

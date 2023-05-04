@@ -251,11 +251,13 @@ export const AjbProvider = (props) => {
             pekerjaan_pihak_pertama: inputAjb.pekerjaan,
             kel_ktp_pihak_pertama: inputAjb.kel_ktp_pihak_pertama,
             tgl_keluar_ktp_pihak_pertama: inputAjb.tgl_keluar_ktp_pihak_pertama,
-            berlaku_ktp_pihak_pertama: inputAjb.berlaku_ktp_pihak_pertama,
+            berlaku_ktp_pihak_pertama:
+              inputAjb.berlaku_ktp_pihak_pertama || "Seumur Hidup",
             pekerjaan_pihak_kedua: inputAjb.pekerjaan_pihak_kedua,
             kel_ktp_pihak_kedua: inputAjb.kel_ktp_pihak_kedua,
             tgl_keluar_ktp_pihak_kedua: inputAjb.tgl_keluar_ktp_pihak_kedua,
-            berlaku_ktp_pihak_kedua: inputAjb.berlaku_ktp_pihak_kedua,
+            berlaku_ktp_pihak_kedua:
+              inputAjb.berlaku_ktp_pihak_kedua || "Seumur Hidup",
             no_hak_milik: inputAjb.no_hak_milik,
             tgl_surat_ukur: inputAjb.tgl_surat_ukur,
             no_surat_ukur: inputAjb.no_surat_ukur,
@@ -512,15 +514,21 @@ export const AjbProvider = (props) => {
           refreshToken();
         } else if (response.status === 500) {
           swal("Error", "Internal Server Error", "error");
+        } else if (response.status === 400) {
+          return response.json();
         } else {
           return response.blob();
         }
       })
       .then((result) => {
         setLoadingFile(false);
-        setInputAjb({ ...inputAjb, doc2: result });
-        setOtpModal(false);
-        window.location.reload()
+        if (result.error) {
+          swal("Error", result.error, "error");
+        } else {
+          setInputAjb({ ...inputAjb, doc2: result });
+          setOtpModal(false);
+          window.location.reload();
+        }
       })
       .catch((error) => {
         console.log("error " + error);

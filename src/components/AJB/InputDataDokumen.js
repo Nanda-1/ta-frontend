@@ -106,7 +106,7 @@ const InputDataDokumen = () => {
 
   return (
     <>
-      {loadingFile ? <ModalDokumen /> : null}
+      {loadingFile && <ModalDokumen />}
       <div className="rounded-t mb-0 px-2 text-grey py-6 change-scroll">
         <FormData
           dataKec={dataKec}
@@ -121,7 +121,7 @@ const InputDataDokumen = () => {
           className="bg-green-2 text-white w-full py-2 rounded-md"
           onClick={dokReview}
         >
-          Cek Dokumen
+          Perbaharui Dokumen
         </button>
       </div>
     </>

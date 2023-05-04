@@ -158,13 +158,13 @@ const Step6 = (props) => {
     <>
       {/* <p>We recommend creating a secure password for your account</p> */}
       <FormGroup>
-        {loadingFile ? (
+        {loadingFile && (
           <>
             <ModalDokumen />
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
-        ) : null}
-        {otpModal ? <OtpModal /> : null}
+        )}
+        {otpModal && <OtpModal />}
         <div className="flex content-center items-center justify-center h-full mt-20">
           <div className="w-full lg:w-11/12 px-1">
             <div className="relative bg-white flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
@@ -295,7 +295,7 @@ const Step6 = (props) => {
                           <Page pageNumber={pageNumber}></Page>
                         </Document>
                       </div>
-                      {btnConfirm ? (
+                      {btnConfirm && (
                         <div className="flex min-w-full mb-4">
                           <button
                             className="bg-blue text-white w-full rounded-md text-center py-2 m-2 ml-6"
@@ -310,7 +310,7 @@ const Step6 = (props) => {
                             Cancel
                           </button>
                         </div>
-                      ) : null}
+                      )}
                     </div>
                   </div>
                 </div>
