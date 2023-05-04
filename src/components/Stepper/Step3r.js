@@ -55,12 +55,19 @@ const Step3r = (provs) => {
     } else {
       localStorage.setItem("dataDiri", JSON.stringify(data));
     }
+
+    if(object.id_lurah){
+      getDataKel(data.nama)
+      console.log(dataKel)
+    }
+
+    if (object.id_camat || dataKel.length === 0) {
+      getDataKel(object.id_camat||inputRegist.id_camat);
+    }else{
+      return setDataKel([]);
+    }
   };
-
-  if (object.id_camat && dataKel.length === 0) {
-    getDataKel(object.id_camat);
-  }
-
+  
   useEffect(() => {
     getDataProv();
     getDataKota();
@@ -78,7 +85,6 @@ const Step3r = (provs) => {
         <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
           <FormDataDiriU
             changeHandle={changeHandle}
-            // changeHandleV={changeHandleV}
             inputRegist={inputRegist}
             dataKel={dataKel}
             dataKec={dataKec}

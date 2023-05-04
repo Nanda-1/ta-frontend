@@ -35,28 +35,7 @@ const Step4 = (props) => {
   var object = JSON.parse(val);
 
   const handleStartCaptureClick = async () => {
-    var browser_name = "";
-    const isIE = false || !!document.documentMode;
-    const isEdge = !isIE && !!window.StyleMedia;
-    if (navigator.userAgent.indexOf("Chrome") !== -1 && !isEdge) {
-      browser_name = "chrome";
-    } else if (navigator.userAgent.indexOf("Safari") !== -1 && !isEdge) {
-      browser_name = "safari";
-    } else if (navigator.userAgent.indexOf("Firefox") !== -1) {
-      browser_name = "firefox";
-    } else if (
-      navigator.userAgent.indexOf("MSIE") !== -1 ||
-      !!document.documentMode === true
-    ) {
-      //IF IE > 10
-      browser_name = "ie";
-    } else if (isEdge) {
-      browser_name = "edge";
-    } else {
-      browser_name = "other-browser";
-    }
-    console.log(browser_name);
-
+    setCapturing(true);
     navigator.getUserMedia =
       navigator.getUserMedia ||
       navigator.webkitGetUserMedia ||
@@ -96,7 +75,7 @@ const Step4 = (props) => {
             verifVideo("self_video", fileOfBlob);
             // localStorage.setItem("self_video", fileOfBlob);
             // console.log(fileOfBlob);
-          }, 10000);
+          }, 7000);
         }
 
         setTimeout(function () {

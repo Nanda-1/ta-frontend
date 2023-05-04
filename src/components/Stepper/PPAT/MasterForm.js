@@ -40,9 +40,10 @@ class MasterForm extends Component {
 
   constructor(props) {
     super(props);
-
     // Set the intiial input values
-    this.num = cookies.get('step')
+    this.num = cookies.get("step");
+    this.val = localStorage.getItem("statusDataDiri");
+    // var stat = JSON.parse(val);
     this.state = {
       currentStep: this.num ? Number(this.num) : 1,
       email: "",
@@ -89,11 +90,11 @@ class MasterForm extends Component {
 
     if (currentStep === 7) {
       // this.context.cekKTPPPAT();
-      this.context.sendLengkapiDiriPPAT(); 
-      this.context.setLoading(true);
-      this.context.ppatDetail(); 
+      this.context.sendLengkapiDiriPPAT();
+      // this.context.ppatDetail();
+      // this.context.setLoading(true);
     }
-    cookies.set('step', currentStep)
+    cookies.set("step", currentStep);
   }
 
   // The "next" and "previous" button functions
@@ -125,6 +126,24 @@ class MasterForm extends Component {
           <Button
             className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-blue active:bg-blue text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
             onClick={this._next}
+          >
+            Lanjutkan
+          </Button>
+        </>
+      );
+    }
+    return null;
+  }
+  get nextButtonDisabled() {
+    let currentStep = this.state.currentStep;
+    // If the current step is not 3, then render the "next" button
+    if (currentStep < 7) {
+      return (
+        <>
+          <Button
+            className="text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-4 bg-gray-d active:bg-blue text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 float-right"
+            onClick={this._next}
+            disabled
           >
             Lanjutkan
           </Button>
@@ -215,6 +234,13 @@ class MasterForm extends Component {
     return status;
   }
 
+  get stat() {
+    var val = localStorage.getItem("statusDataDiri");
+    var stat = JSON.parse(val);
+
+    return stat;
+  }
+
   render() {
     return (
       <>
@@ -258,7 +284,14 @@ class MasterForm extends Component {
             </CardBody>
             <CardFooter>
               {this.previousButton}
-              {this.nextButton}
+              {/* {this.nextButton} */}
+              {this.state.currentStep === 6
+                ? this.val
+                  ? this.stat === true
+                    ? this.nextButton
+                    : this.nextButtonDisabled
+                  : this.nextButtonDisabled
+                : this.nextButton}
               {this.statues === true
                 ? this.submitButtonDisabled
                 : this.submitButton}

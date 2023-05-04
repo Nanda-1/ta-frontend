@@ -98,7 +98,7 @@ export default function SyaratKetentuan() {
                     />
                     <label
                       htmlFor="toggle"
-                      className="toggle-label-d block h-8 -ml-1 -mt-1 rounded-full bg-sky-500 border-blue-500 border-2 cursor-pointer"
+                      className="toggle-label-d block h-8 -ml-1 -mt-1 rounded-full bg-gray-d border-blue-500 border-2 cursor-pointer"
                     ></label>
                   </div>
                   <div className="text-xs ml-2">

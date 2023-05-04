@@ -24,7 +24,9 @@ const Step1 = (props) => {
       getUserFile("sk_pengangkatan");
     } else if(props.currentStep === 2) {
       getUserFile("ktp");
-    }  
+    } else {
+      return null
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -62,7 +64,7 @@ const Step1 = (props) => {
     <>
       {loading ? <ModalDokumen /> : null}
       <FormGroup>
-        <div className="relative flex-col break-words w-800-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
+        <div className="relative flex-col break-words w-900-d mx-auto shadow-lg rounded-lg mt-12 bg-white border-0">
           <div className="rounded-t mb-0 px-6 py-6">
             <div className="text-center mb-2">
               <h1 className="text-blue text-xl font-bold">
@@ -85,9 +87,9 @@ const Step1 = (props) => {
                   id="empty"
                   className="h-full w-full text-center flex flex-col justify-center items-center"
                 >
-                  <div className="mx-auto my-auto h-auto w-auto">
+                  <div className="mx-auto my-auto">
                     <label htmlFor="upload-button" className="w-auto">
-                      {fileLengkapiDiri.length === 0 ? (
+                      {fileLengkapiDiri.length ? (
                         <div>
                           <img
                             className="mx-auto my-4 align-middle h-36 w-36 bg-fix"
@@ -102,10 +104,10 @@ const Step1 = (props) => {
                       ) : (
                         <>
                           <div className="py-4 my-auto pb-0">
-                            <div className="Example__container">
-                              <div className="Example__container__document overflow-y-auto-d h-pdf">
+                            <div className="Example__container border-grey bebas">
+                              {/* <div className="Example__container__document overflow-y-auto-d h-pdf"> */}
                                 <PreviewFile file={fileLengkapiDiri} />
-                              </div>
+                              {/* </div> */}
                             </div>
                           </div>
                         </>

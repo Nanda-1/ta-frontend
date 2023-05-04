@@ -47,7 +47,7 @@ export default function Modal3() {
           swal({
             title: "Perhatian",
             text: res.data.result_description,
-            icon: "Info",
+            icon: "info",
           });
           // history.push("/modal3");
           /** Get Cert with PDS **/

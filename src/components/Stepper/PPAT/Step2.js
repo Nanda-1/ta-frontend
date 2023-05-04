@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { FormGroup } from "reactstrap";
 import { RegistContext } from "views/auth/RegistContext";
@@ -12,9 +12,9 @@ const Step2 = (props) => {
     ppatFile,
     loading,
     b64toBlob,
-    fileLengkapiDiri,
-    setFileLengkapiDiri,
-    getUserFile,
+    // fileLengkapiDiri,
+    // setFileLengkapiDiri,
+    // getUserFile,
   } = useContext(RegistContext);
 
   const [capturing, setCapturing] = useState(false);

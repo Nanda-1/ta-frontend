@@ -71,7 +71,6 @@ const Step2b = (props) => {
                   ref={webcamRef}
                   screenshotFormat="image/jpg"
                   videoConstraints={videoConstraints}
-                  // width={1280}
                   name="Webcam"
                   id="Webcam"
                   className="mb-2 ml-0-d"

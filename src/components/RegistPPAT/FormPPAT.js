@@ -59,7 +59,7 @@ const FormPPAT = ({
           name="ppat_prov"
           className="bg-white rounded text-sm shadow w-full"
         >
-          <option value="" disabled>
+          <option value="">
             Pilih Provinsi
           </option>
           {dataProv.map((item) => {
@@ -81,7 +81,7 @@ const FormPPAT = ({
           name="ppat_kotkab"
           className="bg-white rounded text-black text-sm shadow w-full"
         >
-          <option value="" disabled>
+          <option value="">
             Pilih Kota
           </option>
           {dataKota
@@ -105,7 +105,7 @@ const FormPPAT = ({
           name="ppat_kecamatan"
           className="bg-white rounded text-sm shadow w-full"
         >
-          <option value="" disabled>
+          <option value="">
             Pilih Kecamatan
           </option>
           {dataKec
@@ -150,12 +150,12 @@ const FormPPAT = ({
           </label>
           <input
             type="text"
-            id="rt"
-            name="rt"
+            id="ppat_rt"
+            name="ppat_rt"
             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
             placeholder="RT"
             onChange={changeHandle}
-            value={inputRegist.rt || object ? object.rt : ""}
+            value={inputRegist.ppat_rt || object ? object.ppat_rt : ""}
             // required
           />
         </div>
@@ -165,12 +165,12 @@ const FormPPAT = ({
           </label>
           <input
             type="text"
-            id="rw"
-            name="rw"
+            id="ppat_rw"
+            name="ppat_rw"
             className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
             placeholder="RW"
             onChange={changeHandle}
-            value={inputRegist.rw || object ? object.rw : ""}
+            value={inputRegist.ppat_rw || object ? object.ppat_rw : ""}
             // required
           />
         </div>
@@ -180,12 +180,12 @@ const FormPPAT = ({
           </label>
           <input
             type="text"
-            id="kodepos"
-            name="kodepos"
+            id="ppat_kodepos"
+            name="ppat_kodepos"
             className="border-0 px-4 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
             placeholder="Kode Pos"
             onChange={changeHandle}
-            value={inputRegist.kodepos || object ? object.kodepos : ""}
+            value={inputRegist.ppat_kodepos || object ? object.ppat_kodepos : ""}
             // required
           />
         </div>

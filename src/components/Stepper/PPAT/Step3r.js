@@ -5,12 +5,21 @@ import FormDataDiri from "components/RegistPPAT/FormDataDiri";
 import FormPPAT from "components/RegistPPAT/FormPPAT";
 
 const Step3r = (provs) => {
-  const { inputRegist, setInputRegist, dataProv, dataKota, dataKec, dataKel, setDataKel, all } =
-    useContext(RegistContext);
+  const {
+    inputRegist,
+    setInputRegist,
+    dataProv,
+    dataKota,
+    dataKec,
+    dataKel,
+    setDataKel,
+    all,
+  } = useContext(RegistContext);
 
   const { getDataProv, getDataKota, getDataKec, getDataKel } = all;
 
   const [filter, setFilter] = useState({});
+  const [stat, setStat] = useState(false);
 
   var val = localStorage.getItem("dataDiri");
   var object = JSON.parse(val);
@@ -45,14 +54,31 @@ const Step3r = (provs) => {
         object = { ...object, ...data };
       }
       localStorage.setItem("dataDiri", JSON.stringify(object));
+      if (object.id_camat) {
+        getDataKel(object.id_camat || inputRegist.id_camat);
+      } else {
+        return setDataKel([]);
+      }
+      if (object.tgl_sk) {
+        setStat(true);
+      } else {
+        return null;
+      }
+      localStorage.setItem("statusDataDiri", JSON.stringify(stat));
     } else {
       localStorage.setItem("dataDiri", JSON.stringify(data));
     }
-  };
 
-  if (object.id_camat && dataKel.length === 0) {
-    getDataKel(object.id_camat);
-  }
+    // if (object.id_camat) {
+    //   getDataKel(object.id_camat||inputRegist.id_camat);
+    // }else{
+    //   return setDataKel([]);
+    // }
+
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 3000);
+  };
 
   useEffect(() => {
     getDataProv();

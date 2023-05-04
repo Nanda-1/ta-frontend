@@ -55,6 +55,7 @@ export default function Auth() {
                 <Route path="/login_otp" exact component={ModalOtp} />
               </UserProvider>
               <Route path="/forgotpwd" exact component={Forgotpwd} />
+              {/* <Route path="/api/reset-password/verify?" exact component={Resetpwd} /> */}
               <Route path="/resetpwd" exact component={Resetpwd} />
               <Route path="/register" exact component={Register} />
               <Route path="/modal" exact component={Modal} />

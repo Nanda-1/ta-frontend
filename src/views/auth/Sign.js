@@ -1,9 +1,6 @@
 import React, { useState, useRef, useContext } from "react";
 import { fabric } from "fabric";
-// import { useHistory } from "react-router";
-// import { FormGroup } from "reactstrap";
 import { RegistContext } from "views/auth/RegistContext";
-import cookies from "js-cookie";
 import swal from "sweetalert";
 
 import { Link } from "react-router-dom";
@@ -12,11 +9,8 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 export default function Sign() {
   var auth = localStorage.getItem("authentication");
   var token = JSON.parse(auth);
-  // const history = useHistory();
-  const { inputRegist, setInputRegist, refreshToken, functions } =
+  const { inputRegist, setInputRegist, refreshToken } =
     useContext(RegistContext);
-
-  const { getTTD } = functions;
 
   //Show Spinner
   // eslint-disable-next-line no-unused-vars
@@ -24,10 +18,17 @@ export default function Sign() {
   //Show Modal
   // eslint-disable-next-line no-unused-vars
   const [showModal, setShowModal] = useState(false);
+  //Disable Button Toggle Gambar
+  const [disableToggle, setDisableToggle] = useState(true);
   //Disable Button Simpan
   const [disable, setDisable] = useState(true);
+  //Disable Button Reset TTE
+  const [disableReset, setDisableReset] = useState(true);
+  //Disable Button Undo TTE
+  const [disableUndo, setDisableUndo] = useState(true);
+  //Disable Canvas
+  const [disableCanvas, setDisableCanvas] = useState(true);
 
-  //** Testing Section **//
   const [isShow, setShow] = React.useState(false);
   const [defaults, setDefaults] = React.useState(true);
 
@@ -40,8 +41,7 @@ export default function Sign() {
     setDisable(true);
   };
 
-  const ref = useRef(null);
-  //ttd image upload
+  /* TTD Image Upload *?
   // const [ttd, setttd] = React.useState({ previewttd: "", rawttd: "" });
 
   // const uploadttdPreview = (e) => {
@@ -76,14 +76,15 @@ export default function Sign() {
   //   }
   // };
 
-  //** Canvas Section **//
+  /** Canvas Section **/
   const [undoSteps, setUndoSteps] = useState({});
   const [undo, setUndo] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
 
   const canvas = new fabric.Canvas(document.getElementById("canvasId"));
-  const canvasRef = useRef(null);
+  // const ref = useRef(null);
   const contextRef = useRef(null);
+  const ref = useRef(null);
   canvas.setDimensions({
     width: ref.current?.clientWidth,
     height: ref.current?.clientHeight + 50,
@@ -188,72 +189,38 @@ export default function Sign() {
     setLoad(true);
     groupthem();
     canvas.isDrawingMode = false;
-
+    setIsDrawing(false);
     var reSign = canvas
       .toDataURL("image/png")
       .replace("img/png", "image/octet-string");
 
-    let specimen_tdtgn_file = "specimen_tdtgn_file";
     const contentType = "image/png";
     var base64result = reSign.substring(reSign.indexOf(",") + 1);
     var str = Buffer.from(base64result);
     const blob = b64toBlob(str, contentType);
     const blobUrl = URL.createObjectURL(blob);
-    canvas.item.lockMovementX = true;
-    canvas.item.lockMovementY = true;
+    // canvas.item.lockMovementX = true;
+    // canvas.item.lockMovementY = true;
 
     var blobs = new Blob([blob], { type: "image/png" });
 
-    let nama = cookies.get("nama");
-    var fileOfBlob = new File([blobs], "ttd_" + nama + ".png");
-    console.log(fileOfBlob);
-    setInputRegist({ ...inputRegist, [specimen_tdtgn_file]: fileOfBlob });
-
-    setLoad(true);
-
-    canvas.on("object:moving", function (e) {
-      var obj = e.target;
-
-      if (
-        obj.currentHeight > obj.canvas.height ||
-        obj.currentWidth > obj.canvas.width
-      ) {
-        return;
-      }
-      obj.setCoords();
-      // top-left  corner
-      if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
-        obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
-        obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
-      }
-      // bot-right corner
-      if (
-        obj.getBoundingRect().top + obj.getBoundingRect().height >
-          obj.canvas.height ||
-        obj.getBoundingRect().left + obj.getBoundingRect().width >
-          obj.canvas.width
-      ) {
-        obj.top = Math.min(
-          obj.top,
-          obj.canvas.height -
-            obj.getBoundingRect().height +
-            obj.top -
-            obj.getBoundingRect().top
-        );
-        obj.left = Math.min(
-          obj.left,
-          obj.canvas.width -
-            obj.getBoundingRect().width +
-            obj.left -
-            obj.getBoundingRect().left
-        );
-      }
-    });
-    setTimeout(() => {
-      sendLengkapiDiri(blobs);
+    let getttd = blobs.size;
+    if (getttd < "2203") {
+      console.log(blobs.size);
+      canvas.isDrawingMode = true;
+      swal({
+        title: "Gagal!",
+        text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
+        icon: "warning",
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } else if (getttd > "2203") {
+      console.log(blobs.size);
       setLoad(true);
-      // sendRegistCA();
-    }, 5000);
+      sendLengkapiDiri(blobs);
+    }
 
     let img = new Image();
     //edited from
@@ -264,7 +231,119 @@ export default function Sign() {
     context.drawImage(img, 0, 0, 100, 100);
   };
 
+  // const saving = () => {
+  //   setLoad(true);
+  //   canvas.isDrawingMode = true;
+  //   groupthem();
+  //   canvas.isDrawingMode = false;
+
+  //   var reSign = canvas
+  //     .toDataURL("image/png")
+  //     .replace("img/png", "image/octet-string");
+
+  //   let specimen_tdtgn_file = "specimen_tdtgn_file";
+  //   const contentType = "image/png";
+  //   var base64result = reSign.substring(reSign.indexOf(",") + 1);
+  //   var str = Buffer.from(base64result);
+  //   const blob = b64toBlob(str, contentType);
+  //   const blobUrl = URL.createObjectURL(blob);
+  //   canvas.item.lockMovementX = true;
+  //   canvas.item.lockMovementY = true;
+
+  //   var blobs = new Blob([blob], { type: "image/png" });
+
+  //   let nama = cookies.get("nama");
+  //   var fileOfBlob = new File([blobs], "ttd_" + nama + ".png");
+  //   console.log(blobs.size);
+  //   setInputRegist({ ...inputRegist, [specimen_tdtgn_file]: fileOfBlob });
+
+  //   // setLoad(true);
+
+  //   canvas.on("object:moving", function (e) {
+  //     var obj = e.target;
+
+  //     if (
+  //       obj.currentHeight > obj.canvas.height ||
+  //       obj.currentWidth > obj.canvas.width
+  //     ) {
+  //       return;
+  //     }
+  //     obj.setCoords();
+  //     // top-left  corner
+  //     if (obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0) {
+  //       obj.top = Math.max(obj.top, obj.top - obj.getBoundingRect().top);
+  //       obj.left = Math.max(obj.left, obj.left - obj.getBoundingRect().left);
+  //     }
+  //     // bot-right corner
+  //     if (
+  //       obj.getBoundingRect().top + obj.getBoundingRect().height >
+  //         obj.canvas.height ||
+  //       obj.getBoundingRect().left + obj.getBoundingRect().width >
+  //         obj.canvas.width
+  //     ) {
+  //       obj.top = Math.min(
+  //         obj.top,
+  //         obj.canvas.height -
+  //           obj.getBoundingRect().height +
+  //           obj.top -
+  //           obj.getBoundingRect().top
+  //       );
+  //       obj.left = Math.min(
+  //         obj.left,
+  //         obj.canvas.width -
+  //           obj.getBoundingRect().width +
+  //           obj.left -
+  //           obj.getBoundingRect().left
+  //       );
+  //     }
+  //   });
+  //   setTimeout(() => {
+  //     setLoad(true);
+  //     sendLengkapiDiri(blobs);
+  //     // let getttd = blobs.size;
+  //     // // let sizeDoc = event.currentTarget.files[0].size;
+  //     // if (getttd < "2203") {
+  //     //   // if (sizeDoc === "1192") {
+  //     //     // setLoad(false);
+  //     //     swal({
+  //     //       title: "Gagal!",
+  //     //       text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
+  //     //       icon: "warning",
+  //     //     });
+  //     //     canvas.isDrawingMode = true;
+  //     //     // setDisable(true);
+  //     //   // }
+  //     // } else if (getttd > "2203") {
+  //     //   sendLengkapiDiri(blobs);
+
+  //     //   // swal({
+  //     //   //   title: "Berhasil!",
+  //     //   //   text: "Done",
+  //     //   //   icon: "success",
+  //     //   // });
+  //     //   // setDisable(false);
+  //     // }else{
+  //     //   swal({
+  //     //     title: "Gagal!",
+  //     //     text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
+  //     //     icon: "warning",
+  //     //   });
+  //     //   canvas.isDrawingMode = true;
+  //     // }
+  //     // sendRegistCA();
+  //   }, 1000);
+  //   // setLoad(false);
+  //   let img = new Image();
+  //   //edited from
+  //   // img.crossOrigin = "anonymous";
+  //   img.src = blobUrl;
+  //   //edited end
+  //   context.fillRect(100, 100, 100, 100);
+  //   context.drawImage(img, 0, 0, 100, 100);
+  // };
+
   //checking signing size
+
   const handleChange = (event) => {
     let typeOfInput = event.target.value;
     let name = event.target.name;
@@ -274,7 +353,7 @@ export default function Sign() {
     let getttd = event.target.files[0];
     let sizeDoc = event.currentTarget.files[0].size;
     if (getttd) {
-      if (sizeDoc === "1192") {
+      if (sizeDoc === "1781") {
         swal({
           title: "Gagal!",
           text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
@@ -282,7 +361,7 @@ export default function Sign() {
         });
         setDisable(true);
       }
-    } else if (sizeDoc > "1192") {
+    } else if (sizeDoc > "1781") {
       swal({
         title: "Berhasil!",
         text: "Done",
@@ -312,17 +391,12 @@ export default function Sign() {
 
   const sendLengkapiDiri = (fileOfBlob) => {
     setLoad(true);
-    // event.preventDefault();
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
     myHeaders.append("Authorization", "Bearer " + token.access_token);
-    // myHeaders.append("Content-Type", "multipart/form-data");
-    
+
     let formdata = new FormData();
-    // formdata.append("uid", cookies.get("uid"));
     formdata.append("file", fileOfBlob);
-    // formdata.append("roles", "ppat");
-    // formdata.append("roles", cookies.get("roles"));
 
     let requestOptions = {
       method: "POST",
@@ -336,8 +410,8 @@ export default function Sign() {
         "api/update-profile/send-speciment",
       requestOptions
     )
-      // .then((res) => res.json())
       .then((response) => {
+        setLoad(false);
         if (response.status === 401) {
           refreshToken();
         } else {
@@ -365,12 +439,16 @@ export default function Sign() {
             setLoad(false);
           }
         } else {
+          setDisable(true);
+          setDisableToggle(false);
+          setDisableReset(false);
+          setDisableUndo(false);
+          setDisableCanvas(false);
           swal({
             title: "Berhasil",
             text: "Spesimen Tanda Tangan Anda Tersimpan",
             icon: "success",
           });
-          // getTTD();
         }
       })
       .catch((error) => {
@@ -379,62 +457,62 @@ export default function Sign() {
       });
   };
 
-  const sendRegistCA = () => {
-    setLoad(true);
-    // event.preventDefault();
+  // const sendRegistCA = () => {
+  //   setLoad(true);
+  //   // event.preventDefault();
 
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
-    myHeaders.append("Content-Type", "application/json");
+  //   let myHeaders = new Headers();
+  //   myHeaders.append("Cookie", "REVEL_FLASH=");
+  //   myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+  //   myHeaders.append("Content-Type", "application/json");
 
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      // headers: { Cookie: "REVEL_FLASH=", "Content-Type": "application/json" },
-      credentials: "same-origin",
-      body: JSON.stringify({
-        email: "nabilah3455@gmail.com",
-        // email: cookies.get("email"),
-      }),
-    };
-    fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/ca/register",
-      requestOptions
-    )
-      .then((res) => {
-        if (res.status === 401) {
-          refreshToken();
-        } else {
-          return res.json();
-        }
-      })
-      .then((res) => {
-        let sukses = res.success;
-        setLoad(false);
-        if (sukses === false) {
-          swal({
-            title: "Gagal!",
-            text: res.error,
-            icon: "error",
-          });
-          setLoad(false);
-        } else if (sukses === true) {
-          console.log(res);
-          swal({
-            title: "Lengkapi Diri Selesai",
-            text:
-              "Pengisian biodata Anda berhasil. Silahkan lanjutkan untuk menunggu proses verifikasi Certificates of Authentication (CA) dan " +
-              res.data,
-            icon: "success",
-          });
-        }
-      })
-      .catch((error) => {
-        setLoad(false);
-        console.log("error", error);
-      });
-  };
+  //   let requestOptions = {
+  //     method: "POST",
+  //     headers: myHeaders,
+  //     // headers: { Cookie: "REVEL_FLASH=", "Content-Type": "application/json" },
+  //     credentials: "same-origin",
+  //     body: JSON.stringify({
+  //       email: "nabilah3455@gmail.com",
+  //       // email: cookies.get("email"),
+  //     }),
+  //   };
+  //   fetch(
+  //     process.env.REACT_APP_BACKEND_HOST + "api/ca/register",
+  //     requestOptions
+  //   )
+  //     .then((res) => {
+  //       if (res.status === 401) {
+  //         refreshToken();
+  //       } else {
+  //         return res.json();
+  //       }
+  //     })
+  //     .then((res) => {
+  //       let sukses = res.success;
+  //       setLoad(false);
+  //       if (sukses === false) {
+  //         swal({
+  //           title: "Gagal!",
+  //           text: res.error,
+  //           icon: "error",
+  //         });
+  //         setLoad(false);
+  //       } else if (sukses === true) {
+  //         console.log(res);
+  //         swal({
+  //           title: "Lengkapi Diri Selesai",
+  //           text:
+  //             "Pengisian biodata Anda berhasil. Silahkan lanjutkan untuk menunggu proses verifikasi Certificates of Authentication (CA) dan " +
+  //             res.data,
+  //           icon: "success",
+  //         });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoad(false);
+  //       console.log("error", error);
+  //     });
+  // };
 
   return (
     <>
@@ -460,8 +538,14 @@ export default function Sign() {
                     <li>
                       <Button
                         label=" Gambar"
-                        onClick={handleToggle}
-                        className="far fa-edit get-started shadow text-white px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 bg-blue-500 active:bg-blue-500 text-xs hover:shadow-lg ease-linear transition-all duration-150 disabled:opacity-button"
+                        className={`${
+                          disableToggle
+                            ? "bg-blue-500 "
+                            : "opacity--d bg-gray-d"
+                        } far fa-edit get-started shadow text-white px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 active:bg-blue-500 text-xs hover:shadow-lg ease-linear transition-all duration-150 disabled:opacity-button`}
+                        onClick={disableToggle ? handleToggle : null}
+                        // onClick={handleToggle}
+                        // className="far fa-edit get-started shadow text-white px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 bg-blue-500 active:bg-blue-500 text-xs hover:shadow-lg ease-linear transition-all duration-150 disabled:opacity-button"
                       />
                     </li>
                   </ul>
@@ -502,8 +586,15 @@ export default function Sign() {
                               <li>
                                 <button
                                   type="button"
-                                  onClick={resetCanvas}
-                                  className="get-started justify-center text-black px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 bg-white active:bg-blue-500 text-xs shadow hover:shadow-lg ease-linear transition-all duration-150"
+                                  className={`${
+                                    disableReset
+                                      ? "bg-white text-black "
+                                      : "opacity--d bg-white text-grey-d "
+                                  }get-started justify-center px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 active:bg-blue-500 text-xs shadow hover:shadow-lg ease-linear transition-all duration-150`}
+                                  onClick={disableReset ? resetCanvas : null}
+
+                                  // onClick={resetCanvas}
+                                  // className="get-started justify-center text-black px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 bg-white active:bg-blue-500 text-xs shadow hover:shadow-lg ease-linear transition-all duration-150"
                                 >
                                   <i className="fas fa-trash"></i>
                                 </button>
@@ -511,8 +602,14 @@ export default function Sign() {
                               <li className="pl-customine text-right">
                                 <button
                                   type="button"
-                                  onClick={undoCanvas}
-                                  className="get-started justify-center text-black px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 bg-white active:bg-blue-500 text-xs shadow hover:shadow-lg ease-linear transition-all duration-150 place-self-end"
+                                  className={`${
+                                    disableUndo
+                                      ? "bg-white text-black "
+                                      : "opacity--d bg-white text-grey-d "
+                                  }get-started justify-center px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 active:bg-blue-500 text-xs shadow hover:shadow-lg ease-linear transition-all duration-150`}
+                                  onClick={disableUndo ? undoCanvas : null}
+                                  // onClick={undoCanvas}
+                                  // className="get-started justify-center text-black px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 bg-white active:bg-blue-500 text-xs shadow hover:shadow-lg ease-linear transition-all duration-150 place-self-end"
                                 >
                                   <i className="fas fa-redo-alt"></i>
                                 </button>
@@ -521,26 +618,43 @@ export default function Sign() {
                           </span>
                         </div>
 
-                        <div className="" ref={ref}>
-                          <label>
-                            <canvas
-                              id="canvasId"
-                              name="canvasId"
-                              onMouseDown={startDrawing}
-                              onMouseUp={finishDrawing}
-                              onMouseMove={draw}
-                              ref={canvasRef}
-                              onChange={handleChange}
-                            ></canvas>
-                          </label>
-                        </div>
+                        {disableCanvas ? (
+                          <div className="" ref={ref}>
+                            <label>
+                              <canvas
+                                id="canvasId"
+                                name="canvasId"
+                                onMouseDown={startDrawing}
+                                onMouseUp={finishDrawing}
+                                onMouseMove={draw}
+                                ref={ref}
+                                onChange={handleChange}
+                              />
+                            </label>
+                          </div>
+                        ) : (
+                          <div>
+                            <label>
+                              <canvas
+                                id="canvasId"
+                                name="canvasId"
+                                // onMouseDown={startDrawing}
+                                // onMouseUp={finishDrawing}
+                                // onMouseMove={draw}
+                                // ref={ref}
+                                // onChange={handleChange}
+                              />
+                            </label>
+                          </div>
+                        )}
                       </div>
                     </span>
                   )}
                 </div>
 
                 <p className="text-center text-sm pt-2 w-auto px-10 mx-auto">
-                  Gambar tanda tangan Anda pada kotak diatas
+                  Gambar tanda tangan Anda pada kotak diatas, <br></br>
+                  Pastikan tanda tangan sudah benar sebelum menyimpan.
                 </p>
               </div>
               <div className="text-center mt-6 w-auto ml-12 mr-12 mx-auto">
@@ -563,7 +677,8 @@ export default function Sign() {
                           {/*header*/}
                           <div className="flex items-start justify-center rounded-t">
                             <h3 className="text-2xl font-semibold text-blue-500 pt-7">
-                              Lengkapi Diri Selesai
+                              {/* Lengkapi Diri Selesai */}
+                              {/* Spesimen Tanda Tangan Anda Tersimpan */}
                             </h3>
                           </div>
                           <img
@@ -577,8 +692,8 @@ export default function Sign() {
                           <p className="mb-8 text-blueGray-500 text-sm text-center">
                             Anda telah selesai melakukan registrasi.
                             <br />
-                            Kami akan memproses verifikasi data Anda selama
-                            60-120 menit.
+                            Kami akan memproses verifikasi data Anda selama 1x24
+                            jam.
                             <br />
                           </p>
                         </div>
@@ -594,10 +709,7 @@ export default function Sign() {
               <div className="w-1/2"></div>
               <div className="w-1/2 text-right">
                 <Link to="/lengkapiDiri/modal3">
-                  <button
-                    // onClick={uploadSK}
-                    className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
-                  >
+                  <button className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150">
                     Lanjutkan
                   </button>
                 </Link>

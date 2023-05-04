@@ -1,10 +1,12 @@
-import React, { /*useContext,*/ useState } from "react";
+import React, { useContext, useState } from "react";
 import swal from "sweetalert";
+import { RegistContext } from "views/auth/RegistContext";
 import { useHistory } from "react-router";
-import cookies from "js-cookie";
 
 export default function Forgotpwd() {
-  const history = useHistory();
+  const history = useHistory()
+  const { refreshToken } = useContext(RegistContext);
+
   const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
@@ -19,6 +21,8 @@ export default function Forgotpwd() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+    var auth = localStorage.getItem("authentication");
+    var token = JSON.parse(auth);
     //eslint-disable-next-line
     // var pattern = new RegExp(/^\s+|\s+$/g, "");
     // var pattern = new RegExp(/^[0-9\b]+$/);
@@ -34,52 +38,44 @@ export default function Forgotpwd() {
       });
 
       return false;
-    } else {
-    }
+    } 
 
-    let myHeaders = new Headers();
-    myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
-    myHeaders.append("Content-Type", "application/json");
-
-    let requestOptions = {
-      method: "POST",
-      credentials: "same-origin",
-      headers: myHeaders,
-      body: JSON.stringify({
-        email: input.email,
-      }),
-      redirect: "follow",
-    };
-
-    await fetch(
-      process.env.REACT_APP_BACKEND_HOST + "/api/users/resetpassword",
-      requestOptions
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH + "api/reset-password/send-email",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token.access_token,
+        },
+        body: JSON.stringify({
+          email: input.email,
+        }),
+      }
     )
-      // console.log(res.status)
-      .then((res) => res.json())
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
       .then((res) => {
-        console.log(res);
-        if (res.data === null) {
-        }
-        if (res.success === false) {
+        setLoading(false);
+        if (res.success) {
           swal({
-            title: "Gagal!",
-            text: "Email Tidak Terdaftar",
-            icon: "warning",
-          });
-        }
-        if (res.success === true) {
-          swal({
-            title: "Sukses!",
-            text: "Cek Email anda, link untuk Reset Password sudah dikirim",
+            title: "Berhasil",
+            text: res.data.message,
             icon: "success",
           });
-          input.email = "";
-          history.push("/login");
+          history.push("/login")
+        } else {
+          swal("Gagal", res.error, "error");
         }
+      })
+      .catch((error) => {
         setLoading(false);
-        return true;
+        console.log("error", error);
       });
   };
   return (
@@ -95,7 +91,7 @@ export default function Forgotpwd() {
         <div className="flex content-center items-center justify-center h-screen">
           <div className="w-full lg:w-4/12 px-1">
             <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded-lg border-0">
-              <div className="rounded-t mb-0 px-6 py-6 ">
+              <div className="rounded-t mb-0 px-6 py-6 bg-white">
                 <div className="text-center text-3xl font-bold text-blue pt-6">
                   Lupa Password
                 </div>
@@ -124,6 +120,7 @@ export default function Forgotpwd() {
                   <div className="text-center mt-6">
                     <input
                       type="submit"
+                      style={{cursor:'pointer'}}
                       value="Kirim Reset Password"
                       className="bg-blue text-white text-sm font-bold py-2 mt-1 text-center rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                     />

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { RegistContext } from "views/auth/RegistContext";
+import { Link } from "react-router-dom";
 
 export default function Ca() {
   // eslint-disable-next-line no-unused-vars
@@ -130,12 +131,13 @@ export default function Ca() {
             <div className="relative flex flex-wrap my-6 w-800-d mx-auto">
               <div className="w-1/2"></div>
               <div className="w-1/2 text-right">
+              <Link to="/lengkapiDiri/modal3">
                 <button
-                  //   onClick={uploadSK}
                   className="get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1 bg-blue-500 active:bg-blue-500 text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                 >
                   Lanjutkan
                 </button>
+              </Link>
               </div>
             </div>
           </div>
