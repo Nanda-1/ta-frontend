@@ -3,7 +3,6 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
 const FormDataDiriU = ({
   changeHandle,
-  changeHandleV,
   inputRegist,
   dataKel,
   dataKec,
@@ -37,7 +36,7 @@ const FormDataDiriU = ({
           id="nama"
           onChange={changeHandle}
           value={object ? object.nama : ""}
-          // required
+          required
         />
       </div>
       <div className="relative flex flex-wrap my-6 w-auto">
@@ -56,6 +55,7 @@ const FormDataDiriU = ({
               value={
                 inputRegist.tempat_lahir || object ? object.tempat_lahir : ""
               }
+              required
             />
           </div>
         </div>
@@ -74,7 +74,7 @@ const FormDataDiriU = ({
               value={
                 inputRegist.tanggal_lahir || object ? object.tanggal_lahir : ""
               }
-              // required
+              required
             />
           </div>
         </div>
@@ -90,6 +90,7 @@ const FormDataDiriU = ({
               onChange={changeHandle}
               name="gender"
               className="bg-white rounded text-sm shadow w-full"
+              required
             >
               <option value="" disabled>
                 Pilih Jenis Kelamin
@@ -109,6 +110,7 @@ const FormDataDiriU = ({
               onChange={changeHandle}
               name="status_nikah"
               className="bg-white rounded text-sm shadow w-full"
+              required
             >
               <option value="" disabled>
                 Pilih Status
@@ -133,7 +135,7 @@ const FormDataDiriU = ({
           placeholder="Alamat Rumah"
           onChange={changeHandle}
           value={inputRegist.alamat || object ? object.alamat : ""}
-          // required
+          required
         />
       </div>
       <div className="relative flex flex-wrap my-6 w-auto">
@@ -147,8 +149,9 @@ const FormDataDiriU = ({
               onChange={changeHandle}
               name="id_prov"
               className="bg-white rounded text-sm shadow w-full"
+              required
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Provinsi
               </option>
               {dataProv.map((item) => {
@@ -171,8 +174,9 @@ const FormDataDiriU = ({
               onChange={changeHandle}
               name="id_kota"
               className="bg-white rounded text-black text-sm shadow w-full"
+              required
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Kota
               </option>
               {dataKota
@@ -203,8 +207,9 @@ const FormDataDiriU = ({
               onChange={changeHandle}
               name="id_camat"
               className="bg-white rounded text-sm shadow w-full"
+              required
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Kecamatan
               </option>
               {dataKec
@@ -233,6 +238,7 @@ const FormDataDiriU = ({
               onChange={changeHandle}
               name="id_lurah"
               className="bg-white rounded text-sm shadow w-full"
+              required
             >
               <option value="" disabled>
                 Pilih Kelurahan
@@ -261,7 +267,7 @@ const FormDataDiriU = ({
             placeholder="RT"
             onChange={changeHandle}
             value={inputRegist.rt || object ? object.rt : ""}
-            // required
+            required
           />
         </div>
         <div className="relative w-auto mb-1 mr-2">
@@ -276,7 +282,7 @@ const FormDataDiriU = ({
             placeholder="RW"
             onChange={changeHandle}
             value={inputRegist.rw || object ? object.rw : ""}
-            // required
+            required
           />
         </div>
         <div className="relative w-auto mb-1 mr-2">
@@ -291,7 +297,7 @@ const FormDataDiriU = ({
             placeholder="Kode Pos"
             onChange={changeHandle}
             value={inputRegist.kodepos || object ? object.kodepos : ""}
-            // required
+            required
           />
         </div>
       </div>
@@ -307,7 +313,7 @@ const FormDataDiriU = ({
           placeholder="Nomor Induk Kependudukan"
           onChange={changeHandle}
           value={inputRegist.no_nik || object ? object.no_nik : ""}
-          // required
+          required
         />
       </div>
       <div className="relative w-full mb-1">
@@ -322,7 +328,7 @@ const FormDataDiriU = ({
           placeholder="Nomor Pokok Wajib Pajak"
           onChange={changeHandle}
           value={inputRegist.no_npwp || object ? object.no_npwp : ""}
-          // required
+          required
         />
       </div>
     </div>

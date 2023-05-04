@@ -127,6 +127,10 @@ input[type="checkbox"][id^="myCheckbox"] {
 .group:hover .group-hover\:text-blue-800-d {
   color: #9fb9e0;
 }
+
+.text-grey-d {
+  color: #abafb6;
+}
 /** checkbox untuk form Syarat & Ketentuan **/
 
 /* input[type="number"] {
@@ -271,10 +275,10 @@ input[type="number"]::-webkit-outer-spin-button {
 /** OTP css**/
 
 /* React-PDF css */
-.react-pdf__Page__canvas {
+.bebas .react-pdf__Page__canvas {
   height: 100% !important;
   width: 100% !important;
-  /* object-fit: fill; */
+  /* object-fit: fill;
 }
 
 .Example__container {
@@ -632,7 +636,7 @@ i-d {
 }
 
 .h-face-d {
-  height: 18rem;
+  height: 14rem;
 }
 
 .h-reg {

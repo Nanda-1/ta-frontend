@@ -27,15 +27,11 @@ const Step3 = (props) => {
     setImagess(imageSrc);
 
     //convert base64 to image/jpg
-    // let self_photo = "self_photo";
     const contentType = "image/jpg";
     var base64result = imageSrc.substring(imageSrc.indexOf(",") + 1);
     var str = Buffer.from(base64result);
     const blob = b64toBlob(str, contentType);
-    // var blobs = new Blob([blob], {
-    //   type: "application/json",
-    // });
-    var blobs = new Blob([blob], { type: "image/png" });
+    var blobs = new Blob([blob], { type: "image/jpg" });
     setInputRegist({ ...inputRegist, selfie_photo: imageSrc });
     ppatFile("selfie_photo", blobs)
   };
@@ -179,7 +175,6 @@ const Step3 = (props) => {
                   ref={webcamRef}
                   screenshotFormat="image/jpg"
                   videoConstraints={videoConstraints}
-                  // width={1280}
                   name="Webcam"
                   id="Webcam"
                   className="mb-2 ml-0-d"

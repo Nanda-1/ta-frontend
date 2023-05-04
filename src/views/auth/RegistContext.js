@@ -160,8 +160,15 @@ export const RegistProvider = (props) => {
           no_sk: dataDiri.no_sk_pengangkatan,
           sk_date: tanggalan,
           ppat_name: dataDiri.ppat_name,
-          ppat_address: dataDiri.ppat_alamat,
-          ppat_district_id: dataDiri.ppat_kotkab,
+          ppat_address:
+            dataDiri.ppat_alamat +
+            ", Rukun Tetangga " +
+            dataDiri.ppat_rt +
+            ", Rukun Warga " +
+            dataDiri.ppat_rw +
+            ", Kode Pos " +
+            dataDiri.ppat_kodepos,
+          ppat_district_id: dataDiri.ppat_kecamatan,
         }),
       }
     )
@@ -305,15 +312,20 @@ export const RegistProvider = (props) => {
         }
       })
       .then((response) => {
-        setDataKec(response.data)
+        setDataKec(response.data);
       })
       .catch((error) => console.log("error", error));
   };
 
   const getDataKel = (district_id) => {
-    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/loc/kelurahan?district_id="+ district_id, {
-      method: "GET",
-    })
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/loc/kelurahan?district_id=" +
+        district_id,
+      {
+        method: "GET",
+      }
+    )
       .then((res) => {
         if (res.status === 401) {
           refreshToken();
@@ -322,7 +334,7 @@ export const RegistProvider = (props) => {
         }
       })
       .then((response) => {
-        setDataKel(response.data)
+        setDataKel(response.data);
       })
       .catch((error) => console.log("error", error));
   };
@@ -334,7 +346,6 @@ export const RegistProvider = (props) => {
     });
     setdataCityFilter1(filterData);
   };
-  // console.log(dataCityFilter);
 
   const getDistrictFilter1 = (id_kota) => {
     let id = Number(id_kota);
@@ -343,7 +354,6 @@ export const RegistProvider = (props) => {
     });
     setdataDistrictFilter1(filterData);
   };
-  // console.log(dataDistrictFilter);
 
   const getLurahFilter1 = (id_camat) => {
     let id = Number(id_camat);
@@ -360,7 +370,6 @@ export const RegistProvider = (props) => {
     });
     setdataCityFilter(filterData);
   };
-  // console.log(dataCityFilter);
 
   const getDistrictFilter = (ppat_kotkab) => {
     let id = Number(ppat_kotkab);
@@ -369,7 +378,6 @@ export const RegistProvider = (props) => {
     });
     setdataDistrictFilter(filterData);
   };
-  // console.log(dataDistrictFilter);
 
   const getLurahFilter = (ppat_kecamatan) => {
     let id = Number(ppat_kecamatan);
@@ -378,6 +386,7 @@ export const RegistProvider = (props) => {
     });
     setdataLurahFilter(filterData);
   };
+
   const all = {
     getDataProv,
     getDataKota,
@@ -462,7 +471,14 @@ export const RegistProvider = (props) => {
         date_of_birth: tanggalan,
         gender: dataDiri.gender,
         marriage_status: dataDiri.status_nikah,
-        address: dataDiri.alamat + ", Rukun Tetangga " + dataDiri.rt + ", Rukun Warga " + dataDiri.rw + ", Kelurahan " + dataDiri.id_lurah,
+        address:
+          dataDiri.alamat +
+          ", Rukun Tetangga " +
+          dataDiri.rt +
+          ", Rukun Warga " +
+          dataDiri.rw +
+          ", Kelurahan " +
+          dataDiri.id_lurah,
         province_id: dataDiri.id_prov,
         city_id: dataDiri.id_kota,
         district_id: dataDiri.id_camat,
@@ -502,8 +518,10 @@ export const RegistProvider = (props) => {
   };
 
   const sendLengkapiDiriPPAT = () => {
-    var dates = dataDiri.tanggal_lahir;
-
+    if (val) {
+      var dates = dataDiri.tanggal_lahir || "mm/dd/yyyy";
+    }
+    
     function padTo2Digits(num) {
       return num.toString().padStart(2, "0");
     }
@@ -530,7 +548,14 @@ export const RegistProvider = (props) => {
         date_of_birth: tanggalan,
         gender: dataDiri.gender,
         marriage_status: dataDiri.status_nikah,
-        address: dataDiri.alamat,
+        address:
+          dataDiri.alamat +
+          ", Rukun Tetangga " +
+          dataDiri.rt +
+          ", Rukun Warga " +
+          dataDiri.rw +
+          ", Kelurahan " +
+          dataDiri.id_lurah,
         province_id: dataDiri.id_prov,
         city_id: dataDiri.id_kota,
         district_id: dataDiri.id_camat,
@@ -567,6 +592,7 @@ export const RegistProvider = (props) => {
           });
         }
       });
+    ppatDetail();
   };
 
   const sendMailLengkapiDiri = async () => {

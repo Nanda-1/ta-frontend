@@ -19,8 +19,7 @@ class Modal2 extends Component {
       seconds: 60,
       numInputs: 6,
       separator: "-",
-      isdisable: false,
-      isdisabled: true,
+      isdisabled: false,
       hasErrored: false,
       isInputNum: true,
       isInputSecure: false,
@@ -51,7 +50,7 @@ class Modal2 extends Component {
   };
 
   clearOtp = () => {
-    this.setState({ otp: "" });
+    this.setState({ otp: " " });
   };
 
   handleOtpChange = (otp) => {
@@ -195,7 +194,7 @@ class Modal2 extends Component {
                 </div>
                 <div className="btn-row mx-auto text-center">
                   <button
-                    className="bg-blue-500 text-white active:bg-emerald-600
+                    className="bg-blue-500 text-white active:bg-blue-600
                     text-sm px-4 py-2 mr-1 my-6 w-24 rounded-xl shadow
                     hover:shadow-lg outline-none focus:outline-none ease-linear
                     transition-all duration-150"
@@ -206,7 +205,7 @@ class Modal2 extends Component {
                     Hapus
                   </button>
                   <button
-                    className="bg-blue-500 text-white active:bg-emerald-600
+                    className="bg-blue-500 text-white active:bg-blue-600
                     text-sm px-4 py-2 mr-1 my-6 w-24 rounded-xl shadow
                     hover:shadow-lg outline-none focus:outline-none ease-linear
                     transition-all duration-150"

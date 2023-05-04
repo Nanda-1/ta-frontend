@@ -29,35 +29,42 @@ const PreviewFile = ({ file }) => {
 
   return (
     <>
-      <button
-        type="button"
-        disabled={pageNumber <= 1}
-        onClick={previousPage}
-        className={`rounded-md text-grey px-2 py-1 ${
-          pageNumber === 1
-            ? "bg-darkgray"
-            : "bg-white text-black px-2 py-1 border-black"
-        }`}
-      >
-        Sebelumnya
-      </button>
-      <p className="text-black px-3 py-1 font-semibold">
-        Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-      </p>
-      <button
-        type="button"
-        disabled={pageNumber >= numPages}
-        onClick={nextPage}
-        className={`rounded-md text-grey px-2 py-1 ${
-          pageNumber === numPages
-            ? "bg-darkgray"
-            : "bg-white text-black px-2 py-1 border-black"
-        }`}
-      >
-        Selanjutnya
-      </button>
+      <>
+        <div className="relative flex flex-wrap my-6 w-auto mx-auto">
+          <div className="relative flex mb-1 mx-auto">
+          <button
+            type="button"
+            disabled={pageNumber <= 1}
+            onClick={previousPage}
+            className={`rounded-md text-grey text-xs px-1 py-1 ${
+              pageNumber === 1
+                ? "bg-darkgray"
+                : "bg-white text-black px-1 py-1 border-grey"
+            }`}
+          >
+            Sebelumnya
+          </button>
+          <p className="text-black text-xs px-1 py-1 font-semibold">
+          {"  "} {pageNumber || (numPages ? 1 : "--")} / {"  "}
+            {numPages || "--"} {"  "}
+          </p>
+          <button
+            type="button"
+            disabled={pageNumber >= numPages}
+            onClick={nextPage}
+            className={`rounded-md text-grey text-xs px-1 py-1 ${
+              pageNumber === numPages
+                ? "bg-darkgray"
+                : "bg-white text-black px-1 py-1 border-grey"
+            }`}
+          >
+            Selanjutnya
+          </button>
+          </div>
+        </div>
+      </>
       <Document
-        className="react-pdf__Page__canvas"
+        className="react-pdf__Page__canvas border-grey"
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
       >

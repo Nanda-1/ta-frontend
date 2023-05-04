@@ -36,7 +36,7 @@ const FormDataDiri = ({
           id="nama"
           onChange={changeHandle}
           value={object ? object.nama : ""}
-          // required
+          required
         />
       </div>
       <div className="relative flex flex-wrap my-6 w-auto">
@@ -55,6 +55,7 @@ const FormDataDiri = ({
               value={
                 inputRegist.tempat_lahir || object ? object.tempat_lahir : ""
               }
+              required
             />
           </div>
         </div>
@@ -73,7 +74,7 @@ const FormDataDiri = ({
               value={
                 inputRegist.tanggal_lahir || object ? object.tanggal_lahir : ""
               }
-              // required
+              required
             />
           </div>
         </div>
@@ -88,9 +89,10 @@ const FormDataDiri = ({
               value={object ? object.gender : ""}
               onChange={changeHandle}
               name="gender"
+              required
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Jenis Kelamin
               </option>
               <option value="M">Laki-laki</option>
@@ -107,9 +109,10 @@ const FormDataDiri = ({
               value={object ? object.status_nikah : ""}
               onChange={changeHandle}
               name="status_nikah"
+              required
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Status
               </option>
               <option value="Belum Menikah">Belum Menikah</option>
@@ -132,7 +135,7 @@ const FormDataDiri = ({
           placeholder="Alamat Rumah"
           onChange={changeHandle}
           value={inputRegist.alamat || object ? object.alamat : ""}
-          // required
+          required
         />
       </div>
       <div className="relative flex flex-wrap my-6 w-auto">
@@ -145,9 +148,10 @@ const FormDataDiri = ({
               value={object ? object.id_prov : ""}
               onChange={changeHandle}
               name="id_prov"
+              required
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Provinsi
               </option>
               {dataProv.map((item) => {
@@ -169,9 +173,10 @@ const FormDataDiri = ({
               value={object ? object.id_kota : ""}
               onChange={changeHandle}
               name="id_kota"
+              required
               className="bg-white rounded text-black text-sm shadow w-full"
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Kota
               </option>
               {dataKota
@@ -201,9 +206,10 @@ const FormDataDiri = ({
               value={object ? object.id_camat : ""}
               onChange={changeHandle}
               name="id_camat"
+              required
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Kecamatan
               </option>
               {dataKec
@@ -232,15 +238,15 @@ const FormDataDiri = ({
               value={object ? object.id_lurah : ""}
               onChange={changeHandle}
               name="id_lurah"
+              required
               className="bg-white rounded text-sm shadow w-full"
             >
-              <option value="" disabled>
+              <option value="">
                 Pilih Kelurahan
               </option>
-              {dataKel
-                .map((item) => {
+              {dataKel?.map((item) => {
                   return (
-                    <option value={item.id} key={item.id}>
+                    <option value={item.name} key={item.id}>
                       {item.nama}
                     </option>
                   );
@@ -262,7 +268,7 @@ const FormDataDiri = ({
             placeholder="RT"
             onChange={changeHandle}
             value={inputRegist.rt || object ? object.rt : ""}
-            // required
+            required
           />
         </div>
         <div className="relative w-auto mb-1 mr-2">
@@ -277,7 +283,7 @@ const FormDataDiri = ({
             placeholder="RW"
             onChange={changeHandle}
             value={inputRegist.rw || object ? object.rw : ""}
-            // required
+            required
           />
         </div>
         <div className="relative w-auto mb-1 mr-2">
@@ -292,7 +298,7 @@ const FormDataDiri = ({
             placeholder="Kode Pos"
             onChange={changeHandle}
             value={inputRegist.kodepos || object ? object.kodepos : ""}
-            // required
+            required
           />
         </div>
       </div>
@@ -308,7 +314,7 @@ const FormDataDiri = ({
           placeholder="Nomor Induk Kependudukan"
           onChange={changeHandle}
           value={inputRegist.no_nik || object ? object.no_nik : ""}
-          // required
+          required
         />
       </div>
       <div className="relative w-full mb-1">
@@ -323,7 +329,7 @@ const FormDataDiri = ({
           placeholder="Nomor Pokok Wajib Pajak"
           onChange={changeHandle}
           value={inputRegist.no_npwp || object ? object.no_npwp : ""}
-          // required
+          required
         />
       </div>
     </div>

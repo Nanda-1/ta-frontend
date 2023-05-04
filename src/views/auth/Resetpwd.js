@@ -1,27 +1,41 @@
-import React, { /*useContext,*/ useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import swal from "sweetalert";
-import { useHistory } from "react-router";
+import { RegistContext } from "views/auth/RegistContext";
+import { useHistory, useLocation } from "react-router";
 import cookies from "js-cookie";
+import queryString from "query-string";
+
 export default function Resetpwd() {
   const history = useHistory();
+  const location = useLocation();
+
+  var auth = localStorage.getItem("authentication");
+  var tokenn = JSON.parse(auth);
+
+  const { email, reset_code } = queryString.parse(location.search);
+
+  const { refreshToken } = useContext(RegistContext);
 
   const [loading, setLoading] = useState(false);
-
   const [passwordShown, setPasswordShown] = useState(false);
+
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
+
   //show/hide repassword
   const [repasswordShown, setrePasswordShown] = useState(false);
   const togglerePassword = () => {
     setrePasswordShown(!repasswordShown);
   };
+
   const [values, setValues] = useState({
     password: "",
-    confirmPassword: "",
+    newPassword: "",
     email: "",
     token: "",
   });
+
   const handleChange = (event) => {
     let typeOfInput = event.target.value;
     let name = event.target.name;
@@ -29,49 +43,47 @@ export default function Resetpwd() {
     setValues({ ...values, [name]: typeOfInput });
   };
 
-  useEffect(() => {
-    const checkToken = async () => {
-      const query = new URLSearchParams(window.location.search);
-      const imel = query.get("u");
-      const token = query.get("n");
+  const checkToken = async () => {
+    let myHeaders = new Headers();
+    myHeaders.append("Cookie", "REVEL_FLASH=");
+    myHeaders.append("Authorization", "Bearer " + tokenn.access_token);
 
-      //console.log("api called");
-      setLoading(true);
-      let myHeaders = new Headers();
-      myHeaders.append("Cookie", "REVEL_FLASH=");
-      myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
-      myHeaders.append("Content-Type", "application/json");
-
-      fetch(process.env.REACT_APP_BACKEND_HOST + "/api/users/cekresetcode", {
-        method: "POST",
-        headers: myHeaders,
-        credentials: "same-origin",
-        body: JSON.stringify({
-          email: imel,
-          reset_code: token,
-        }),
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_AUTH +
+        "api/reset-password/verify?email=" +
+        email +
+        "&reset_code=" +
+        reset_code,
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
       })
-        .then((res) => res.json())
-        .then((res) => {
-          //console.log(res)
-          setLoading(false);
-          if (res.data === null) {
-          }
-          if (res.success === false) {
-            swal({
-              title: "Gagal!",
-              text: "Reset Password Token tidak valid",
-              icon: "warning",
-            });
-            history.push("/login");
-          }
-        });
-    };
+      .then((res) => {
+        setLoading(false);
+        if (res.success === false) {
+          swal("Gagal", res.error, "error");
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log("error", error);
+      });
+  };
+
+  useEffect(() => {
     checkToken();
-  }, [history]);
+  });
+
   const [errors, setErrors] = useState({
     password: [],
-    confirmPassword: [],
+    newPassword: [],
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
@@ -95,31 +107,26 @@ export default function Resetpwd() {
     // }
     return arr;
   };
+
   const validates = () => {
     const errors = {
       password: [],
-      confirmPassword: [],
+      newPassword: [],
     };
 
     errors.password = validatePassword(values.password);
-    if (values.password !== values.confirmPassword) {
-      errors.confirmPassword.push("Kata sandi tidak sama");
+    if (values.password !== values.newPassword) {
+      errors.newPassword.push("Kata sandi tidak sama");
     }
     setErrors({ ...errors });
 
-    return errors.password.length || errors.confirmPassword.length
+    return errors.password.length || errors.newPassword.length
       ? false
       : true;
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("submit clicked");
-    const query = new URLSearchParams(window.location.search);
-    const imel = query.get("u");
-    const token = query.get("n");
-    // let pass = values.password;
-    // let confpass = values.confirmPassword;
-    //console.log(imel + pass + confpass);
     setLoading(true);
     if (validates()) {
       setIsFormValid(true);
@@ -129,33 +136,35 @@ export default function Resetpwd() {
 
     let myHeaders = new Headers();
     myHeaders.append("Cookie", "REVEL_FLASH=");
-    myHeaders.append("Authorization", "Bearer " + cookies.get("token"));
+    myHeaders.append("Authorization", "Bearer " + tokenn.access_token);
     myHeaders.append("Content-Type", "application/json");
 
     if (isFormValid === true) {
       await fetch(
-        process.env.REACT_APP_BACKEND_HOST + "/api/users/password/update",
+        process.env.REACT_APP_BACKEND_HOST_AUTH + "/api/reset-password",
         {
           method: "POST",
           headers: myHeaders,
           credentials: "same-origin",
           body: JSON.stringify({
-            email: imel,
-            password: values.password,
-            reset_code: token,
+            email: email,
+            new_password: values.password,
+            reset_code: reset_code,
           }),
         }
       )
-        // console.log(res.status)
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          if (res.data === null) {
+        .then((response) => {
+          if (response.status === 401) {
+            refreshToken();
+          } else {
+            return response.json();
           }
+        })
+        .then((res) => {
           if (res.success === false) {
             swal({
               title: "Gagal!",
-              text: "Email Tidak Terdaftar",
+              text: res.error,
               icon: "warning",
             });
           }
@@ -183,10 +192,10 @@ export default function Resetpwd() {
         </>
       ) : null}
       <div className="container mx-auto h-screen">
-        <div className="flex content-center items-center justify-center">
+        <div className="flex content-center items-center justify-center h-screen">
           <div className="w-full lg:w-4/12 px-1">
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">
-              <div className="rounded-t mb-0 px-6 py-6 ">
+              <div className="rounded-t mb-0 px-6 py-6 bg-white">
                 <div className="text-center text-3xl font-bold text-blue pt-6">
                   Reset Untuk Lupa Password
                 </div>
@@ -246,21 +255,21 @@ export default function Resetpwd() {
                   <div className="form-group relative w-full mb-3">
                     <label
                       className="block text-blueGray-600 text-xs font-bold mb-1 border-0"
-                      htmlFor="confirm-password"
+                      htmlFor="new-password"
                     >
                       Ketik Ulang Kata Sandi
                     </label>
                     <input
-                      name="confirmPassword"
+                      name="newPassword"
                       type={repasswordShown ? "text" : "password"}
                       placeholder="Ketik Ulang Kata Sandi"
                       className={
-                        errors.confirmPassword.length
+                        errors.newPassword.length
                           ? "form-control is-invalid border-0 px-2 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           : "form-control border-0 px-2 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       }
-                      id="confirm-password"
-                      value={values.confirmPassword}
+                      id="new-password"
+                      value={values.newPassword}
                       onChange={handleChange}
                     />
                     <button
@@ -274,7 +283,7 @@ export default function Resetpwd() {
                         }
                       ></i>
                     </button>
-                    {errors.confirmPassword.map((error, index) => (
+                    {errors.newPassword.map((error, index) => (
                       <div
                         className="invalid-feedback text-xs text-red-500 mt-0"
                         key={index}
@@ -286,6 +295,7 @@ export default function Resetpwd() {
                   <div className="text-center mt-6">
                     <input
                       type="submit"
+                      style={{ cursor: "pointer" }}
                       value="Kirim Reset Password"
                       className="bg-blue text-white text-sm font-bold py-2 mt-1 text-center rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                     />

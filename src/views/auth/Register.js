@@ -8,6 +8,9 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 export default function Register() {
   //Show Error
   const [errorEmail, setErrorEmail] = useState(false);
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
 
   //Show Spinner
   const [load, setLoad] = useState(false);
@@ -31,6 +34,13 @@ export default function Register() {
   const { regist, setRegist, setStatus, apiRegist } = useContext(RegistContext);
 
   const changeHandle = (e) => {
+    if (!isValidEmail(e.target.value)) {
+      setErrorEmail("Email tidak valid");
+    } else {
+      setErrorEmail(null);
+    }
+
+    // setEmail(e.target.value);
     let isian = e.target.value;
     let formIsian = e.target.name;
     setRegist({ ...regist, [formIsian]: isian });
@@ -164,7 +174,7 @@ export default function Register() {
       } else {
         swal({
           title: "Perhatian",
-          text: "Pastikan Anda mengisikan alamat email dan nomor handphone dengan baik dan benar. Karena data tersebut tidak dapat diubah dan akan digunakan sebgai alat autentikasi tanda tangan digital Anda.",
+          text: "Pastikan Anda mengisikan alamat email dan nomor handphone dengan baik dan benar. Karena data tersebut tidak dapat diubah dan akan digunakan sebagai alat autentikasi tanda tangan digital Anda.",
           icon: "warning",
           buttons: true,
           dangerMode: true,
@@ -285,10 +295,7 @@ export default function Register() {
                 <form onSubmit={addRegistAPI}>
                   {" "}
                   <div className="relative w-full mb-3 mt-3">
-                    <label
-                      className="block text-blueGray-600 text-xs font-bold mb-1"
-                      htmlFor="grid-password"
-                    >
+                    <label className="block text-blueGray-600 text-xs font-bold mb-1">
                       E-Mail
                     </label>
                     <input
