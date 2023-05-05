@@ -76,7 +76,7 @@ export default function TopUp() {
       <hr className="my-3 mx-auto topup-line" />
       <ListProduk />
       <div className="mt-8 text-xl font-bold">Riwayat Top Up</div>
-      <div className="card-shadow border-grey-3 w-9/12 rounded-lg my-4">
+      <div className="card-shadow border-grey-3 w-9/12 rounded-lg my-4 z-40">
         <table className="items-center w-full overflow-x-auto">
           <thead>
             <tr>
@@ -157,7 +157,7 @@ export default function TopUp() {
                             </span>
                           )}
                         </td>
-                        <td className="px-6 text-left text-xs p-3 border border-l-0 border-r-0 border-t-0">
+                        <td className="px-6 text-left text-xs p-3 border border-l-0 border-r-0 border-t-0 z-40">
                           <button
                             className="bg-blue text-white text-md px-4 py-2 rounded-lg"
                             onClick={() => detailBtn(el.top_up_transaction_id)}

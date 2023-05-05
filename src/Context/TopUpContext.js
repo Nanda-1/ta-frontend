@@ -196,6 +196,7 @@ export const TopUpProvider = (props) => {
         }
       })
       .then((result) => {
+        setLoadingFile(false);
         if (!result.success) {
           swal("Gagal", result.error, "error");
         } else {

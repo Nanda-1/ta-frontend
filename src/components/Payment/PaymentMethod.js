@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import PaymentList from "./PaymentList";
+import LoadingDoc from "components/Modals/LoadingDoc";
 
 export default function PaymentMethod({ midtrans, checkout, setOtherPayment }) {
+  const [loading, setLoading] = useState(true);
+
+  setTimeout(() => {
+    setLoading(false)
+  }, 3000)
+
   const hurufKapital = (str) => {
     if (str) {
       if (str === "bank_transfer") {
@@ -35,7 +42,8 @@ export default function PaymentMethod({ midtrans, checkout, setOtherPayment }) {
 
   return (
     <>
-      {midtrans === null ? (
+      {loading ? <LoadingDoc /> :
+      !midtrans ? (
         <>
           <div className="flex w-full justify-between">
             <h2 className="font-bold font-700 text-black">Metode Pembayaran</h2>
@@ -99,6 +107,7 @@ export default function PaymentMethod({ midtrans, checkout, setOtherPayment }) {
           </div>
         </>
       )}
+
     </>
   );
 }

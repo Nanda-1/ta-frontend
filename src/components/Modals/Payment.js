@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TopUpContext } from "Context/TopUpContext";
 import Cookies from "js-cookie";
 import PaymentMethod from "components/Payment/PaymentMethod";
 import Secure from "../../assets/img/security.png";
-import PaymentList from "components/Payment/PaymentList";
 import OtherPayment from "components/Payment/OtherPayment";
+import ModalDokumen from "./ModalDokumen";
 
 export default function Payment() {
   const {
@@ -19,9 +19,11 @@ export default function Payment() {
     listPayment,
     otherPayment,
     setOtherPayment,
+    setLoadingFile,
+    loadingFile,
   } = useContext(TopUpContext);
 
-  const { topUpDetail } = functions;
+  const { topUpDetail, topUpPay } = functions;
 
   const listHarga = [...produkSatuan, ...listPaketQuota];
 
@@ -53,15 +55,20 @@ export default function Payment() {
       return formatHarga(filter.map((el) => el.price));
     } else {
       const filter = listHarga.filter((el) =>
-        nama_produk.toLowerCase().includes("e-meterai")
+        nama_produk.toLowerCase().includes("meterai")
           ? el.product_name === "emeterai"
-          : nama_produk.toLowerCase().includes("e-form")
+          : nama_produk.toLowerCase().includes("form")
           ? el.product_name === "eform"
           : el.product_name === "ttd"
       );
       const quota = nama_produk.split("")[0] + nama_produk.split("")[1];
       return formatHarga(filter.map((el) => el.product_price * Number(quota)));
     }
+  };
+
+  const payTransaction = () => {
+    topUpPay(checkout.top_up_transaction_id);
+    setLoadingFile(true);
   };
 
   return (
@@ -75,6 +82,7 @@ export default function Payment() {
                 className="border-0 rounded-lg shadow-lg relative flex flex-col w-700-d bg-white outline-none focus:outline-none"
                 style={{ filter: otherPayment ? "brightness(0.9)" : "" }}
               >
+                {loadingFile && <ModalDokumen />}
                 {/*body*/}
                 <div className="px-4">
                   <div className="flex ">
@@ -89,7 +97,8 @@ export default function Payment() {
                       Pembayaran
                     </h2>
                   </div>
-                  {checkout.payment_status !== "success" ? (
+                  {checkout.payment_status !== "success" &&
+                  checkout.payment_status !== "failure" ? (
                     <>
                       <PaymentMethod
                         midtrans={midtrans}
@@ -158,18 +167,20 @@ export default function Payment() {
                           )}
                     </label>
                   </div>
-                  <button
-                    className="bg-blue text-white flex rounded-lg px-8 py-2 text-sm"
-                    style={{ alignSelf: "center" }}
-                  >
-                    <img
-                      src={Secure}
-                      style={{ width: "22px", height: "20px" }}
-                      className="mr-2"
-                    />
-                    Bayar
-                  </button>
-                  {/* </div> */}
+                  {checkout.payment_status === null && (
+                    <button
+                      className="bg-blue text-white flex rounded-lg px-8 py-2 text-sm"
+                      style={{ alignSelf: "center" }}
+                      onClick={payTransaction}
+                    >
+                      <img
+                        src={Secure}
+                        style={{ width: "22px", height: "20px" }}
+                        className="mr-2"
+                      />
+                      Bayar
+                    </button>
+                  )}
                 </div>
               </div>
               {otherPayment && (

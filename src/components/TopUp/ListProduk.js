@@ -51,7 +51,7 @@ export default function ListProduk() {
                 {formatHarga(total.pajak + total.harga)}
               </span>
             </div>
-            <div className="text-xs text-grey mt-6">
+            <div className="text-xs text-grey mt-6 justify-self-end">
               Dengan ini, Anda setuju bahwa semua data yang berhubungan dengan
               order Anda akan diproses oleh saluran pembayaran.
             </div>

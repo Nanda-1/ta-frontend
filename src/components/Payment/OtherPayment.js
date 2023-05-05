@@ -8,16 +8,11 @@ export default function OtherPayment() {
   const { setListPayment, listPayment, setOtherPayment } =
     useContext(TopUpContext);
 
-  // const { topUpPay } = functions;
-
   const handleButton = (type) => {
     let text1 = "payment_type";
     setListPayment({ [text1]: type });
   };
 
-  // if (listPayment.length !== 0) {
-  //   topUpPay(checkout.top_up_transaction_id, "");
-  // }
   return (
     <div className="font-roboto z-50 font-bold text-black">
       <div className="flex mb-2">
@@ -78,7 +73,10 @@ export default function OtherPayment() {
       </button>
 
       <div className="mt-6 border-t">
-        <button className="bg-blue my-4 py-2 w-full text-white rounded-md">
+        <button
+          className="bg-blue my-4 py-2 w-full text-white rounded-md"
+          onClick={() => setOtherPayment(false)}
+        >
           Pilih Metode Pembayaran
         </button>
       </div>
