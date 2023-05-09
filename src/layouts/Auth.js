@@ -15,6 +15,8 @@ import SyaratKetentuan from "views/auth/SyaratKetentuan";
 import Modal from "views/auth/Modal";
 //verif success
 import ModalVerif from "views/auth/ModalVerif";
+//terverifikasi
+import VerifiyEmail from "views/auth/VerifyEmail";
 //otp
 import Modal2 from "views/auth/Modal2";
 import ModalOtp from "views/auth/ModalOtp";
@@ -57,8 +59,8 @@ export default function Auth() {
                 <Route path="/login_otp" exact component={ModalOtp} />
               </UserProvider>
               <Route path="/forgotpwd" exact component={Forgotpwd} />
-              {/* <Route path="/api/reset-password/verify?" exact component={Resetpwd} /> */}
               <Route path="/resetpwd" exact component={Resetpwd} />
+              <Route path="/verify-email" exact component={VerifiyEmail} />
               <Route path="/register" exact component={Register} />
               <Route path="/modal" exact component={Modal} />
               <Route

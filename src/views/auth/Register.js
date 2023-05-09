@@ -141,7 +141,7 @@ export default function Register() {
           icon: "warning",
         });
         setIsFormValid(false);
-      } else if (regist["phone"].length !== 12) {
+      } else if (regist["phone"].length < 10) {
         swal({
           title: "Gagal!",
           text: "No. Handphone Salah",
@@ -164,13 +164,13 @@ export default function Register() {
     setLoad(false);
 
     if (isFormValid === true) {
-      if (regist["phone"].length !== 12) {
+      if (regist["phone"].length >= 12) {
+        setIsFormValid(false);
         swal({
           title: "Gagal!",
           text: "No. Handphone tidak valid",
           icon: "warning",
         });
-        setIsFormValid(false);
       } else {
         swal({
           title: "Perhatian",
