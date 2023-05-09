@@ -36,7 +36,7 @@ export default function RiwayatPemohon() {
   }, []);
 
   const currentDoc = (id, statusDoc, typeDoc) => {
-    Cookies.set("transaction_id", id, { expires: 1 });
+    // Cookies.set("transaction_id", id, { expires: 1 });
     let url = "";
 
     if (typeDoc === "akta_jual_beli") {
@@ -47,34 +47,34 @@ export default function RiwayatPemohon() {
 
     if (statusDoc === "draft") {
       Cookies.set("step", "input_data_penjual");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "pihak_pertama") {
       Cookies.set("step", "input_data_pembeli");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "add_data") {
       Cookies.set("step", "input_data_pembeli");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "pihak_kedua") {
       Cookies.set("step", "dokumen");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "submit_dokumen") {
       Cookies.set("step", "stamping");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "stamp_emeterai") {
-      Cookies.set("transaction_id", id);
+      // Cookies.set("transaction_id", id);
       Cookies.set("step", "stamping");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "sign_ttd") {
-      history.push("/ruang_virtual=testing");
+      history.push("/ruang_virtual=testin&&id=" + id);
     } else if (statusDoc === "generate_document") {
-      Cookies.set("transaction_id", id);
+      // Cookies.set("transaction_id", id);
       if (typeDoc === "akta_jual_beli") {
         Cookies.set("step", "dokumen");
 
-        history.push("/admin/" + url);
+        history.push("/admin/" + url + "=" + id);
       } else if (typeDoc === "akta_pemberian_hak_tanggunan") {
         Cookies.set("step", "dokumen");
-        history.push("/admin/" + url);
+        history.push("/admin/" + url + "=" + id);
       } else {
         history.push("/admin/" + typeDoc + "/inputDataForm");
       }
@@ -211,16 +211,6 @@ export default function RiwayatPemohon() {
               </tbody>
             </table>
           </div>
-          {/* {listTransaction.length > 5 && (
-            <div className="w-full my-3 text-center">
-              <button
-                className="text-xs border font-bold px-6 py-2 rounded shadow focus:outline-none"
-                onClick={() => history.push("/admin/dokumen")}
-              >
-                Lihat Semua
-              </button>
-            </div>
-          )} */}
         </div>
       </div>
     </>

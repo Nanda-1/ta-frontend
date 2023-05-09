@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { MyAjbContext } from "Context/AjbContext";
 import DocumentReady from "./DocumentReady";
 import AgoraVideoCall from "./AgoraVideoCall";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const AgoraRtc = () => {
   const {
@@ -19,8 +20,11 @@ const AgoraRtc = () => {
 
   const { getDokumenAjb, getTtdImage, addTandaTangan } = functions;
 
+  
+  let { id } = useParams();
+
   useEffect(() => {
-    getDokumenAjb();
+    getDokumenAjb(id);
     getTtdImage();
     setLoadingFile(true);
   }, []);

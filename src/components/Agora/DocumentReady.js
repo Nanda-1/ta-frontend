@@ -7,6 +7,7 @@ import LasttPage from "../../assets/img/icon/lastPage.png";
 import { fabric } from "fabric";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import OtpModal from "components/Modals/OTP";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const DocumentReady = ({
   ajbDoc,
@@ -22,6 +23,8 @@ const DocumentReady = ({
 }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+
+  let { id } = useParams();
 
   var elements = [];
 
@@ -64,8 +67,12 @@ const DocumentReady = ({
   const addTtd = (data) => {
     setBtnConfirm(true);
 
-    let docHeight = document.querySelector(".react-pdf__Page__textContent")?.clientHeight
-    let docWidth = document.querySelector(".react-pdf__Page__textContent")?.clientWidth
+    let docHeight = document.querySelector(
+      ".react-pdf__Page__textContent"
+    )?.clientHeight;
+    let docWidth = document.querySelector(
+      ".react-pdf__Page__textContent"
+    )?.clientWidth;
 
     var canvas = new fabric.Canvas("canvasTtd", {
       preserveObjectStacking: true,
@@ -148,7 +155,7 @@ const DocumentReady = ({
 
   const handlePembubuhan = () => {
     setLoadingFile(true);
-    addTandaTangan(pageNumber);
+    addTandaTangan(pageNumber, id);
   };
 
   const ref = useRef(null);
@@ -163,7 +170,7 @@ const DocumentReady = ({
       ) : null}
       {otpModal ? (
         <>
-          <OtpModal />
+          <OtpModal id={id} />
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
@@ -173,6 +180,7 @@ const DocumentReady = ({
       >
         <div className="flex">
           <img
+            alt=""
             src={FirstPage}
             disabled={pageNumber < 2 ? true : false}
             onClick={firstPage}
@@ -182,6 +190,7 @@ const DocumentReady = ({
             style={{ height: 15, alignSelf: "center" }}
           />
           <img
+            alt=""
             src={Prev}
             disabled={pageNumber < 2 ? true : false}
             onClick={previousPage}
@@ -205,6 +214,7 @@ const DocumentReady = ({
             })}
           </select>
           <img
+            alt=""
             src={Next}
             disabled={pageNumber >= numPages}
             onClick={nextPage}
@@ -214,6 +224,7 @@ const DocumentReady = ({
             style={{ height: 15, alignSelf: "center" }}
           />
           <img
+            alt=""
             src={LasttPage}
             disabled={pageNumber >= numPages}
             onClick={lastPage}
@@ -250,7 +261,7 @@ const DocumentReady = ({
         )}
       </div>
       <div
-      ref={ref}
+        ref={ref}
         className="pb-6 doc-scroll mx-32"
         style={{
           height: "100vh",
@@ -259,7 +270,7 @@ const DocumentReady = ({
           padding: "0 10px",
         }}
       >
-        <div  className='Example__container_pdf'>
+        <div className="Example__container_pdf">
           <div className="canvas-wrapper">
             <canvas id="canvasTtd" className="z-2 border-black">
               <img
@@ -275,7 +286,7 @@ const DocumentReady = ({
             onLoadSuccess={onDocumentLoadSuccess}
             className="doc_sign"
           >
-            <Page pageNumber={pageNumber} ></Page>
+            <Page pageNumber={pageNumber}></Page>
           </Document>
         </div>
       </div>

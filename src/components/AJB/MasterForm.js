@@ -38,7 +38,6 @@ import { MyAjbContext } from "Context/AjbContext";
 import Cookies from "js-cookie";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import swal from "sweetalert";
-import { useHistory } from "react-router";
 
 class MasterFormAjb extends Component {
   static contextType = MyAjbContext;
@@ -47,6 +46,8 @@ class MasterFormAjb extends Component {
     super(props);
 
     this.num = Cookies.get("step");
+
+    this.id = props.id;
 
     this.stepNum = this.num ? this.num : "input_data_penjual";
     // Set the intiial input values
@@ -130,7 +131,7 @@ class MasterFormAjb extends Component {
           currentStep: "input_data_pembeli",
         });
       } else {
-        this.context.functions.addPenjual();
+        this.context.functions.addPenjual(this.id);
         this.context.setLoadingFile(true);
         this.setState({
           currentStep: "input_data_pembeli",
@@ -157,12 +158,12 @@ class MasterFormAjb extends Component {
     } else if (this.state.currentStep === "npwp_pembeli") {
       Cookies.set("step", "dokumen");
       if (this.context.nextStep) {
-        this.context.functions.addPembeli();
+        this.context.functions.addPembeli(this.id);
         this.setState({
           currentStep: "dokumen",
         });
       } else {
-        this.context.functions.addPembeli();
+        this.context.functions.addPembeli(this.id);
         this.context.setLoadingFile(true);
         this.setState({
           currentStep: "dokumen",
@@ -176,7 +177,7 @@ class MasterFormAjb extends Component {
       });
       window.location.reload();
     } else if (this.state.currentStep === "stamping") {
-      this.context.rtcPage();
+      this.context.rtcPage(this.id);
     }
   }
 
@@ -247,10 +248,11 @@ class MasterFormAjb extends Component {
       this.setState({
         currentStep: "npwp_pembeli",
       });
-    } else if (this.state.currentStep === "stamping") {
-      this.context.functions.getDokumenAjb();
-      this.context.setLoadingFile(true);
-    }
+    } 
+    // else if (this.state.currentStep === "stamping") {
+    //   this.context.functions.getDokumenAjb(this.id);
+    //   this.context.setLoadingFile(true);
+    // }
   }
 
   // The "next" and "previous" button functions

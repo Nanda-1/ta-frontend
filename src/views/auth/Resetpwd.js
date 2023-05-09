@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import swal from "sweetalert";
 import { RegistContext } from "views/auth/RegistContext";
 import { useHistory, useLocation } from "react-router";
-import cookies from "js-cookie";
 import queryString from "query-string";
 
 export default function Resetpwd() {

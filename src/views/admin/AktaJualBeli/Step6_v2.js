@@ -9,6 +9,8 @@ import { fabric } from "fabric";
 import { FormGroup } from "reactstrap";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import OtpModal from "components/Modals/OTP";
+import { useParams } from "react-router-dom";
+import OtpModalConfirm from "components/Modals/OtpConfirm";
 
 const Step6 = (props) => {
   const {
@@ -17,6 +19,7 @@ const Step6 = (props) => {
     ajbDoc,
     meterai,
     setConfirmModal,
+    confirmModal,
     setBtnConfirm,
     btnConfirm,
     loadingFile,
@@ -31,9 +34,11 @@ const Step6 = (props) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
 
+  let { id } = useParams();
+
   useEffect(() => {
     if (props.currentStep === "stamping") {
-      getDokumenAjb();
+      getDokumenAjb(id);
       setLoadingFile(true);
     }
   }, []);
@@ -164,7 +169,8 @@ const Step6 = (props) => {
             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
           </>
         )}
-        {otpModal && <OtpModal />}
+        {confirmModal && <OtpModalConfirm id={id} />}
+        {/* {otpModal && <OtpModal />} */}
         <div className="flex content-center items-center justify-center h-full mt-20">
           <div className="w-full lg:w-11/12 px-1">
             <div className="relative bg-white flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg border-0">

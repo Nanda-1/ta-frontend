@@ -777,6 +777,7 @@ input[type="number"] {
 .package-tooltip {
   background: rgba(82, 117, 193, 0.12);
   padding: 1px 6px;
+  text-align: left !important;
 }
 
 .font-700 {
@@ -1852,4 +1853,8 @@ body {
     -webkit-transform: none;
     transform: none;
   }
+}
+
+.tooltip-price{
+  font-size: 12px !important;
 }

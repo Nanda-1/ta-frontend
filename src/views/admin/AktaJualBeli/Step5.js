@@ -4,6 +4,7 @@ import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { MyAjbContext } from "Context/AjbContext";
 import { FormGroup } from "reactstrap";
 import InputDataDokumen from "components/AJB/InputDataDokumen";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const Step5 = (props) => {
   const { functions, ajbDoc } = useContext(MyAjbContext);
@@ -11,10 +12,11 @@ const Step5 = (props) => {
   const { detailAjb } = functions;
 
   const [isFixed, setIsFixed] = useState(false);
+  let { id } = useParams();
 
   useEffect(() => {
     if (props.currentStep === "dokumen") {
-      detailAjb();
+      detailAjb(id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

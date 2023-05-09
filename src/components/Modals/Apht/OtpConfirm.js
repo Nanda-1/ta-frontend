@@ -3,27 +3,27 @@ import React, { useContext } from "react";
 // Context
 import { MyAphtcontext } from "Context/AphtContext";
 import Meterai from "assets/img/signature/meterai.png";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function OtpModalConfirmApht() {
   const {
     inputAjb,
-    // meterai,
     setBtnConfirm,
     confirmModal,
     setConfirmModal,
-    // setTtdDigital,
-    // setMeterai,
     functions,
     setLoadingFile,
   } = useContext(MyAphtcontext);
 
   const { addMeterai } = functions;
 
+  let { id } = useParams();
+
   const ppatConfirm = () => {
     setConfirmModal(false);
     setBtnConfirm(false);
     // setMeterai(true);
-    addMeterai();
+    addMeterai(id);
     setLoadingFile(true);
 
     // if (meterai === true) {

@@ -1,29 +1,9 @@
-import React, { useContext } from "react";
-import { createPopper } from "@popperjs/core";
+import React from "react";
 
-import { UserContext } from "Context/UserContext";
-import cookies from "js-cookie";
-import { useHistory } from "react-router";
 import noImage from "assets/img/icon/no-avatar.jpg";
 
 const UserDropdown = () => {
-  let history = useHistory();
-
-  const { setLoginStatus } = useContext(UserContext);
-
-  // dropdown props
-  const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
-  const btnDropdownRef = React.createRef();
-  const popoverDropdownRef = React.createRef();
-  const openDropdownPopover = () => {
-    createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
-      placement: "bottom-start",
-    });
-    setDropdownPopoverShow(true);
-  };
-  const closeDropdownPopover = () => {
-    setDropdownPopoverShow(false);
-  };
+ 
 
   const getName = (nama) => {
     let user_name = nama.split(" ")[0];
@@ -33,12 +13,12 @@ const UserDropdown = () => {
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
-  const handleLogout = () => {
-    setLoginStatus(false);
-    localStorage.removeItem("dataPPAT");
-    cookies.remove("token");
-    history.push("/login");
-  };
+  // const handleLogout = () => {
+  //   setLoginStatus(false);
+  //   localStorage.removeItem("dataPPAT");
+  //   cookies.remove("token");
+  //   history.push("/login");
+  // };
 
   return (
     <div className="items-center flex">

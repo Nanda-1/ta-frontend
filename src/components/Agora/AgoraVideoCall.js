@@ -8,10 +8,10 @@ import { useParams } from "react-router";
 
 const appId = "15ade710d3de457bbd2ddc96f487c621"; //ENTER APP ID HERE
 const token =
-  "007eJxTYPheID/ptlEjk8xzSdbcf8wff0dvmn+9cILYpMZ3D7TaTnMrMBiaJqakmhsapBinpJqYmiclpRilpCRbmqWZWJgnmxkZ8sgEpTQEMjIcedbGysgAgSA+O0NJanFJZl46AwMA2ZshRg==";
+  "007eJxTYFC77h19T8VWcFuk89ndvxkiVpUkTT1wpaFVYkaR4adzKVoKDIamiSmp5oYGKcYpqSam5klJKUYpKcmWZmkmFubJZkaGikcjUxoCGRkmLpnFyMgAgSA+O0NJanFJZl46AwMArCog8Q==";
 
 const AgoraVideoCall = () => {
-  const [inCall, setInCall] = useState(true);
+  const setInCall = true;
 
   let { channelName } = useParams();
   let channel = channelName;
@@ -118,8 +118,9 @@ const Videos = (props) => {
 };
 
 export const Controls = (props) => {
-  const client = useClient();
-  const { tracks, setStart, setInCall } = props;
+  // const client = useClient();
+  const { tracks } = props;
+  // const { tracks, setStart, setInCall } = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
   const mute = async (type) => {
     if (type === "audio") {
@@ -135,15 +136,16 @@ export const Controls = (props) => {
     }
   };
 
-  const leaveChannel = async () => {
-    await client.leave();
-    client.removeAllListeners();
-    tracks[0].close();
-    tracks[1].close();
-    setStart(false);
-    setInCall(false);
-    window.location.reload();
-  };
+  // const leaveChannel = async () => {
+  //   await client.leave();
+  //   client.removeAllListeners();
+  //   tracks[0].close();
+  //   tracks[1].close();
+  //   setStart(false);
+  //   setInCall(false);
+  //   window.location.reload();
+  // };
+
   return (
     <div className="controls w-full bg-white rounded-lg mt-2">
       <p onClick={() => mute("audio")} className="my-2">

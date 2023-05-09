@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import { MyAjbContext } from "Context/AjbContext";
 import Meterai from "assets/img/signature/meterai.png";
 
-export default function OtpModalConfirm() {
+export default function OtpModalConfirm({id}) {
   const {
     inputAjb,
     meterai,
@@ -12,7 +12,6 @@ export default function OtpModalConfirm() {
     confirmModal,
     setConfirmModal,
     setTtdDigital,
-    // setMeterai,
     functions,
     setLoadingFile,
   } = useContext(MyAjbContext);
@@ -23,7 +22,7 @@ export default function OtpModalConfirm() {
     setConfirmModal(false);
     setBtnConfirm(false);
     // setMeterai(true);
-    addMeterai();
+    addMeterai(id);
     setLoadingFile(true);
 
     if (meterai === true) {

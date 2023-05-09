@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 // Context
 import { DokumenContext } from "Context/DokumenContext";
 import Meterai from "assets/img/signature/meterai.png";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function MeteraiConfirm() {
   const {
@@ -14,11 +15,15 @@ export default function MeteraiConfirm() {
   } = useContext(DokumenContext);
 
   const { addMeterai } = functions;
+  
+  let { id } = useParams();
+
+  console.log(id)
 
   const ppatConfirm = () => {
     setConfirmModal(false);
     setBtnConfirm(false);
-    addMeterai("akta_pemberian_hak_tanggungan");
+    addMeterai();
     setLoadingFile(true);
   };
 
