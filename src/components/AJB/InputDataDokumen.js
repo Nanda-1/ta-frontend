@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { MyAjbContext } from "Context/AjbContext";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import FormData from "./FormData";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const InputDataDokumen = () => {
   const {
@@ -24,6 +25,8 @@ const InputDataDokumen = () => {
   let wilayah_id = localStorage.getItem("wilayah");
   let wilayah_obj = JSON.parse(wilayah_id);
 
+  let {id} = useParams()
+
   useEffect(() => {
     getDataKec();
     getDataKota();
@@ -34,7 +37,7 @@ const InputDataDokumen = () => {
   const dokReview = (e) => {
     e.preventDefault();
     setLoadingFile(true);
-    addDokumenAjb();
+    addDokumenAjb(id);
   };
 
   const handleChange = (event) => {

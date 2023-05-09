@@ -1,12 +1,9 @@
 import React, { useState, useContext } from "react";
 import cookies from "js-cookie";
 import swal from "sweetalert";
-import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
 import { RegistContext } from "views/auth/RegistContext";
 
 export default function Modal3() {
-  const history = useHistory();
   let email = cookies.get("email");
   const [load, setLoad] = useState(false);
   const { refreshToken } = useContext(RegistContext);

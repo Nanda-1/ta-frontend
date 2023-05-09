@@ -16,7 +16,9 @@ export default function PaketProduk() {
 
   useEffect(() => {
     paketKuota();
-  }, []);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   const addPaket = (nilai, kode) => {
     if (nilai > 0) {
@@ -96,7 +98,10 @@ export default function PaketProduk() {
 
     return `Anda Mendapatkan ${
       name.substring(indexOfSpace + 1) === "Hemat"
-        ? data.map((el) => "<br />" + el.name + "<br />" + el.name2 + "<br />" + el.name3)
+        ? data.map(
+            (el) =>
+              "<br />" + el.name + "<br />" + el.name2 + "<br />" + el.name3
+          )
         : name
             .substring(indexOfSpace + 1)
             .toLowerCase()
@@ -140,7 +145,7 @@ export default function PaketProduk() {
                     place="bottom"
                     type="dark"
                     effect="solid"
-                    className="rounded-full"
+                    className="rounded-full tooltip-price"
                     multiline={true}
                   />
                 </div>

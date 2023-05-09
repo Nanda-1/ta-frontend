@@ -5,7 +5,7 @@ import OtpInput from "react-otp-input";
 import { MyAjbContext } from "Context/AjbContext";
 import { useEffect } from "react";
 
-export default function OtpModal() {
+export default function OtpModal({ id }) {
   const { otpModal, functions, setLoadingFile } = useContext(MyAjbContext);
 
   const { otpTandaTangan } = functions;
@@ -19,7 +19,7 @@ export default function OtpModal() {
 
   const handleSubmit = () => {
     setLoadingFile(true);
-    otpTandaTangan(kodeOtp);
+    otpTandaTangan(kodeOtp, id);
   };
 
   var val = localStorage.getItem("dataPPAT");

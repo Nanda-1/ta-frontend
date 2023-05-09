@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
 // components
@@ -28,25 +28,27 @@ import Syarat3 from "views/auth/Syarat3";
 import { RegistProvider } from "views/auth/RegistContext";
 import * as serviceWorker from "./serviceWorker";
 import Maps from "views/admin/WebRTC/Maps";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
-
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Auth() {
   var val = localStorage.getItem("authentication");
+  const histori = useHistory();
 
-  const LoginRoute = ({ ...props }) => {
-    if (val === undefined) {
-      return <Route {...props} />;
-    } else {
-      return <Redirect to="/admin/dashboard" />;
-    }
-  };
+  // useEffect(() => {
+  //   if (val !== null) {
+  //     histori.push("/admin/dashboard");
+  //   }
+  // }, []);
 
   return (
     <>
       <RegistNavbar transparent />
       <main>
-        <section className="absolute w-full h-full">
+        <section
+          className={`absolute w-full ${
+            !window.location.pathname.includes("/topup") && "h-full"
+          }`}
+        >
           <Switch>
             <RegistProvider>
               <UserProvider>

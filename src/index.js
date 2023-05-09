@@ -40,7 +40,7 @@ ReactDOM.render(
           <AjbProvider>
             <AgoraProvider>
               <PrivateRoute
-                path="/ruang_virtual=:channelName"
+                path="/ruang_virtual=:channelName&&id=:id"
                 component={AgoraRtc}
               />
             </AgoraProvider>

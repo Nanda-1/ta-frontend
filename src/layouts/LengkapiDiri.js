@@ -30,15 +30,17 @@ import Syarat4 from "views/auth/Syarat4";
 
 import { RegistProvider } from "views/auth/RegistContext";
 import * as serviceWorker from "./serviceWorker";
-import { PexipProvider } from "Context/PexipContect";
-import Call from "components/Pexip/Call/Call";
 
 export default function lengkapiDiri() {
   return (
     <>
       <RegistNavbar transparent />
       <main>
-        <section className="absolute w-full h-full">
+        <section
+          className={`absolute w-full ${
+            !window.location.pathname.includes("/topup") && "h-full"
+          }`}
+        >
           <Switch>
             <RegistProvider>
               <Route
@@ -68,9 +70,6 @@ export default function lengkapiDiri() {
               <Route path="/lengkapiDiri/modal3" exact component={Modal3} />
               <Route path="/lengkapiDiri/sign" exact component={Sign} />
               <Route path="/lengkapiDiri/ca" exact component={Ca} />
-              <PexipProvider>
-                <Route path="/call_mobile" exact component={Call} />
-              </PexipProvider>
               <Route path="/lengkapiDiri/syarat4" exact component={Syarat4} />
             </RegistProvider>
           </Switch>

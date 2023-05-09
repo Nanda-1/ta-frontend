@@ -30,7 +30,6 @@ export const AjbProvider = (props) => {
   const [stepper, setStepper] = useState("");
 
   let history = useHistory();
-
   // var val = localStorage.getItem("dataPPAT");
   // var object = JSON.parse(val);
 
@@ -65,7 +64,7 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const addPenjual = () => {
+  const addPenjual = (transaction_id) => {
     setLoadingFile(true);
 
     fetch(
@@ -79,7 +78,7 @@ export const AjbProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: transaction_id,
           actors: [
             {
               no_nik: inputAjb.nik_penjual,
@@ -146,7 +145,7 @@ export const AjbProvider = (props) => {
       });
   };
 
-  const addPembeli = () => {
+  const addPembeli = (transaction_id) => {
     setLoadingFile(true);
 
     fetch(
@@ -161,7 +160,7 @@ export const AjbProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: transaction_id,
           actors: [
             {
               no_nik: inputAjb.nik_pembeli,
@@ -219,7 +218,7 @@ export const AjbProvider = (props) => {
             history.push("/admin/dashboard");
             swal("Berhasil Membuat Draf", "Menunggu Registrasi", "success");
           } else {
-            addDokumenAjb();
+            addDokumenAjb(transaction_id);
           }
         } else if (result.success !== true) {
           setLoadingFile(false);
@@ -229,7 +228,7 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const addDokumenAjb = async () => {
+  const addDokumenAjb = async (id) => {
     await fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/generate-document",
@@ -241,7 +240,7 @@ export const AjbProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: id,
           doc_name: inputAjb.nama_dokumen,
           doc_num: inputAjb.nomor_dokumen,
           price_value: Number(inputAjb.price_value || inputAjb.harga_jual),
@@ -295,11 +294,11 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const getDokumenAjb = () => {
+  const getDokumenAjb = (id) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
-        Cookies.get("transaction_id") +
+        id +
         "/document?doc_type=akta_jual_beli",
       {
         method: "GET",
@@ -327,12 +326,12 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const detailAjb = () => {
+  const detailAjb = (id) => {
     setLoadingFile(true);
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/" +
-        Cookies.get("transaction_id"),
+        id,
       {
         method: "GET",
         redirect: "follow",
@@ -360,12 +359,12 @@ export const AjbProvider = (props) => {
 
         let obj = JSON.parse(hasil2);
         setInputAjb({ ...inputAjb, ...obj, nomor_dokumen, nama_dokumen, id });
-        getDokumenAjb();
+        getDokumenAjb(id);
       })
       .catch((error) => console.log("error", error));
   };
 
-  const addMeterai = () => {
+  const addMeterai = (id) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/stamp-emeterai",
@@ -378,7 +377,7 @@ export const AjbProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: id,
           llx: inputAjb.llx,
           lly: inputAjb.lly,
           urx: inputAjb.urx,
@@ -414,11 +413,11 @@ export const AjbProvider = (props) => {
             setMeterai(false);
           }
         } else {
-          getDokumenAjb();
+          getDokumenAjb(id);
         }
       })
       .catch((error) => {
-        getDokumenAjb();
+        getDokumenAjb(id);
         console.log("error", error);
       });
   };
@@ -450,7 +449,7 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const addTandaTangan = (pageNumber) => {
+  const addTandaTangan = (pageNumber, id) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/sign-doc/step-1",
@@ -462,7 +461,7 @@ export const AjbProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: id,
           llx: inputAjb.llx,
           lly: inputAjb.lly,
           urx: inputAjb.urx,
@@ -489,7 +488,7 @@ export const AjbProvider = (props) => {
       .catch((error) => swal("Error", error, "error"));
   };
 
-  const otpTandaTangan = (otp) => {
+  const otpTandaTangan = (otp, id) => {
     fetch(
       process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
         "/api/transactions/sign-doc/step-2",
@@ -502,7 +501,7 @@ export const AjbProvider = (props) => {
         },
         credentials: "same-origin",
         body: JSON.stringify({
-          transaction_id: Cookies.get("transaction_id"),
+          transaction_id: id,
           sign_doc_id: Cookies.get("sign_doc_id"),
           otp_code: otp,
         }),
@@ -655,8 +654,8 @@ export const AjbProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const rtcPage = () => {
-    history.push("/ruang_virtual=" + "testing");
+  const rtcPage = (id) => {
+    history.push("/ruang_virtual=testing&&id=" + id);
   };
 
   const functions = {

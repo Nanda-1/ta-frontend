@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { TopUpContext } from "Context/TopUpContext";
 import Cookies from "js-cookie";
 import PaymentMethod from "components/Payment/PaymentMethod";
@@ -177,6 +177,7 @@ export default function Payment() {
                         src={Secure}
                         style={{ width: "22px", height: "20px" }}
                         className="mr-2"
+                        alt=""
                       />
                       Bayar
                     </button>

@@ -147,7 +147,7 @@ export default function Admin() {
                 <OtpModalConfirm />
                 <Route
                   exact
-                  path="/admin/AktaJualBeli"
+                  path="/admin/AktaJualBeli=:id"
                   component={StepperIndexAjb}
                 />
                 <Route

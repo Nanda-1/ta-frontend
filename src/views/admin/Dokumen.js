@@ -11,9 +11,6 @@ import PrevIcon from "../../assets/img/prev.png";
 export default function Dokumen() {
   const { functions, listTransaction } = useContext(UserContext);
 
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
-
   const { transactionList } = functions;
 
   const [page, setPage] = useState(0);
@@ -56,12 +53,11 @@ export default function Dokumen() {
   };
 
   useEffect(() => {
-    transactionList('doc');
+    transactionList("doc");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const currentDoc = (id, statusDoc, typeDoc) => {
-    Cookies.set("transaction_id", id, { expires: 1 });
     let url = "";
 
     if (typeDoc === "akta_jual_beli") {
@@ -72,34 +68,34 @@ export default function Dokumen() {
 
     if (statusDoc === "draft") {
       Cookies.set("step", "input_data_penjual");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "pihak_pertama") {
       Cookies.set("step", "input_data_pembeli");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "add_data") {
       Cookies.set("step", "input_data_pembeli");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "pihak_kedua") {
       Cookies.set("step", "dokumen");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "submit_dokumen") {
       Cookies.set("step", "stamping");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "stamp_emeterai") {
-      Cookies.set("transaction_id", id);
+      // Cookies.set("transaction_id", id);
       Cookies.set("step", "stamping");
-      history.push("/admin/" + url);
+      history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "sign_ttd") {
-      history.push("/ruang_virtual=testing");
+      history.push("/ruang_virtual=testin&&id=" + id);
     } else if (statusDoc === "generate_document") {
-      Cookies.set("transaction_id", id);
+      // Cookies.set("transaction_id", id);
       if (typeDoc === "akta_jual_beli") {
         Cookies.set("step", "dokumen");
 
-        history.push("/admin/" + url);
+        history.push("/admin/" + url + "=" + id);
       } else if (typeDoc === "akta_pemberian_hak_tanggunan") {
         Cookies.set("step", "dokumen");
-        history.push("/admin/" + url);
+        history.push("/admin/" + url + "=" + id);
       } else {
         history.push("/admin/" + typeDoc + "/inputDataForm");
       }
