@@ -3,18 +3,19 @@ import { Link } from "react-router-dom";
 import cookies from "js-cookie";
 import swal from "sweetalert";
 import ModalDokumen from "components/Modals/ModalDokumen";
+import { useHistory } from "react-router-dom";
 
 export default function ModalVerif() {
-  let email = cookies.get("email");
+  const histori = useHistory();
 
   const [disable, setDisable] = useState(true);
   const [load, setLoad] = useState(false);
 
+  var userData = localStorage.getItem("user-info");
+  var object = JSON.parse(userData);
+
   const getAnswer = () => {
     setLoad(true);
-
-    var userData = localStorage.getItem('user-info')
-  var object = JSON.parse(userData)
 
     fetch(
       process.env.REACT_APP_BACKEND_HOST_AUTH +
@@ -31,10 +32,11 @@ export default function ModalVerif() {
             icon: "success",
           });
           setDisable(false);
+          histori.push("/");
         } else {
-          setTimeout(() => {
-            getAnswer();
-          }, 5000);
+          // setTimeout(() => {
+          //   getAnswer();
+          // }, 5000);
           swal({
             title: "Gagal",
             text: "Email belum terverifikasi. Silahkan cek email",
@@ -45,10 +47,10 @@ export default function ModalVerif() {
       .catch((error) => console.log("error", error));
   };
 
-  useEffect(() => {
-    getAnswer();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  // getAnswer();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const resendEmailRegist = async (event) => {
     event.preventDefault();
@@ -104,10 +106,10 @@ export default function ModalVerif() {
             />
 
             <div className="my-1 mx-6 mb-12 text-blueGray-500 text-md text-center">
-              Terimakasih telah melakukan registrasi. <br />
-              Mohon periksa e-mail dibawah untuk verifikasi e-mail Anda.
+              Terimakasih telah melakukan registrasi <br />
+              Mohon periksa e-mail Anda untuk melakukan verifikasi
               <br />
-              <p className="text-blue-500 mt-3">{email}</p>
+              <p className="text-blue-500 mt-3">{object.email}</p>
               <br />
               <p className="mt-0 text-sm">Belum terima e-mail?</p>
               <a
@@ -121,16 +123,17 @@ export default function ModalVerif() {
           </div>
           <div className="relative flex flex-wrap mt-4 w-auto mx-auto">
             <div className="w-full text-right">
-              <Link
-                to="/login"
-                className={`get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1  text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 ${
-                  disable
-                    ? "opacity--d bg-gray-d"
-                    : "bg-blue-500 active:bg-blue-500"
-                }`}
+              <button
+                // className={`get-started text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1  text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 ${
+                //   disable
+                //     ? "opacity--d bg-gray-d"
+                //     : "bg-blue-500 active:bg-blue-500"
+                // }`}
+                className="bg-blue-500 active:bg-blue-500 text-white font-bold px-6 py-3 rounded-lg outline-none focus:outline-none mr-1 mb-1  text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+                onClick={getAnswer}
               >
                 Lanjutkan
-              </Link>
+              </button>
             </div>
           </div>
         </div>

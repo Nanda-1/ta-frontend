@@ -9,7 +9,7 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 export default function Sign() {
   var auth = localStorage.getItem("authentication");
   var token = JSON.parse(auth);
-  const { inputRegist, setInputRegist, refreshToken } =
+  const { inputRegist, setInputRegist, refreshToken} =
     useContext(RegistContext);
 
   //Show Spinner
@@ -20,6 +20,8 @@ export default function Sign() {
   const [showModal, setShowModal] = useState(false);
   //Disable Button Toggle Gambar
   const [disableToggle, setDisableToggle] = useState(true);
+  //Disable Button Toggle Upload
+  const [disableUpload, setDisableUpload] = useState(true);
   //Disable Button Simpan
   const [disable, setDisable] = useState(true);
   //Disable Button Reset TTE
@@ -30,6 +32,7 @@ export default function Sign() {
   const [disableCanvas, setDisableCanvas] = useState(true);
 
   const [isShow, setShow] = React.useState(false);
+  const [isUpload, setUpload] = React.useState(false);
   const [defaults, setDefaults] = React.useState(true);
 
   // var val = localStorage.getItem("dataPPAT");
@@ -39,42 +42,48 @@ export default function Sign() {
     setShow(true);
     setDefaults(false);
     setDisable(true);
+    setUpload(false);
   };
 
-  /* TTD Image Upload *?
-  // const [ttd, setttd] = React.useState({ previewttd: "", rawttd: "" });
+  const handleUpload = () => {
+    setUpload(true);
+    setDefaults(false);
+    setShow(false);
+  };
 
-  // const uploadttdPreview = (e) => {
-  //   let specimen_tdtgn_file = "specimen_tdtgn_file";
-  //   let getttd = e.target.files[0];
-  //   let typeDoc = e.currentTarget.files[0].type;
-  //   if (e.currentTarget.files.length) {
-  //     if (typeDoc === "image/png") {
-  //       setttd({
-  //         previewttd: URL.createObjectURL(e.currentTarget.files[0]),
-  //         rawttd: e.currentTarget.files[0],
-  //       });
-  //       setInputRegist({ ...inputRegist, [specimen_tdtgn_file]: getttd });
-  //       cookies.set(specimen_tdtgn_file, getttd);
-  //       console.log(inputRegist);
-  //       setDisable(false);
-  //     } else {
-  //       swal({
-  //         title: "Gagal!",
-  //         text: "Format Dokumen Tidak Sesuai",
-  //         icon: "warning",
-  //       });
-  //       setDisable(true);
-  //     }
-  //   } else if (getttd && !getttd.name) {
-  //     swal({
-  //       title: "Gagal!",
-  //       text: "Harap upload spesimen tandatangan Anda terlebih dahulu",
-  //       icon: "warning",
-  //     });
-  //     setDisable(true);
-  //   }
-  // };
+  /* TTD Image Upload */
+  const [png, setPng] = React.useState({ previewPng: "", rawPng: "" });
+  const [getk, getPng] = React.useState("");
+
+  const uploadPngPreview = (e) => {
+    let getttd = e.target.files[0];
+    let typeDoc = e.currentTarget.files[0].type;
+    if (e.currentTarget.files.length) {
+      if (typeDoc === "image/png") {
+        getPng(e.currentTarget.files[0].name);
+        setPng({
+          previewPng: URL.createObjectURL(e.currentTarget.files[0]),
+          rawPng: e.currentTarget.files[0],
+        });
+        setDisable(false);
+      } else {
+        swal({
+          title: "Gagal!",
+          text: "Format Dokumen Tidak Sesuai, file tandatangan harus .png",
+          icon: "warning",
+        });
+        setDisable(true);
+      }
+    } else if (getttd && !getttd.name) {
+      swal({
+        title: "Gagal!",
+        text: "Harap upload spesimen tandatangan Anda terlebih dahulu",
+        icon: "warning",
+      });
+      setDisable(true);
+    }
+    console.log(getk);
+  };
 
   /** Canvas Section **/
   const [undoSteps, setUndoSteps] = useState({});
@@ -396,7 +405,11 @@ export default function Sign() {
     myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let formdata = new FormData();
-    formdata.append("file", fileOfBlob);
+    if(isShow === true){
+      formdata.append("file", fileOfBlob);
+    }else if(isUpload === true){
+      formdata.append("file", png.previewPng);
+    }
 
     let requestOptions = {
       method: "POST",
@@ -441,6 +454,7 @@ export default function Sign() {
         } else {
           setDisable(true);
           setDisableToggle(false);
+          setDisableUpload(false);
           setDisableReset(false);
           setDisableUndo(false);
           setDisableCanvas(false);
@@ -549,6 +563,21 @@ export default function Sign() {
                       />
                     </li>
                   </ul>
+                  <ul className="w-full ml-11-d flex-end">
+                    <li>
+                      <Button
+                        label=" Unggah"
+                        className={`${
+                          disableUpload
+                            ? "bg-blue-500 "
+                            : "opacity--d bg-gray-d"
+                        } far fa-edit get-started shadow text-white px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 active:bg-blue-500 text-xs hover:shadow-lg ease-linear transition-all duration-150 disabled:opacity-button`}
+                        onClick={disableUpload ? handleUpload : null}
+                        // onClick={handleToggle}
+                        // className="far fa-edit get-started shadow text-white px-4 py-2 rounded-lg outline-none focus:outline-none mr-1 bg-blue-500 active:bg-blue-500 text-xs hover:shadow-lg ease-linear transition-all duration-150 disabled:opacity-button"
+                      />
+                    </li>
+                  </ul>
                 </span>
                 {defaults && (
                   <span className="flex h-55-d w-auto ml-12 mr-12 mx-auto border-2 border-blue-400 border-dashed rounded">
@@ -650,10 +679,68 @@ export default function Sign() {
                       </div>
                     </span>
                   )}
+                  {isUpload && (
+                    <span className="flex h-55-d w-auto ml-12 mr-12 mx-auto border-2 border-blue-400 border-dashed rounded">
+                      <ul id="gallery" className="flex flex-1 flex-wrap mt-px">
+                        <li
+                          id="empty"
+                          className="h-full w-full text-center flex flex-col justify-center items-center"
+                        >
+                          <div className="mx-auto my-auto">
+                            <label htmlFor="upload-button" required>
+                              {png.previewPng ? (
+                                <div className="mx-auto my-auto h-44 w-80">
+                                  <img
+                                    src={png.previewPng}
+                                    alt="dummy1"
+                                    className="mx-auto my-auto h-44 w-80"
+                                    name="png"
+                                  />
+                                </div>
+                              ) : (
+                                <>
+                                  {/* <img
+                                    className="flex mx-auto align-middle h-36 w-auto pt-2"
+                                    src={require("assets/img/ttd.png").default}
+                                    alt="no data"
+                                  />
+                                  <p className="text-center text-sm pt-2">
+                                    Klik disini untuk upload tandatangan Anda.
+                                  </p> */}
+                                  <div className="mx-auto my-auto h-44 w-80">
+                                    <img
+                                      className="flex mx-auto align-middle h-36 w-auto pt-2"
+                                      src={
+                                        require("assets/img/ttd.png").default
+                                      }
+                                      alt="no data"
+                                    />
+                                    <br />
+                                    <p className="text-center text-sm pt-2">
+                                      Klik disini untuk upload tandatangan Anda.
+                                    </p>
+                                  </div>
+                                </>
+                              )}
+                            </label>
+                            <input
+                              type="file"
+                              id="upload-button"
+                              style={{ display: "none" }}
+                              onChange={uploadPngPreview}
+                            />
+                            <br />
+                            <button hidden>Upload</button>
+                          </div>
+                        </li>
+                      </ul>
+                    </span>
+                  )}
                 </div>
 
                 <p className="text-center text-sm pt-2 w-auto px-10 mx-auto">
-                  Gambar tanda tangan Anda pada kotak diatas, <br></br>
+                  Gambar atau Unggah tanda tangan Anda pada kotak diatas,{" "}
+                  <br></br>
                   Pastikan tanda tangan sudah benar sebelum menyimpan.
                 </p>
               </div>
