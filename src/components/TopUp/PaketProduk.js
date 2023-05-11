@@ -89,7 +89,7 @@ export default function PaketProduk() {
   const tooltipDesc = (name) => {
     const indexOfSpace = name.indexOf(" ");
     let data = [
-      { name: "100 e-Meterai", name2: "100 Tanda Tangan", name3: "100 Form" },
+      { name: "50 e-Meterai", name2: "50 Tanda Tangan", name3: "50 Blangko" },
     ];
 
     if (indexOfSpace === -1) {
@@ -100,7 +100,7 @@ export default function PaketProduk() {
       name.substring(indexOfSpace + 1) === "Hemat"
         ? data.map(
             (el) =>
-              "<br />" + el.name + "<br />" + el.name2 + "<br />" + el.name3
+              ": <br />" + el.name + "<br />" + el.name2 + "<br />" + el.name3
           )
         : name
             .substring(indexOfSpace + 1)
@@ -123,17 +123,13 @@ export default function PaketProduk() {
           {listPaketQuota?.map((el, index) => {
             return (
               <div
-                className={`card-shadow border-grey-3 rounded-lg px-6 py-4 ${
+                className={`card-shadow-2 border-grey-3 rounded-lg px-6 py-5 ${
                   index !== listPaketQuota.length ? "mr-4" : null
                 }`}
                 key={index}
               >
                 <div className="font-bold text-sm text-black">
-                  {el.package_name.toLowerCase().includes("ttd")
-                    ? "100 Tanda Tangan"
-                    : el.package_name.toLowerCase().includes("hemat")
-                    ? "Paket 100"
-                    : "100 e-Meterai"}
+                  {el.package_name}
                   <a
                     data-tip={tooltipDesc(el.package_name)}
                     className="package-tooltip text-blue mx-2 rounded-full text-xxs"
@@ -145,16 +141,16 @@ export default function PaketProduk() {
                     place="bottom"
                     type="dark"
                     effect="solid"
-                    className="rounded-full tooltip-price"
+                    className="rounded-full tooltip-price font-sans"
                     multiline={true}
                   />
                 </div>
                 <div className="flex justify-between mt-2">
-                  <div className="font-bold mt-2 w-full text-blue text-sm">
+                  <div className="font-bold mt-5 w-full text-blue text-sm">
                     {formatHarga(Number(el.price))} <br />
-                    <label className="text-xxs text-grey font-light">
+                    {/* <label className="text-xxs text-grey font-light">
                       Pajak {formatHarga(Number(el.tax))}
-                    </label>
+                    </label> */}
                   </div>
                   <div className="mt-4 w-full text-right">
                     <button

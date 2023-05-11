@@ -82,7 +82,7 @@ export default function ProdukSatuan() {
           {produkSatuan.map((el, index) => {
             return (
               <div
-                className={`card-shadow border-grey-3 rounded-lg px-6 py-4 ${
+                className={`card-shadow-2 border-grey-3 rounded-lg px-6 py-5 ${
                   index !== produkSatuan.length ? "mr-4" : null
                 }`}
                 key={index}
@@ -98,11 +98,11 @@ export default function ProdukSatuan() {
                     : "e-Meterai"}
                 </div>
                 <div className="flex justify-between mt-2">
-                  <div className="font-bold mt-2 w-full text-blue text-sm">
+                  <div className="font-bold mt-5 w-full text-blue text-sm">
                     {formatHarga(Number(el.product_price))} <br />
-                    <label className="text-xxs text-grey font-light">
+                    {/* <label className="text-xxs text-grey font-light">
                       Pajak {formatHarga(Number(el.product_tax))}
-                    </label>
+                    </label> */}
                   </div>
                   <div className="mt-4 w-full text-right">
                     <button

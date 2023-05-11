@@ -19,6 +19,8 @@ export default function KuotaCard() {
 
   const { quotaMeterai, cekQuota, quotaForm } = functions;
 
+  console.log(meteraiQuota)
+
   useEffect(() => {
       // dokumenSelesai(dataUser.uid);
       // dokumenPending(dataUser.uid);

@@ -1327,6 +1327,10 @@ body {
   box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.06);
 }
 
+.card-shadow-2 {
+  box-shadow: 0px 1px 6px rgba(49, 53, 59, 0.12);
+}
+
 .py-24 {
   padding-top: 6rem;
   padding-bottom: 6rem;
@@ -1857,4 +1861,5 @@ body {
 
 .tooltip-price{
   font-size: 12px !important;
+  text-align-last: left !important;
 }

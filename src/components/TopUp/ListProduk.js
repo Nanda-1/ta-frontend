@@ -37,7 +37,7 @@ export default function ListProduk() {
           <ProdukSatuan />
           <PaketProduk />
         </div>
-        <div className="text-black mt-9 card-shadow border-grey-3 rounded-lg font-sans">
+        <div className="text-black mt-9 card-shadow-2 border-grey-3 rounded-lg font-sans">
           <div className="rounded-lg p-4 text-sm">
             <div className="font-bold font-700 mb-4">Detail Pesanan</div>
             <div className="mb-3 text-xs text-grey">

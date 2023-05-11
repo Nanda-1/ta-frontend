@@ -46,7 +46,7 @@ export default function Forgotpwd() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token.access_token,
+          // Authorization: "Bearer " + token.access_token,
         },
         body: JSON.stringify({
           email: input.email,

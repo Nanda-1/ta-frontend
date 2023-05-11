@@ -164,7 +164,7 @@ export default function Register() {
     setLoad(false);
 
     if (isFormValid === true) {
-      if (regist["phone"].length >= 12) {
+      if (regist["phone"].length > 12) {
         setIsFormValid(false);
         swal({
           title: "Gagal!",

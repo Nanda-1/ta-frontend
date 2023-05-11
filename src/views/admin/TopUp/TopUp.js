@@ -76,7 +76,7 @@ export default function TopUp() {
       <hr className="my-3 mx-auto topup-line" />
       <ListProduk />
       <div className="mt-8 text-xl font-bold">Riwayat Top Up</div>
-      <div className="card-shadow border-grey-3 w-9/12 rounded-lg my-4 z-40">
+      <div className="card-shadow-2 border-grey-3 w-9/12 rounded-lg my-4 z-40">
         <table className="items-center w-full overflow-x-auto">
           <thead>
             <tr>

@@ -436,13 +436,14 @@ export const UserProvider = (props) => {
         }
       })
       .then((result) => {
+        console.log(type)
         if (type === "eform") {
           setFormKuota(result.data.quota_value);
           cekQuota("ttd");
         } else if (type === "ttd") {
           setTtdQuota(result.data.quota_value);
           cekQuota("emeterai");
-        } else {
+        } else if(type === "emeterai"){
           setMeteraiQuota(result.data.quota_value);
         }
       })
