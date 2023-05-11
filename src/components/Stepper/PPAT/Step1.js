@@ -89,7 +89,7 @@ const Step1 = (props) => {
                 >
                   <div className="mx-auto my-auto">
                     <label htmlFor="upload-button" className="w-auto">
-                      {fileLengkapiDiri.length ? (
+                      {fileLengkapiDiri.length < 0? (
                         <div>
                           <img
                             className="mx-auto my-4 align-middle h-36 w-36 bg-fix"
