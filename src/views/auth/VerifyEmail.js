@@ -13,63 +13,45 @@ export default function VerifiyEmail() {
   const { email, verify_code } = queryString.parse(location.search);
   const { refreshToken } = useContext(RegistContext);
 
-  const { respon, setRespon } = useState(null);
-  const { errorr, setErrorr } = useState(null);
   const { go, setGo } = useState(false);
 
+  //200
+  const { respon, setRespon } = useState(null);
+  const successDiv = respon ? <div className="respon">{respon}</div> : "";
+  //400
+  const [errors, setErrors] = useState(null);
+  const errorDiv = errors ? <div className="error">{errors}</div> : "";
+
   const checkCode = async () => {
-    
     let myHeaders = new Headers();
     myHeaders.append("Cookies", "REVEL_FLASH=");
     myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     fetch(
       process.env.REACT_APP_BACKEND_HOST_AUTH +
-      "api/auth/register/verify-email?email=" +
-      email +
-      "&verify_code=" +
-      verify_code,
+        "api/auth/register/verify-email?email=" +
+        email +
+        "&verify_code=" +
+        verify_code,
       { method: "GET" }
-      ).then((res) => res.json())
+    )
+      .then((ress) => {
+        if (ress.status === 401) {
+          refreshToken();
+        } else {
+          return ress.json();
+        }
+      })
       .then((res) => {
-      let getErr = res.error 
-
-      if (res.success === true) {
-        console.log(getErr);
-        setRespon(JSON.stringify(getErr))
-        setGo(true)
-      } else{
-        console.log(getErr);
-        setErrorr(JSON.stringify(getErr))
-        setGo(false)
-      }
-    })
-    .catch((error) => console.log("error", error));
-      // .then((res) => {
-      //   if (res.status === 401) {
-      //     refreshToken();
-      //   } else if (res.status === 400) {
-      //     // setGo(false);
-      //     // setErrorr(res.error);
-      //     console.log(res.success);
-      //   } else {
-      //     return res.json();
-      //   }
-      // })
-      // .then((respons) => {
-      //   if (respons.data === null) {
-      //     // setGo(true);
-      //     setRespon(respons.data.message);
-      //     console.log(respons.data.message);
-      //   // } else if (respons.success === false) {
-      //   //   // setGo(false);
-      //     setErrorr("respons.error");
-      //   //   console.log(respons.error);
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.log("error", error);
-      // });
+        if (res.success === true) {
+          setRespon(res.data.message)
+          setGo(true);
+        } else {
+          setErrors(res.error);
+          setGo(false);
+        }
+      })
+      .catch((error) => console.log("error", error));
   };
 
   useEffect(() => {
@@ -91,9 +73,8 @@ export default function VerifiyEmail() {
                   />
                   <h1 className="text-center text-4xl font-bold mt-4">
                     Selamat!!! <br />
-                    
-                    {respon && <h3>{respon}</h3>}
-                    {errorr && <h3>{errorr}</h3>}
+                    {successDiv}
+                    {/* {errorDiv} */}
                   </h1>
                   <p className="text-center mt-4">
                     Akun Anda sudah dapat digunakan
@@ -116,8 +97,8 @@ export default function VerifiyEmail() {
                   />
                   <h1 className="text-center text-4xl font-bold mt-4">
                     Perhatian!!! <br />
-                    {respon && <h3>{respon}</h3>}
-                    {errorr && <h3>{errorr}</h3>}
+                    {/* {successDiv} */}
+                    {errorDiv}
                   </h1>
                   {/* <p className="text-center mt-4">
                     Akun Anda sudah dapat digunakan

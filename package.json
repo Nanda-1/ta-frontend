@@ -26,6 +26,7 @@
     "jquery": "^3.6.0",
     "js-cookie": "^3.0.1",
     "postcss": "8.2.8",
+    "query-string": "^8.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-headless-pagination": "^1.1.4",
@@ -58,18 +59,12 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  
+  "browserslist": [
+    ">0.2%",
+   "not dead",
+   "not op_mini all"
+ ],
   "optionalDependencies": {
     "typescript": "4.2.3"
   }
