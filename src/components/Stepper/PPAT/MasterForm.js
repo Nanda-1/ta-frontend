@@ -9,7 +9,7 @@ import {
   CardText,
   CardFooter,
 } from "reactstrap";
-import swal from "sweetalert";
+// import swal from "sweetalert";
 import cookies from "js-cookie";
 
 //1.Upload SK
@@ -156,32 +156,33 @@ class MasterForm extends Component {
   // Trigger an alert on form submission
   handleSubmit = (event) => {
     event.preventDefault();
-    swal("Apakah anda telah memiliki tanda tangan elektronik sebelumnya ?", {
-      buttons: {
-        cancel: "Batal",
-        catchSign: {
-          text: "Belum",
-          value: "catchSign",
-        },
-        catchCA: {
-          text: "Sudah",
-          value: "catchCA",
-        },
-      },
-    }).then((value) => {
-      switch (value) {
-        case "catchSign":
-          this.context.toSign();
-          break;
+    this.context.toSign();
+    // swal("Apakah anda telah memiliki tanda tangan elektronik sebelumnya ?", {
+    //   buttons: {
+    //     cancel: "Batal",
+    //     catchSign: {
+    //       text: "Belum",
+    //       value: "catchSign",
+    //     },
+    //     catchCA: {
+    //       text: "Sudah",
+    //       value: "catchCA",
+    //     },
+    //   },
+    // }).then((value) => {
+    //   switch (value) {
+    //     case "catchSign":
+    //       this.context.toSign();
+    //       break;
 
-        case "catchCA":
-          this.context.toCA();
-          break;
+    //     case "catchCA":
+    //       this.context.toCA();
+    //       break;
 
-        default:
-          swal("Submit dibatalkan");
-      }
-    });
+    //     default:
+    //       swal("Submit dibatalkan");
+    //   }
+    // });
   };
 
   get submitButton() {

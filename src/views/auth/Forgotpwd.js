@@ -4,7 +4,7 @@ import { RegistContext } from "views/auth/RegistContext";
 import { useHistory } from "react-router";
 
 export default function Forgotpwd() {
-  const history = useHistory()
+  const history = useHistory();
   const { refreshToken } = useContext(RegistContext);
 
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ export default function Forgotpwd() {
       });
 
       return false;
-    } 
+    }
 
     fetch(
       process.env.REACT_APP_BACKEND_HOST_AUTH + "api/reset-password/send-email",
@@ -68,7 +68,7 @@ export default function Forgotpwd() {
             text: res.data.message,
             icon: "success",
           });
-          history.push("/login")
+          history.push("/login");
         } else {
           swal("Gagal", res.error, "error");
         }
@@ -120,7 +120,7 @@ export default function Forgotpwd() {
                   <div className="text-center mt-6">
                     <input
                       type="submit"
-                      style={{cursor:'pointer'}}
+                      style={{ cursor: "pointer" }}
                       value="Kirim Reset Password"
                       className="bg-blue text-white text-sm font-bold py-2 mt-1 text-center rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                     />

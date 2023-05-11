@@ -204,6 +204,7 @@ export const TopUpProvider = (props) => {
             topUpDetail(id);
           }
         }
+        topUpDetail(id);
       })
       .catch((error) => console.log("error", error));
   };
@@ -228,6 +229,9 @@ export const TopUpProvider = (props) => {
         setMidtrans(result.data.midtrans);
         setCheckout(result.data.top_up);
         setListItem(result.data.top_up.top_up_details);
+        if(paymentModal && result.data.top_up.payment_status === 'success'){
+          swal("Berhasil", "Pembayaran Berhasil", "success");
+        }
       })
       .catch((error) => console.log("error", error));
   };

@@ -49,6 +49,10 @@ export default function Payment() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const cekStatus = () => {
+    topUpDetail(Cookies.get("top_up_transaction_id"));
+  };
+
   const hargaBarang = (nama_produk) => {
     if (nama_produk.includes("Paket")) {
       const filter = listHarga.filter((el) => el.package_name === nama_produk);
@@ -155,7 +159,11 @@ export default function Payment() {
                   className="text-black px-4 py-3 flex"
                   style={{ boxShadow: " 0px -2px 10px rgba(0, 0, 0, 0.12)" }}
                 >
-                  <div className=" w-80">
+                  <div
+                    className={
+                      checkout.payment_status === "pending" ? "w-60" : "w-80"
+                    }
+                  >
                     Total Belanja <br />
                     <label className="font-700">
                       {midtrans
@@ -167,7 +175,7 @@ export default function Payment() {
                           )}
                     </label>
                   </div>
-                  {checkout.payment_status === null && (
+                  {checkout.payment_status === null ? (
                     <button
                       className="bg-blue text-white flex rounded-lg px-8 py-2 text-sm"
                       style={{ alignSelf: "center" }}
@@ -181,7 +189,15 @@ export default function Payment() {
                       />
                       Bayar
                     </button>
-                  )}
+                  ) : checkout.payment_status === "pending" ? (
+                    <button
+                      className="bg-blue text-white flex rounded-lg px-2 py-2 text-sm"
+                      style={{ alignSelf: "center" }}
+                      onClick={cekStatus}
+                    >
+                      Saya Sudah Membayar
+                    </button>
+                  ) : null}
                 </div>
               </div>
               {otherPayment && (

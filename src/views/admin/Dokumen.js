@@ -86,7 +86,7 @@ export default function Dokumen() {
       Cookies.set("step", "stamping");
       history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "sign_ttd") {
-      history.push("/ruang_virtual=testin&&id=" + id);
+      history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "generate_document") {
       // Cookies.set("transaction_id", id);
       if (typeDoc === "akta_jual_beli") {
