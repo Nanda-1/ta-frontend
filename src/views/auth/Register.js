@@ -34,7 +34,7 @@ export default function Register() {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isValid, setIsValid] = useState(false);
 
-  //validasi email//
+  //validate email//
   const changeHandle = (e) => {
     if (!regist["email"] || regist["email"] !== "") {
       var patternd = new RegExp(/\S+@\S+\.\S+/);
@@ -62,6 +62,7 @@ export default function Register() {
     setRegist({ ...regist, [formIsian]: isian });
   };
 
+  //validate phone//
   const validatePhone = (phone) => {
     let phones = String(phone).trim();
     const arr = [];
@@ -101,7 +102,7 @@ export default function Register() {
     return errorp.phone.length ? false : true;
   };
 
-  //validasi password//
+  //validate password//
   const validatePassword = (password) => {
     const arr = [];
     if (password.length < 8) {
@@ -154,6 +155,9 @@ export default function Register() {
   const addRegistAPI = async (event) => {
     event.preventDefault();
     cookies.remove("token");
+    
+    setLoad(false);
+    
     if (phoneHandle()) {
       setIsValid(true);
     } else {
@@ -175,8 +179,6 @@ export default function Register() {
         icon: "warning",
       });
     }
-
-    setLoad(false);
 
     if (isValid === true && isFormValid === true) {
       swal({
