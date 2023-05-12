@@ -5,7 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "Context/UserContext";
 
 // views
-import Login from "views/auth/Login.js";
+import Login from "views/auth/login.js";
 import * as serviceWorker from "./serviceWorker";
 
 export default function Auth() {

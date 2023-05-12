@@ -11,7 +11,7 @@ export default function LoginForm() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const [input, setInput] = useState({
-    email: null,
+    nra: null,
     password: "",
   });
 
@@ -23,7 +23,7 @@ export default function LoginForm() {
   };
 
   if (input.tlp?.includes("@")) {
-    setInput({ ...input, email: input.tlp, tlp: null });
+    setInput({ ...input, nra: input.tlp, tlp: null });
   }
 
   const handleSubmit = async (event) => {
@@ -31,18 +31,25 @@ export default function LoginForm() {
     setLoading(true);
 
     var formdata = new FormData();
-    formdata.append("email", input.email);
+    formdata.append("nra", input.nra);
     formdata.append("password", input.password);
+
+    var myHeaders = {
+      'Content-Type': 'application/json',
+      'API.KEY': 'KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoIlh'
+    };
+    
 
     var requestOptions = {
       method: "POST",
-      // headers: myHeaders,
-      body: formdata,
+      headers: myHeaders,
+      body: JSON.stringify(Object.fromEntries(formdata)),
       redirect: "follow",
     };
 
     await fetch(
-      process.env.REACT_APP_BACKEND_HOST + "api/auth/login",
+      // process.env.REACT_APP_BACKEND_HOST + "api/auth/login",
+      "http://localhost:8080/api/auth/login",
       requestOptions
     )
       .then((res) => res.json())
@@ -85,8 +92,8 @@ export default function LoginForm() {
 
                     <input
                       type="text"
-                      name="email"
-                      value={input.email}
+                      name="nra"
+                      value={input.nra}
                       onChange={handleChange}
                       className="px-3 py-3 text-sm mb-3 focus:outline-none w-full login-form"
                       required={true}
