@@ -9,7 +9,7 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 export default function Sign() {
   var auth = localStorage.getItem("authentication");
   var token = JSON.parse(auth);
-  const { inputRegist, setInputRegist, refreshToken} =
+  const { inputRegist, setInputRegist, refreshToken } =
     useContext(RegistContext);
 
   //Show Spinner
@@ -82,7 +82,10 @@ export default function Sign() {
       });
       setDisable(true);
     }
+    console.log(png.previewPng);
+    console.log(png.rawPng);
     console.log(getk);
+    console.log(png);
   };
 
   /** Canvas Section **/
@@ -211,26 +214,34 @@ export default function Sign() {
     // canvas.item.lockMovementX = true;
     // canvas.item.lockMovementY = true;
 
-    var blobs = new Blob([blob], { type: "image/png" });
+    // var blobs = new Blob([blob], { type: "image/png" });
 
-    let getttd = blobs.size;
-    if (getttd < "2203") {
-      console.log(blobs.size);
-      canvas.isDrawingMode = true;
-      swal({
-        title: "Gagal!",
-        text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
-        icon: "warning",
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } else if (getttd > "2203") {
-      console.log(blobs.size);
-      setLoad(true);
-      sendLengkapiDiri(blobs);
+    // let getttd = blobs.size;
+
+    if (!base64result) {
+        setLoad(true);
+        sendLengkapiDiri(png.rawPng);
+        console.log(png.rawPng)
+    } else {
+      var blobs = new Blob([blob], { type: "image/png" });
+      let getttd = blobs.size;
+      if (getttd < "2203") {
+        console.log(blobs.size);
+        canvas.isDrawingMode = true;
+        swal({
+          title: "Gagal!",
+          text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
+          icon: "warning",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else if (getttd > "2203") {
+        console.log(blobs.size);
+        setLoad(true);
+        sendLengkapiDiri(blobs);
+      }
     }
-
     let img = new Image();
     //edited from
     // img.crossOrigin = "anonymous";
@@ -405,10 +416,11 @@ export default function Sign() {
     myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let formdata = new FormData();
-    if(isShow === true){
+    if (isShow === true) {
       formdata.append("file", fileOfBlob);
-    }else if(isUpload === true){
-      formdata.append("file", png.previewPng);
+    } else if (isUpload === true) {
+      formdata.append("file", png.rawPng);
+      console.log(png.rawPng);
     }
 
     let requestOptions = {
