@@ -164,7 +164,7 @@ export const UserProvider = (props) => {
         // console.log(result)
         let transaction_id = result.data.transaction_id;
         cookies.set("transaction_id", transaction_id, { expires: 1 });
-        history.push(`/admin/AktaJualBeli`);
+        history.push(`/admin/AktaJualBeli=` + transaction_id);
         window.location.reload();
       })
       .catch((error) => console.log("error", error));
@@ -436,7 +436,6 @@ export const UserProvider = (props) => {
         }
       })
       .then((result) => {
-        console.log(type)
         if (type === "eform") {
           setFormKuota(result.data.quota_value);
           cekQuota("ttd");

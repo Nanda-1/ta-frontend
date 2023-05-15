@@ -112,7 +112,7 @@ export default function Login() {
                 </div>
                 <div className="text-sm pt-2 pb-10 text-center">
                   {" "}
-                  Masukkan nomor handphone dan password akun Anda
+                  {/* Masukkan nomor handphone atau email dan password akun Anda */}
                 </div>
                 {error && (
                   <div
@@ -129,7 +129,7 @@ export default function Login() {
                       className="block uppercase text-xs font-bold mb-2"
                       htmlFor="grid-password"
                     >
-                      Nomor Handphone
+                      No. Handphone atau E-mail
                     </label>
                     <input
                       type="text"

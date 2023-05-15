@@ -30,7 +30,7 @@ const UserDropdown = () => {
         />
       </span>
       <div className={"px-3 text-blue"}>
-        {!object.user_detail ? "Pengguna" : getName(object.user_detail.name)}
+        {!object?.user_detail ? "Pengguna" : getName(object?.user_detail.name)}
       </div>
     </div>
   );

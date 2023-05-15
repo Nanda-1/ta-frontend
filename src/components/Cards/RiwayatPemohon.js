@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { UserContext } from "Context/UserContext";
 import Cookies from "js-cookie";
 import { useHistory } from "react-router-dom";
+import { io } from "socket.io-client";
+import swal from "sweetalert";
 
 export default function RiwayatPemohon() {
   const { functions, listTransaction } = useContext(UserContext);
@@ -30,10 +32,33 @@ export default function RiwayatPemohon() {
     }
   };
 
+  const socketRoom = (id) => {
+    const socket = io("https://be-ppat-transaction.infinids.id");
+    // console.log(socket)
+
+    socket.on("connect", () => {
+      console.log(`Connected with ID: ${socket.id}`);
+    });
+
+    socket.on(`room start ${id}`, (data) => {
+      swal({
+        text: data.message,
+        icon: "warning",
+        title: "Perhatian",
+        closeOnClickOutside: false,
+      }).then(function () {
+        history.push("/ruang_virtual=testing&&id=" + id);
+      });
+    });
+  };
+
   useEffect(() => {
     transactionList("dashboard");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  var val = localStorage.getItem("dataPPAT");
+  var object = JSON.parse(val);
 
   const currentDoc = (id, statusDoc, typeDoc) => {
     // Cookies.set("transaction_id", id, { expires: 1 });
@@ -62,8 +87,12 @@ export default function RiwayatPemohon() {
       history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "stamp_emeterai") {
       // Cookies.set("transaction_id", id);
-      Cookies.set("step", "stamping");
-      history.push("/admin/" + url + "=" + id);
+      if (object.role === "member") {
+        history.push("/ruang_virtual=testing&&id=" + id);
+      } else {
+        Cookies.set("step", "stamping");
+        history.push("/admin/" + url + "=" + id);
+      }
     } else if (statusDoc === "sign_ttd") {
       history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "generate_document") {
@@ -144,6 +173,7 @@ export default function RiwayatPemohon() {
                 ) : (
                   <>
                     {listTransaction.slice(0, 5).map((item, index) => {
+                      socketRoom(item.transaction_id);
                       return (
                         <tr key={index}>
                           <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">
@@ -197,9 +227,15 @@ export default function RiwayatPemohon() {
                                     item.doc_type
                                   )
                                 }
-                                className="bg-blue font-bold text-white py-2 px-3 rounded-md cursor-pointer"
+                                className={`font-bold text-white cursor-pointer ${
+                                  item.doc_status === "sign_ttd"
+                                    ? ""
+                                    : "bg-blue py-2 px-3 rounded-md"
+                                }`}
                               >
-                                Detail
+                                {item.doc_status === "sign_ttd"
+                                  ? "▶️"
+                                  : "Detail"}
                               </button>
                             )}
                           </td>

@@ -9,7 +9,7 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 export default function Sign() {
   var auth = localStorage.getItem("authentication");
   var token = JSON.parse(auth);
-  const { inputRegist, setInputRegist, refreshToken} =
+  const { inputRegist, setInputRegist, refreshToken } =
     useContext(RegistContext);
 
   //Show Spinner
@@ -53,14 +53,22 @@ export default function Sign() {
 
   /* TTD Image Upload */
   const [png, setPng] = React.useState({ previewPng: "", rawPng: "" });
-  const [getk, getPng] = React.useState("");
+  const [getPng, setGetPng] = React.useState("");
 
   const uploadPngPreview = (e) => {
     let getttd = e.target.files[0];
     let typeDoc = e.currentTarget.files[0].type;
+
+    const reader = new FileReader();
+    reader.onload = function (fileLoadedEvent) {
+      var akta = fileLoadedEvent.target.result;
+      setGetPng(akta);
+    };
+    reader.readAsDataURL(getttd);
+
     if (e.currentTarget.files.length) {
       if (typeDoc === "image/png") {
-        getPng(e.currentTarget.files[0].name);
+        // getPng(encoded);
         setPng({
           previewPng: URL.createObjectURL(e.currentTarget.files[0]),
           rawPng: e.currentTarget.files[0],
@@ -82,7 +90,6 @@ export default function Sign() {
       });
       setDisable(true);
     }
-    console.log(getk);
   };
 
   /** Canvas Section **/
@@ -192,7 +199,6 @@ export default function Sign() {
     canvas.add(alltogetherObj);
     canvas.renderAll();
   };
-
   //save canvas
   const save = () => {
     setLoad(true);
@@ -211,23 +217,26 @@ export default function Sign() {
     // canvas.item.lockMovementX = true;
     // canvas.item.lockMovementY = true;
 
-    var blobs = new Blob([blob], { type: "image/png" });
+    var blobs =
+      getPng ||
+      new Blob([blob], {
+        type: "image/png",
+      });
 
     let getttd = blobs.size;
     if (getttd < "2203") {
-      console.log(blobs.size);
+      setLoad(false);
       canvas.isDrawingMode = true;
       swal({
         title: "Gagal!",
         text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
         icon: "warning",
       });
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    } else if (getttd > "2203") {
-      console.log(blobs.size);
-      setLoad(true);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
+    } else {
+      console.log(blobs);
       sendLengkapiDiri(blobs);
     }
 
@@ -405,9 +414,9 @@ export default function Sign() {
     myHeaders.append("Authorization", "Bearer " + token.access_token);
 
     let formdata = new FormData();
-    if(isShow === true){
+    if (isShow === true) {
       formdata.append("file", fileOfBlob);
-    }else if(isUpload === true){
+    } else if (isUpload === true) {
       formdata.append("file", png.previewPng);
     }
 

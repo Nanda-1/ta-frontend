@@ -8,6 +8,7 @@ import { UserContext } from "Context/UserContext";
 import cookies from "js-cookie";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import RiwayatPemohon from "components/Cards/RiwayatPemohon";
+import { io } from "socket.io-client";
 
 export default function Dashboard() {
   const { setLengkapidiri, loading } = useContext(UserContext);
@@ -41,6 +42,22 @@ export default function Dashboard() {
   if (!object.user_detail && userFiles === false) {
     setLengkapidiri(true);
   }
+
+  let id = cookies.get('roomId')
+
+  useEffect(() => {
+    const socket = io("https://be-ppat-transaction.infinids.id");
+    // console.log(socket)
+
+    socket.on("connect", () => {
+      console.log(`Connected with ID: ${socket.id}`);
+    });
+
+    socket.on(`room start ${id}`, (data) => {
+      alert(data);
+    });
+
+  }, []);
 
   return (
     <>

@@ -31,9 +31,14 @@ import { RegistProvider } from "views/auth/RegistContext";
 import * as serviceWorker from "./serviceWorker";
 import Maps from "views/admin/WebRTC/Maps";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Dashboard from "views/admin/Dashboard";
+import Admin from "./Admin";
 
 export default function Auth() {
   var val = localStorage.getItem("authentication");
+
+  var dataUser = localStorage.getItem("dataPPAT");
+
   const histori = useHistory();
 
   // useEffect(() => {
@@ -54,7 +59,7 @@ export default function Auth() {
           <Switch>
             <RegistProvider>
               <UserProvider>
-                <Route path="/" exact component={Login} />
+                <Route path="/" exact component={val ? Admin : Login} />
                 <Route path="/login" exact component={Login} />
                 <Route path="/login_otp" exact component={ModalOtp} />
               </UserProvider>

@@ -42,6 +42,9 @@ export default function HistoryCard({ dataUser }) {
     // transactionList(dataUser.uid);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
+  var val = localStorage.getItem("dataPPAT");
+  var object = JSON.parse(val);
 
   const currentDoc = (id, statusDoc, typeDoc) => {
     Cookies.set("id_transaksi", id, { expires: 1 });

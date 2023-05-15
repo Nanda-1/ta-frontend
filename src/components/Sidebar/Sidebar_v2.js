@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
 
@@ -21,9 +21,11 @@ import NewDoc from "assets/img/Iconnew.png";
 // Context
 import { UserContext } from "../../Context/UserContext";
 import ListBlanko from "./ListBlanko";
+import ModalDokumen from "components/Modals/ModalDokumen";
 
 export default function Sidebar_v2() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
+  const [loading, setLoading] = useState(false);
   const { setLoginStatus, sidebar } = useContext(UserContext);
 
   let history = useHistory();
@@ -33,13 +35,17 @@ export default function Sidebar_v2() {
 
   const handleLogout = () => {
     setLoginStatus(false);
+    setLoading(true);
     localStorage.removeItem("dataPPAT");
     localStorage.removeItem("authentication");
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
   };
 
   return (
     <>
+      {loading && <ModalDokumen />}
       {sidebar && (
         <nav className="fixed sidebar-scroll md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden sidebar bg-white flex flex-wrap items-center justify-between md:w-46 z-40 py-4 font-roboto sidebar-open">
           <div className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
@@ -108,30 +114,32 @@ export default function Sidebar_v2() {
                       />
                     </td>
                     <td className="font-bold text-sm">
-                      {object.ppat_detail?.name}
+                      {object?.ppat_detail?.name || object?.user_detail?.name}
                     </td>
                   </tr>
                   <tr>
                     {/* <td style={{background: 'blue'}}></td> */}
-                    <td className="text-xs">{object.role.toUpperCase()}</td>
+                    <td className="text-xs">{object?.role.toUpperCase()}</td>
                   </tr>
                 </tbody>
               </table>
               <hr className="mt-2 mx-auto sidebar-line" />
               {/* Navigation */}
-              <div className="ml-4 mt-3">
-                <label className="font-700 flex" style={{ fontSize: "13px" }}>
-                  <img
-                    src={NewDoc}
-                    style={{ width: "15px", height: "18px" }}
-                    className="mr-2 mb-2"
-                  />
-                  Buat Baru Blangko Akta PPAT
-                </label>
-                <div>
-                  <ListBlanko />
+              {object.role !== "member" && (
+                <div className="ml-4 mt-3">
+                  <label className="font-700 flex" style={{ fontSize: "13px" }}>
+                    <img
+                      src={NewDoc}
+                      style={{ width: "15px", height: "18px" }}
+                      className="mr-2 mb-2"
+                    />
+                    Buat Baru Blangko Akta PPAT
+                  </label>
+                  <div>
+                    <ListBlanko />
+                  </div>
                 </div>
-              </div>
+              )}
 
               <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                 <li className="items-center mt-2">
@@ -151,28 +159,29 @@ export default function Sidebar_v2() {
                     <div className="pl-8 pt-1 sidebar-font">Beranda</div>
                   </Link>
                 </li>
-
-                <li className="items-center mt-2">
-                  {window.location.pathname.includes("ppat") && (
-                    <div className="sidebar-active"></div>
-                  )}
-                  <Link
-                    className={
-                      "text-md py-2 ml-6 block focus:outline-none" +
-                      (window.location.pathname.includes("ppat")
-                        ? "text-sky-500 hover:text-sky-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/ppat"
-                  >
-                    <img
-                      src={DataPpat}
-                      className="sidebar-icon"
-                      alt="data_ppat"
-                    />
-                    <div className="pl-8 pt-1 sidebar-font">Data PPAT</div>
-                  </Link>
-                </li>
+                {object.role !== "member" && (
+                  <li className="items-center mt-2">
+                    {window.location.pathname.includes("ppat") && (
+                      <div className="sidebar-active"></div>
+                    )}
+                    <Link
+                      className={
+                        "text-md py-2 ml-6 block focus:outline-none" +
+                        (window.location.pathname.includes("ppat")
+                          ? "text-sky-500 hover:text-sky-600"
+                          : "text-blueGray-700 hover:text-blueGray-500")
+                      }
+                      to="/admin/ppat"
+                    >
+                      <img
+                        src={DataPpat}
+                        className="sidebar-icon"
+                        alt="data_ppat"
+                      />
+                      <div className="pl-8 pt-1 sidebar-font">Data PPAT</div>
+                    </Link>
+                  </li>
+                )}
 
                 <li className="items-center mt-2">
                   {window.location.pathname.includes("dokumen") && (
@@ -192,27 +201,29 @@ export default function Sidebar_v2() {
                   </Link>
                 </li>
 
-                <li className="items-center mt-2">
-                  {window.location.pathname.includes("karyawan") && (
-                    <div className="sidebar-active"></div>
-                  )}
-                  <Link
-                    className={
-                      "text-md py-2 ml-6 block focus:outline-none" +
-                      (window.location.pathname.includes("karyawan")
-                        ? "text-sky-500 hover:text-sky-600"
-                        : "text-blueGray-700 hover:text-blueGray-500")
-                    }
-                    to="/admin/karyawan"
-                  >
-                    <img
-                      src={Karyawan}
-                      className="sidebar-icon"
-                      alt="karyawan"
-                    />
-                    <div className="pl-8 pt-1 sidebar-font">Karyawan</div>
-                  </Link>
-                </li>
+                {object.role !== "member" && (
+                  <li className="items-center mt-2">
+                    {window.location.pathname.includes("karyawan") && (
+                      <div className="sidebar-active"></div>
+                    )}
+                    <Link
+                      className={
+                        "text-md py-2 ml-6 block focus:outline-none" +
+                        (window.location.pathname.includes("karyawan")
+                          ? "text-sky-500 hover:text-sky-600"
+                          : "text-blueGray-700 hover:text-blueGray-500")
+                      }
+                      to="/admin/karyawan"
+                    >
+                      <img
+                        src={Karyawan}
+                        className="sidebar-icon"
+                        alt="karyawan"
+                      />
+                      <div className="pl-8 pt-1 sidebar-font">Karyawan</div>
+                    </Link>
+                  </li>
+                )}
 
                 <li className="items-center mt-2">
                   {window.location.pathname.includes("histori") && (

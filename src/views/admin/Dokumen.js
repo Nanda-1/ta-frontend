@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { Pagination } from "react-headless-pagination";
 import NextIcon from "../../assets/img/next-light.png";
 import PrevIcon from "../../assets/img/prev.png";
+import { io } from "socket.io-client";
 
 export default function Dokumen() {
   const { functions, listTransaction } = useContext(UserContext);
@@ -57,8 +58,22 @@ export default function Dokumen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  var val = localStorage.getItem("dataPPAT");
+  var object = JSON.parse(val);
+
   const currentDoc = (id, statusDoc, typeDoc) => {
     let url = "";
+
+    const socket = io("https://be-ppat-transaction.infinids.id");
+    // console.log(socket)
+
+    socket.on("connect", () => {
+      console.log(`Connected with ID: ${socket.id}`);
+    });
+
+    socket.on(`room start ${id}`, (data) => {
+      alert(data);
+    });
 
     if (typeDoc === "akta_jual_beli") {
       url = "AktaJualBeli";
@@ -83,8 +98,12 @@ export default function Dokumen() {
       history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "stamp_emeterai") {
       // Cookies.set("transaction_id", id);
-      Cookies.set("step", "stamping");
-      history.push("/admin/" + url + "=" + id);
+      if (object.role === "member") {
+        history.push("/ruang_virtual=testing&&id=" + id);
+      } else {
+        Cookies.set("step", "stamping");
+        history.push("/admin/" + url + "=" + id);
+      }
     } else if (statusDoc === "sign_ttd") {
       history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "generate_document") {
@@ -260,9 +279,15 @@ export default function Dokumen() {
                                       item.doc_type
                                     )
                                   }
-                                  className="bg-blue text-white py-2 px-3 rounded-md cursor-pointer"
+                                  className={`font-bold text-white cursor-pointer ${
+                                    item.doc_status === "sign_ttd"
+                                      ? ""
+                                      : "bg-blue py-2 px-3 rounded-md"
+                                  }`}
                                 >
-                                  Detail
+                                  {item.doc_status === "sign_ttd"
+                                    ? "▶️"
+                                    : "Detail"}
                                 </button>
                               </>
                             )}

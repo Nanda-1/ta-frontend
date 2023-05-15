@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 
 // Context
@@ -42,12 +42,27 @@ import Stamping from "views/admin/PTSL/Stamping";
 import UploadSertipikat from "views/admin/SuratKuasa/UploadSertipikat";
 import DokumenSuratKuasa from "views/admin/SuratKuasa/DokumenSuratKuasa";
 import StampingSuratKuasa from "views/admin/SuratKuasa/StampingSuratKuasa";
+// import { io } from "socket.io-client";
+// import Cookies from "js-cookie";
 
 export default function Admin() {
   const { sidebar } = useContext(UserContext);
 
-  if (window.location.pathname.includes("call")) {
-  }
+  // let id = Cookies.get("roomid");
+
+  // useEffect(() => {
+  //   const socket = io("https://be-ppat-transaction.infinids.id");
+  //   // console.log(socket)
+
+  //   socket.on("connect", () => {
+  //     console.log(`Connected with ID: ${socket.id}`);
+  //   });
+
+  //   socket.on(`room start ${id}`, (data) => {
+  //     alert(data);
+  //   });
+  // }, []);
+
   return (
     <>
       <SidebarV2 />
@@ -65,6 +80,7 @@ export default function Admin() {
           <Switch>
             <UserProvider>
               <LengkapiDiriCard />
+              <Route path="/" exact component={Dashboard} />
               <Route path="/admin/dashboard" exact component={Dashboard} />
               {/* <Route path="/admin/tables" exact component={RecordView} /> */}
 

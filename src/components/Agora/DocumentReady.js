@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import Prev from "../../assets/img/icon/prev.png";
 import Next from "../../assets/img/icon/nextBtn.png";
@@ -8,6 +8,8 @@ import { fabric } from "fabric";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import OtpModal from "components/Modals/OTP";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { io } from "socket.io-client";
+import swal from "sweetalert";
 
 const DocumentReady = ({
   ajbDoc,
@@ -20,11 +22,45 @@ const DocumentReady = ({
   loadingFile,
   setLoadingFile,
   otpModal,
+  getDokumenAjb,
 }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [disabled, setDisabled] = useState(true);
+  const [disabledImg, setDisabledImg] = useState(false);
 
   let { id } = useParams();
+
+  const val = localStorage.getItem("dataPPAT");
+  const object = JSON.parse(val);
+
+  useEffect(() => {
+    const socket = io("https://be-ppat-transaction.infinids.id");
+    // console.log(socket)
+
+    socket.on("connect", () => {
+      console.log(`Connected with ID: ${socket.id}`);
+    });
+
+    socket.on(`update document ${id}`, (data) => {
+      swal({
+        title: "Berhasil",
+        text: data.message,
+        icon: "success",
+      });
+      getDokumenAjb();
+      setDisabled(!disabled);
+    });
+
+    socket.on(`ttd ${id} ${object.email}`, (data) => {
+      swal({
+        // title: "",
+        text: data.message,
+        icon: "warning",
+      });
+      setDisabled(!disabled);
+    });
+  }, []);
 
   var elements = [];
 
@@ -154,6 +190,7 @@ const DocumentReady = ({
   };
 
   const handlePembubuhan = () => {
+    setDisabledImg(true);
     setLoadingFile(true);
     addTandaTangan(pageNumber, id);
   };
@@ -252,8 +289,11 @@ const DocumentReady = ({
         ) : (
           <div style={{ alignSelf: "center" }}>
             <button
-              className="bg-blue text-white py-2 px-12 rounded"
+              className={`text-white py-2 px-12 rounded ${
+                disabled ? "bg-gray-d cursor-not-allowed" : "bg-blue"
+              }`}
               onClick={() => addTtd("addTtd")}
+              // disabled={disabled}
             >
               Tanda Tangan
             </button>
@@ -273,12 +313,14 @@ const DocumentReady = ({
         <div className="Example__container_pdf">
           <div className="canvas-wrapper">
             <canvas id="canvasTtd" className="z-2 border-black">
-              <img
-                src={ttdImage}
-                id="ttd"
-                className="z-2 img-canvas"
-                alt="ttd"
-              />
+              {!disabledImg && (
+                <img
+                  src={ttdImage}
+                  id="ttd"
+                  className="z-2 img-canvas"
+                  alt="ttd"
+                />
+              )}
             </canvas>
           </div>
           <Document

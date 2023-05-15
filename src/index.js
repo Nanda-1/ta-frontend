@@ -16,11 +16,15 @@ import TopUp from "views/admin/TopUp/TopUp";
 import { AjbProvider } from "Context/AjbContext";
 import { AgoraProvider } from "Context/AgoraContext";
 import AgoraRtc from "components/Agora/AgoraRtc";
+import swal from "sweetalert";
+import Dashboard from "views/admin/Dashboard";
 
 var val = localStorage.getItem("authentication");
+var dataUser = localStorage.getItem("dataPPAT");
+console.log(val);
 
 const PrivateRoute = ({ ...props }) => {
-  if (val !== undefined) {
+  if (dataUser !== null) {
     return <Route {...props} />;
   } else {
     return <Redirect to="/" />;

@@ -8,12 +8,14 @@ export const MyAjbContext = createContext();
 export const AjbProvider = (props) => {
   const [ajb, setAjb] = useState([""]);
   const [ajbDoc, setAjbDoc] = useState([""]);
+  const [dataDetailAjb, setDataDetailAjb] = useState([]);
   const [inputAjb, setInputAjb] = useState([]);
   const [dataProv, setDataProv] = useState([]);
   const [dataKota, setDataKota] = useState([]);
   const [dataKec, setDataKec] = useState([]);
   const [dataKel, setDataKel] = useState([]);
   const [dataNik, setDataNik] = useState();
+  const [faceVerifikasi, setFaceVerifikasi] = useState(true);
   const [ttdDigital, setTtdDigital] = useState(false);
   const [meterai, setMeterai] = useState(false);
   const [ttdImage, setTtdImage] = useState("");
@@ -350,6 +352,8 @@ export const AjbProvider = (props) => {
         }
       })
       .then((result) => {
+        // Cookies.set(result.data.actors[0].user_email);
+        setDataDetailAjb(result.data)
         let nomor_dokumen = result.data.doc_num;
         let nama_dokumen = result.data.doc_name;
         let id = result.data.transaction_id;
@@ -524,9 +528,9 @@ export const AjbProvider = (props) => {
         if (result.error) {
           swal("Error", result.error, "error");
         } else {
-          setInputAjb({ ...inputAjb, doc2: result });
+          getDokumenAjb(id)
           setOtpModal(false);
-          window.location.reload();
+          // window.location.reload();
         }
       })
       .catch((error) => {
@@ -724,6 +728,10 @@ export const AjbProvider = (props) => {
         ajbDoc,
         setAjbDoc,
         rtcPage,
+        faceVerifikasi,
+        setFaceVerifikasi,
+        dataDetailAjb,
+        setDataDetailAjb,
       }}
     >
       {props.children}

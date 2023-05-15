@@ -103,7 +103,7 @@ const InputDataDokumen = () => {
     }
   };
 
-  if (dataKel.length === 0 && wilayah_obj?.kec_hak_mili) {
+  if (dataKel.length === 0 && wilayah_obj?.kec_hak_miliK) {
     getDataKel(wilayah_obj.kec_hak_milik);
   }
 

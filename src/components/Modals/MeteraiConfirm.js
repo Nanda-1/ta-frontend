@@ -18,8 +18,6 @@ export default function MeteraiConfirm() {
   
   let { id } = useParams();
 
-  console.log(id)
-
   const ppatConfirm = () => {
     setConfirmModal(false);
     setBtnConfirm(false);

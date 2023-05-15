@@ -167,15 +167,11 @@ class ModalOtp extends Component {
                 <div className=" mt-4">
                   <OtpInput
                     className="text-center otp"
-                    inputStyle="inputStyle"
-                    numInputs={numInputs}
-                    errorStyle="error"
+                    inputStyle="otpInput"
+                    numInputs={6}
                     onChange={this.handleOtpChange}
-                    separator={<span>{separator}</span>}
-                    isInputNum={isInputNum}
-                    shouldAutoFocus
+                    isInputNum={true}
                     value={otp}
-                    placeholder={placeholder}
                   />
                 </div>
                 <div className="btn-row mx-auto text-center">
