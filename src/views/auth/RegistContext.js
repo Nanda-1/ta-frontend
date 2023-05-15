@@ -215,17 +215,17 @@ export const RegistProvider = (props) => {
       .then((res) => {
         if (res.status === 401) {
           refreshToken();
-        } else {
-          return res.json();
-        }
-      })
-      .then((response) => {
-        if (response.success) {
-          swal("Berhasil", response.data.message, "success");
+        } else 
+      //     return res.json();
+      //   }
+      // })
+      // .then((response) => {
+        if (res.success) {
+          swal("Berhasil", res.data.message, "success");
           setLoading(false);
         } else {
           setLoading(false);
-          swal("Gagal", response.error, "error");
+          swal("Gagal", res.error, "error");
         }
       })
       .catch((error) => {

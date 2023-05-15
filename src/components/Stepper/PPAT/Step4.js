@@ -20,7 +20,9 @@ const Step4 = (props) => {
   const { inputRegist, setInputRegist, verifVideo, setLoading, loading } =
     useContext(RegistContext);
 
+  const [defaults, setDefaults] = React.useState(true);
   const [capturing, setCapturing] = React.useState(false);
+  // const [done, setDone] = React.useState(false);
 
   // const handleStopCaptureClick = React.useCallback(() => {
   //   cookies.set("statues", true);
@@ -28,9 +30,12 @@ const Step4 = (props) => {
 
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
+  var val1 = localStorage.getItem("user-info");
+  var object1 = JSON.parse(val1);
 
   const handleStartCaptureClick = async () => {
     setCapturing(true);
+    setDefaults(false)
     navigator.getUserMedia =
       navigator.getUserMedia ||
       navigator.webkitGetUserMedia ||
@@ -56,10 +61,13 @@ const Step4 = (props) => {
           var transcodedMp4 = new Blob([event.data], { type: "video/webm" });
           var fileOfBlob = new File(
             [transcodedMp4],
-            "video_" + object.user_id + ".webm"
+            "video_" + object1.user_id + ".webm"
           );
 
-          downloadData(transcodedMp4, "rekamwajah_" + object.user_id + ".webm");
+          downloadData(
+            transcodedMp4,
+            "rekamwajah_" + object1.user_id + ".webm"
+          );
 
           setInputRegist({ ...inputRegist, self_video: fileOfBlob });
 
@@ -69,7 +77,9 @@ const Step4 = (props) => {
             verifVideo("self_video", fileOfBlob);
           }, 7000);
 
-          // setLoading(false);
+          // setDone(true);
+          setCapturing(false);
+          setDefaults(true)
         }
 
         setTimeout(function () {
@@ -152,7 +162,7 @@ const Step4 = (props) => {
                 ></li>
               </ul> */}
               <div className="canvases">
-              <Webcam
+                <Webcam
                   ref={webcamRef}
                   screenshotFormat="image/jpg"
                   videoConstraints={videoConstraints}
@@ -173,18 +183,24 @@ const Step4 = (props) => {
               </button>
             </div> */}
             <div className="text-center w-customs-d mt-4 mb-12-d mx-auto">
-              {capturing ? (
-                  <div>
-                    <p>{newName}</p>
-                  </div>
-              ) : (
-                <button
-                  type="button"
-                  className="bg-blue text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                  onClick={handleStartCaptureClick}
-                >
-                  Aktifkan kamera dan Rekam Wajah Anda
-                </button>
+              {/* {done && (
+                <div>
+                  <p>Selesai</p>
+                </div>
+              )} */}
+              {capturing && (
+                <div>
+                  <p>{newName}</p>
+                </div>
+              )}
+              {defaults && (
+              <button
+                type="button"
+                className="bg-blue text-white active:bg-sky text-sm px-4 py-2 rounded-xl shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                onClick={handleStartCaptureClick}
+              >
+                Aktifkan kamera dan Rekam Wajah Anda
+              </button>
               )}
             </div>
           </div>

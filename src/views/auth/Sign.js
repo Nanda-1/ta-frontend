@@ -90,6 +90,7 @@ export default function Sign() {
       });
       setDisable(true);
     }
+    console.log(png);
   };
 
   /** Canvas Section **/
@@ -223,23 +224,32 @@ export default function Sign() {
         type: "image/png",
       });
 
-    let getttd = blobs.size;
-    if (getttd < "2203") {
-      setLoad(false);
-      canvas.isDrawingMode = true;
-      swal({
-        title: "Gagal!",
-        text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
-        icon: "warning",
-      });
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 1000);
-    } else {
-      console.log(blobs);
-      sendLengkapiDiri(blobs);
-    }
+    // let getttd = blobs.size;
 
+    if (!base64result) {
+        setLoad(true);
+        sendLengkapiDiri(png.rawPng);
+        console.log(png.rawPng)
+    } else {
+      var blobs = new Blob([blob], { type: "image/png" });
+      let getttd = blobs.size;
+      if (getttd < "2203") {
+        console.log(blobs.size);
+        canvas.isDrawingMode = true;
+        swal({
+          title: "Gagal!",
+          text: "Harap gambar spesimen tandatangan Anda terlebih dahulu",
+          icon: "warning",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else if (getttd > "2203") {
+        console.log(blobs.size);
+        setLoad(true);
+        sendLengkapiDiri(blobs);
+      }
+    }
     let img = new Image();
     //edited from
     // img.crossOrigin = "anonymous";
@@ -417,7 +427,8 @@ export default function Sign() {
     if (isShow === true) {
       formdata.append("file", fileOfBlob);
     } else if (isUpload === true) {
-      formdata.append("file", png.previewPng);
+      formdata.append("file", png.rawPng);
+      console.log(png.rawPng);
     }
 
     let requestOptions = {
