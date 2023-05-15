@@ -14,6 +14,9 @@ export default function RiwayatPemohon() {
 
   let history = useHistory();
 
+  var val = localStorage.getItem("dataPPAT");
+  var object = JSON.parse(val);
+
   const getStatus = (data) => {
     if (data === "submit_dokumen") {
       return <div className="text-red-500">Menunggu pembubuhan meterai</div>;
@@ -24,7 +27,14 @@ export default function RiwayatPemohon() {
     } else if (data === "generate_document") {
       return <div className="text-orange-500">Membuat dokumen</div>;
     } else if (data === "stamp_emeterai") {
-      return <div className="text-yellow">Menunggu pembubuhan e-Meterai</div>;
+      return (
+        <div className="text-yellow">
+          {" "}
+          {object.role === "member"
+            ? "Menunggu tanda tangan"
+            : "Menunggu pembubuhan e-Meterai"}
+        </div>
+      );
     } else if (data === "sign_ttd") {
       return <div className="text-red-500">Menunggu tanda tangan</div>;
     } else {
@@ -56,9 +66,6 @@ export default function RiwayatPemohon() {
     transactionList("dashboard");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
 
   const currentDoc = (id, statusDoc, typeDoc) => {
     // Cookies.set("transaction_id", id, { expires: 1 });
@@ -228,12 +235,16 @@ export default function RiwayatPemohon() {
                                   )
                                 }
                                 className={`font-bold text-white cursor-pointer ${
-                                  item.doc_status === "sign_ttd"
+                                  item.doc_status === "sign_ttd" ||
+                                  (item.doc_status === "stamp_emeterai" &&
+                                    object.role === "member")
                                     ? ""
                                     : "bg-blue py-2 px-3 rounded-md"
                                 }`}
                               >
-                                {item.doc_status === "sign_ttd"
+                                {item.doc_status === "sign_ttd" ||
+                                (item.doc_status === "stamp_emeterai" &&
+                                  object.role === "member")
                                   ? "▶️"
                                   : "Detail"}
                               </button>
