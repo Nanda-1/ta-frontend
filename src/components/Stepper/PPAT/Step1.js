@@ -19,6 +19,10 @@ const Step1 = (props) => {
     getUserFile,
   } = useContext(RegistContext);
 
+  
+  const val = localStorage.getItem("dataPPAT");
+  const object = JSON.parse(val);
+
   useEffect(() => {
     if (props.currentStep === 1) {
       getUserFile("sk_pengangkatan");
@@ -89,7 +93,7 @@ const Step1 = (props) => {
                 >
                   <div className="mx-auto my-auto">
                     <label htmlFor="upload-button" className="w-auto">
-                      {fileLengkapiDiri === ''? (
+                      {!object.user_files.sk_pengangkatan && fileLengkapiDiri === ''? (
                         <div>
                           <img
                             className="mx-auto my-4 align-middle h-36 w-36 bg-fix"

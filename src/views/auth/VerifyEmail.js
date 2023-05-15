@@ -17,7 +17,7 @@ export default function VerifiyEmail() {
   const [go, setGo] = useState(false);
 
   //200
-  const { respon, setRespon } = useState(null);
+  const [respon, setRespon ] = useState(null);
   const successDiv = respon ? <div className="respon">{respon}</div> : "";
   //400
   const [errors, setErrors] = useState(null);

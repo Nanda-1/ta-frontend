@@ -27,8 +27,8 @@ const DocumentReady = ({
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [disabled, setDisabled] = useState(true);
-  const [disabledImg, setDisabledImg] = useState(false);
 
+  const [disabledImg, setDisabledImg] = useState(false);
   let { id } = useParams();
 
   const val = localStorage.getItem("dataPPAT");
@@ -190,8 +190,8 @@ const DocumentReady = ({
   };
 
   const handlePembubuhan = () => {
-    setDisabledImg(true);
     setLoadingFile(true);
+    setDisabledImg(true);
     addTandaTangan(pageNumber, id);
   };
 
@@ -319,6 +319,7 @@ const DocumentReady = ({
                   id="ttd"
                   className="z-2 img-canvas"
                   alt="ttd"
+                  disabled={disabledImg}
                 />
               )}
             </canvas>
