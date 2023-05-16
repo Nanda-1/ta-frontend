@@ -22,8 +22,8 @@ const AgoraVideoCall = () => {
   );
 };
 
-var val = localStorage.getItem("dataPPAT");
-var object = JSON.parse(val);
+// var val = localStorage.getItem("dataPPAT");
+// var object = JSON.parse(val);
 
 const useClient = createClient({ mode: "rtc", codec: "vp8" });
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
@@ -103,14 +103,11 @@ const Videos = (props) => {
             users.map((user) => {
               if (user.videoTrack) {
                 return (
-                  <>
-                    <AgoraVideoPlayer
-                      className="vid"
-                      videoTrack={user.videoTrack}
-                      key={user.uid}
-                    />
-                    <label>{object.email}</label>
-                  </>
+                  <AgoraVideoPlayer
+                    className="vid"
+                    videoTrack={user.videoTrack}
+                    key={user.uid}
+                  />
                 );
               } else return null;
             })}

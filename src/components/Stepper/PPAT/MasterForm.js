@@ -286,7 +286,7 @@ class MasterForm extends Component {
             <CardFooter>
               {this.previousButton}
               {/* {this.nextButton} */}
-              {this.state.currentStep === 6
+              {this.state.currentStep === 7
                 ? this.val
                   ? this.stat === true
                     ? this.nextButton
