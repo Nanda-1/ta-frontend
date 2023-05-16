@@ -93,6 +93,7 @@ const VideoCall = (props) => {
 const Videos = (props) => {
   const { users, tracks, ready, setInCall, setStart } = props;
 
+  console.log(users);
   return (
     <div>
       <div>
@@ -103,11 +104,13 @@ const Videos = (props) => {
             users.map((user) => {
               if (user.videoTrack) {
                 return (
-                  <AgoraVideoPlayer
-                    className="vid"
-                    videoTrack={user.videoTrack}
-                    key={user.uid}
-                  />
+                  <>
+                    <AgoraVideoPlayer
+                      className="vid"
+                      videoTrack={user.videoTrack}
+                      key={user.uid}
+                    />
+                  </>
                 );
               } else return null;
             })}
