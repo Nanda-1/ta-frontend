@@ -46,7 +46,7 @@ export default function Dokumen() {
     } else if (data === "generate_document") {
       return <div className="text-orange-500">Membuat dokumen</div>;
     } else if (data === "stamp_emeterai") {
-      return <div className="text-yellow">Menunggu pembubuhan e-Meterai</div>;
+      return <div className="text-red-500">Menunggu tanda tangan</div>;
     } else if (data === "sign_ttd") {
       return <div className="text-red-500">Menunggu tanda tangan</div>;
     } else {
@@ -109,13 +109,8 @@ export default function Dokumen() {
       Cookies.set("step", "stamping");
       history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "stamp_emeterai") {
-      // Cookies.set("transaction_id", id);
-      if (object.role === "member") {
         history.push("/ruang_virtual=testing&&id=" + id);
-      } else {
-        Cookies.set("step", "stamping");
-        history.push("/admin/" + url + "=" + id);
-      }
+  
     } else if (statusDoc === "sign_ttd") {
       getSocket(id);
       // history.push("/ruang_virtual=testing&&id=" + id);
