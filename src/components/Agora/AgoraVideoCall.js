@@ -22,8 +22,8 @@ const AgoraVideoCall = () => {
   );
 };
 
-// var val = localStorage.getItem("dataPPAT");
-// var object = JSON.parse(val);
+var val = localStorage.getItem("dataPPAT");
+var object = JSON.parse(val);
 
 const useClient = createClient({ mode: "rtc", codec: "vp8" });
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
@@ -34,12 +34,14 @@ const VideoCall = (props) => {
   const [start, setStart] = useState(false);
   const client = useClient();
   const { ready, tracks } = useMicrophoneAndCameraTracks();
+  console.log(users);
   useEffect(() => {
     // function to initialise the SDK
     let init = async (name) => {
       client.on("user-published", async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-        // console.log("subscribe success");
+        const obj = [{ name: object.email }];
+        setUsers([...users, ...obj]);
         if (mediaType === "video") {
           setUsers((prevUsers) => {
             return [...prevUsers, user];
@@ -49,22 +51,22 @@ const VideoCall = (props) => {
           user.audioTrack?.play();
         }
       });
-      client.on("user-unpublished", (user, type) => {
-        console.log("unpublished", user, type);
-        if (type === "audio") {
-          user.audioTrack?.stop();
-        }
-        if (type === "video") {
-          setUsers((prevUsers) => {
-            return prevUsers.filter((User) => User.uid !== user.uid);
-          });
-        }
-      });
-      client.on("user-left", (user) => {
-        setUsers((prevUsers) => {
-          return prevUsers.filter((User) => User.uid !== user.uid);
-        });
-      });
+      // client.on("user-unpublished", (user, type) => {
+      //   console.log("unpublished", user, type);
+      //   if (type === "audio") {
+      //     user.audioTrack?.stop();
+      //   }
+      //   if (type === "video") {
+      //     setUsers((prevUsers) => {
+      //       return prevUsers.filter((User) => User.uid !== user.uid);
+      //     });
+      //   }
+      // });
+      // client.on("user-left", (user) => {
+      //   setUsers((prevUsers) => {
+      //     return prevUsers.filter((User) => User.uid !== user.uid);
+      //   });
+      // });
       await client.join(appId, name, token, null);
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
