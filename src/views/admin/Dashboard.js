@@ -28,7 +28,7 @@ export default function Dashboard() {
       object.user_files.npwp &&
       object.user_files.self_video &&
       object.user_files.selfie_photo &&
-      // object.user_files.sk_pengangkatan &&
+      !object.user_files.sk_pengangkatan &&
       object.user_files.ttd
     ) {
       setUserFiles(true);
