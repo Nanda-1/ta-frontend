@@ -61,7 +61,7 @@ const Step3r = (provs) => {
       console.log(dataKel)
     }
 
-    if (object.id_camat || dataKel.length === 0) {
+    if (object.id_camat || dataKel?.length === 0) {
       getDataKel(object.id_camat||inputRegist.id_camat);
     }else{
       return setDataKel([]);
