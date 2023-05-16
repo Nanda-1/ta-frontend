@@ -353,7 +353,7 @@ export const AjbProvider = (props) => {
       })
       .then((result) => {
         // Cookies.set(result.data.actors[0].user_email);
-        setDataDetailAjb(result.data)
+        setDataDetailAjb(result.data);
         let nomor_dokumen = result.data.doc_num;
         let nama_dokumen = result.data.doc_name;
         let id = result.data.transaction_id;
@@ -528,7 +528,7 @@ export const AjbProvider = (props) => {
         if (result.error) {
           swal("Error", result.error, "error");
         } else {
-          getDokumenAjb(id)
+          getDokumenAjb(id);
           setOtpModal(false);
           // window.location.reload();
         }
@@ -662,6 +662,38 @@ export const AjbProvider = (props) => {
     history.push("/ruang_virtual=testing&&id=" + id);
   };
 
+  const inviteTtd = (id, email) => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/sign-doc/notify-ttd",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.access_token,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          transaction_id: id,
+          email: email,
+        }),
+      }
+    )
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
+        } else {
+          return response.json();
+        }
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   const functions = {
     addPenjual,
     addPembeli,
@@ -676,6 +708,7 @@ export const AjbProvider = (props) => {
     getDataKota,
     getDataProv,
     getDataKel,
+    inviteTtd
   };
 
   return (

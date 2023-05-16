@@ -312,9 +312,7 @@ const DocumentReady = ({
         ) : (
           <div style={{ alignSelf: "center" }}>
             <button
-              className={`text-white py-2 px-12 rounded ${
-                disabled ? "bg-gray-d cursor-not-allowed" : "bg-blue"
-              }`}
+              className={"text-white py-2 px-12 rounded bg-blue"}
               onClick={() => addTtd("addTtd")}
               // disabled={disabled}
             >

@@ -62,14 +62,14 @@ export default function Dashboard() {
   let id = cookies.get("roomId");
 
   useEffect(() => {
-    const socket = io("https://be-ppat-transaction.infinids.id");
-    // console.log(socket)
-
-    socket.on("connect", () => {
-      console.log(`Connected with ID: ${socket.id}`);
-    });
-
     if (object.role === "member") {
+      const socket = io("https://be-ppat-transaction.infinids.id");
+      // console.log(socket)
+
+      socket.on("connect", () => {
+        console.log(`Connected with ID: ${socket.id}`);
+      });
+
       socket.on(`room start ${id}`, (data) => {
         swal({
           title: "Berhasil",

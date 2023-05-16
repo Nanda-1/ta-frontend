@@ -10,14 +10,20 @@ const appId = "15ade710d3de457bbd2ddc96f487c621"; //ENTER APP ID HERE
 const token =
   "007eJxTYGBg/Vg6oTf1ZloLX2ioZuOqOawLMrvfeTQ9Fmta/Sq89YECg6FpYkqquaFBinFKqompeVJSilFKSrKlWZqJhXmymZHh2uNJKQ2BjAy7O5yYGBkgEMRnZyhJLS7JzEtnYAAArdQhRQ==";
 
-const AgoraVideoCall = () => {
+const AgoraVideoCall = ({ dataDetailAjb, inviteTtd, id }) => {
   const setInCall = true;
 
   let { channelName } = useParams();
   let channel = channelName;
   return (
     <div className="px-4 h-screen">
-      <VideoCall setInCall={setInCall} channelName={channel} />
+      <VideoCall
+        setInCall={setInCall}
+        channelName={channel}
+        dataDetailAjb={dataDetailAjb}
+        inviteTtd={inviteTtd}
+        id={id}
+      />
     </div>
   );
 };
@@ -29,12 +35,12 @@ const useClient = createClient({ mode: "rtc", codec: "vp8" });
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
 
 const VideoCall = (props) => {
-  const { setInCall, channelName } = props;
+  const { setInCall, channelName, dataDetailAjb, inviteTtd, id } = props;
   const [users, setUsers] = useState([]);
   const [start, setStart] = useState(false);
   const client = useClient();
   const { ready, tracks } = useMicrophoneAndCameraTracks();
-  console.log(users);
+
   useEffect(() => {
     // function to initialise the SDK
     let init = async (name) => {
@@ -86,6 +92,9 @@ const VideoCall = (props) => {
           ready={ready}
           setStart={setStart}
           setInCall={setInCall}
+          dataDetailAjb={dataDetailAjb}
+          inviteTtd={inviteTtd}
+          id={id}
         />
       )}
     </div>
@@ -93,25 +102,47 @@ const VideoCall = (props) => {
 };
 
 const Videos = (props) => {
-  const { users, tracks, ready, setInCall, setStart } = props;
+  const {
+    users,
+    tracks,
+    ready,
+    setInCall,
+    setStart,
+    dataDetailAjb,
+    inviteTtd,
+    id
+  } = props;
 
-  console.log(users);
   return (
     <div>
       <div>
         <div id="videos" className="grid grid-cols-2">
           {/* <div id="videos" className={users.length > 2 ? "grid grid-cols-2" : ""}> */}
-          <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
+          <AgoraVideoPlayer className="vid pt-6" videoTrack={tracks[1]}>
+            <button className="bg-blue rounded-md text-white mb-1 py-1 px-2">
+              Tanda Tangan
+            </button>
+          </AgoraVideoPlayer>
           {users.length > 0 &&
-            users.map((user) => {
+            users.map((user, index) => {
               if (user.videoTrack) {
                 return (
                   <>
                     <AgoraVideoPlayer
-                      className="vid"
+                      className="vid pt-8"
                       videoTrack={user.videoTrack}
                       key={user.uid}
-                    />
+                    >
+                      {/* <button
+                        onClick={inviteTtd(
+                          id,
+                          dataDetailAjb.actors[index].user_email
+                        )}
+                        className="bg-blue rounded-md text-white mb-1 py-1 px-2"
+                      >
+                        Tanda Tangan
+                      </button> */}
+                    </AgoraVideoPlayer>
                   </>
                 );
               } else return null;

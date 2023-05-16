@@ -68,24 +68,22 @@ export default function Dokumen() {
   const currentDoc = (id, statusDoc, typeDoc) => {
     let url = "";
 
-    if (object.role === "member") {
-      const socket = io("https://be-ppat-transaction.infinids.id");
-      // console.log(socket)
+    const socket = io("https://be-ppat-transaction.infinids.id");
+    // console.log(socket)
 
-      socket.on("connect", () => {
-        console.log(`Connected with ID: ${socket.id}`);
-      });
+    socket.on("connect", () => {
+      console.log(`Connected with ID: ${socket.id}`);
+    });
 
-      socket.on(`room start ${id}`, (data) => {
-        swal({
-          title: "Berhasil",
-          text: data.message,
-          icon: "success",
-        }).then(() => {
-          history.push("/ruang_virtual=testing&&id=" + id);
-        });
+    socket.on(`room start ${id}`, (data) => {
+      swal({
+        title: "Berhasil",
+        text: data.message,
+        icon: "success",
+      }).then(() => {
+        history.push("/ruang_virtual=testing&&id=" + id);
       });
-    }
+    });
 
     if (typeDoc === "akta_jual_beli") {
       url = "AktaJualBeli";
@@ -110,7 +108,7 @@ export default function Dokumen() {
       history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "stamp_emeterai") {
       getSocket(id);
-      history.push("/ruang_virtual=testing&&id=" + id);
+      // history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "sign_ttd") {
       // history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "generate_document") {

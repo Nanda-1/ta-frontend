@@ -19,28 +19,30 @@ const AgoraRtc = () => {
     inputAjb,
     setInputAjb,
     loadingFile,
+    dataDetailAjb,
     otpModal,
   } = useContext(MyAjbContext);
 
-  // const val = localStorage.getItem("dataPPAT");
-  // const object = JSON.parse(val);
+  const { inviteTtd } = functions;
+  const val = localStorage.getItem("dataPPAT");
+  const object = JSON.parse(val);
 
-  // useEffect(() => {
-  //   const socket = io("https://be-ppat-transaction.infinids.id");
-  //   // console.log(socket)
+  useEffect(() => {
+    const socket = io("https://be-ppat-transaction.infinids.id");
+    // console.log(socket)
 
-  //   socket.on("connect", () => {
-  //     console.log(`Connected with ID: ${socket.id}`);
-  //   });
+    socket.on("connect", () => {
+      console.log(`Connected with ID: ${socket.id}`);
+    });
 
-  //   socket.on(`update document ${id}`, (data) => {
-  //     alert(data);
-  //   });
+    socket.on(`update document ${id}`, (data) => {
+      alert(data);
+    });
 
-  //   socket.on(`ttd ${id} ${object.email}`, (data) => {
-  //     alert(data);
-  //   });
-  // }, []);
+    socket.on(`ttd ${id} ${object.email}`, (data) => {
+      alert(data);
+    });
+  }, []);
 
   const { getDokumenAjb, getTtdImage, addTandaTangan, detailAjb } = functions;
 
@@ -73,7 +75,7 @@ const AgoraRtc = () => {
           otpModal={otpModal}
           getDokumenAjb={getDokumenAjb}
         />
-        <AgoraVideoCall />
+        <AgoraVideoCall dataDetailAjb={dataDetailAjb} inviteTtd={inviteTtd} id={id} />
       </div>
     </div>
   );
