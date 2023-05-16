@@ -43,7 +43,7 @@ export default function Dashboard() {
     setLengkapidiri(true);
   }
 
-  let id = cookies.get('roomId')
+  let id = cookies.get("roomId");
 
   useEffect(() => {
     const socket = io("https://be-ppat-transaction.infinids.id");
@@ -54,9 +54,12 @@ export default function Dashboard() {
     });
 
     socket.on(`room start ${id}`, (data) => {
-      alert(data);
+      swal({
+        title: "Berhasil",
+        text: data.message,
+        icon: "success",
+      });
     });
-
   }, []);
 
   return (

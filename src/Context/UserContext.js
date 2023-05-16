@@ -275,6 +275,37 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+  const getSocket = (id) => {
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST_TRANSACTION +
+        "/api/transactions/virtual-room/notify-room-start",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.access_token,
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          transaction_id: id,
+        }),
+      }
+    )
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else if (response.status === 500) {
+          swal("Error", "Internal Server Error", "error");
+        } else {
+          return response.json();
+        }
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   const otpExpired = () => {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -442,7 +473,7 @@ export const UserProvider = (props) => {
         } else if (type === "ttd") {
           setTtdQuota(result.data.quota_value);
           cekQuota("emeterai");
-        } else if(type === "emeterai"){
+        } else if (type === "emeterai") {
           setMeteraiQuota(result.data.quota_value);
         }
       })
@@ -484,6 +515,7 @@ export const UserProvider = (props) => {
     dataPenjual,
     otpExpired,
     cekQuota,
+    getSocket,
   };
 
   return (

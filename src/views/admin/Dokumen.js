@@ -12,7 +12,7 @@ import { io } from "socket.io-client";
 export default function Dokumen() {
   const { functions, listTransaction } = useContext(UserContext);
 
-  const { transactionList } = functions;
+  const { transactionList, getSocket } = functions;
 
   const [page, setPage] = useState(0);
   let history = useHistory();
@@ -61,6 +61,9 @@ export default function Dokumen() {
   var val = localStorage.getItem("dataPPAT");
   var object = JSON.parse(val);
 
+  var auth = localStorage.getItem("authentication");
+  var token = JSON.parse(auth);
+
   const currentDoc = (id, statusDoc, typeDoc) => {
     let url = "";
 
@@ -72,7 +75,11 @@ export default function Dokumen() {
     });
 
     socket.on(`room start ${id}`, (data) => {
-      alert(data);
+      swal({
+        title: "Berhasil",
+        text: data.message,
+        icon: "success",
+      });
     });
 
     if (typeDoc === "akta_jual_beli") {
@@ -105,7 +112,8 @@ export default function Dokumen() {
         history.push("/admin/" + url + "=" + id);
       }
     } else if (statusDoc === "sign_ttd") {
-      history.push("/ruang_virtual=testing&&id=" + id);
+      getSocket(id);
+      // history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "generate_document") {
       // Cookies.set("transaction_id", id);
       if (typeDoc === "akta_jual_beli") {
@@ -121,7 +129,7 @@ export default function Dokumen() {
     } else {
       history.push(`/admin/preview_dokumen/transaction_id=${id}`);
     }
-    window.location.reload();
+    // window.location.reload();
   };
 
   return (
