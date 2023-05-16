@@ -56,15 +56,10 @@ const Step3r = (provs) => {
       localStorage.setItem("dataDiri", JSON.stringify(data));
     }
 
-    if(object.id_lurah){
-      getDataKel(data.nama)
-      console.log(dataKel)
-    }
+    console.log(formIsian)
 
-    if (object.id_camat || dataKel?.length === 0) {
-      getDataKel(object.id_camat||inputRegist.id_camat);
-    }else{
-      return setDataKel([]);
+    if(formIsian === "id_camat"){
+      getDataKel(isian)
     }
   };
   

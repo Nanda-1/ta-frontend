@@ -54,6 +54,18 @@ const DocumentReady = ({
       setDisabled(!disabled);
     });
 
+    if (object.role === "ppat") {
+      socket.on(`room start ${id}`, (data) => {
+        swal({
+          title: "Berhasil",
+          text: data.message,
+          icon: "success",
+        }).then(() => {
+          history.push("/ruang_virtual=testing&&id=" + id);
+        });
+      });
+    }
+
     socket.on(`ttd ${id} ${object.email}`, (data) => {
       swal({
         // title: "",
@@ -131,7 +143,7 @@ const DocumentReady = ({
 
     if (data !== "cancel") {
       canvas.add(imgSign);
-    } else if(data === 'reset') {
+    } else if (data === "reset") {
       canvas.dispose();
       setBtnConfirm(false);
     } else {
@@ -197,7 +209,7 @@ const DocumentReady = ({
   const handlePembubuhan = () => {
     setLoadingFile(true);
     setDisabledImg(true);
-    addTtd('reset')
+    addTtd("reset");
     addTandaTangan(pageNumber, id);
   };
 

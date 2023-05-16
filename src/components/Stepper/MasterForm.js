@@ -76,16 +76,16 @@ class MasterForm extends Component {
     let currentStep = this.state.currentStep;
 
     // If the current step is 1 or 2, then add one on "next" button click
-    currentStep = currentStep >= 5 ? 6 : currentStep + 1;
+    currentStep = currentStep + 1;
     this.setState({
       currentStep: currentStep,
     });
 
     //sbentar
-    if (currentStep === 7) {
+    if (currentStep === 5) {
       // this.context.cekKTP();
       // this.context.setLoading(true);
-      this.context.sendLengkapiDiriUmum(); 
+      this.context.sendLengkapiDiriUmum();
     }
     Cookies.set("step", this.state.currentStep);
   }

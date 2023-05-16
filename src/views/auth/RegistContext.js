@@ -215,12 +215,12 @@ export const RegistProvider = (props) => {
       .then((res) => {
         if (res.status === 401) {
           refreshToken();
-        } else 
-      //     return res.json();
-      //   }
-      // })
-      // .then((response) => {
-        if (res.success) {
+        }
+        //     return res.json();
+        //   }
+        // })
+        // .then((response) => {
+        else if (res.success) {
           swal("Berhasil", res.data.message, "success");
           setLoading(false);
         } else {
@@ -443,7 +443,7 @@ export const RegistProvider = (props) => {
 
   // Post API LengkapiDiri
   const sendLengkapiDiriUmum = () => {
-    var dates = dataDiri.tanggal_lahir;
+    var dates = dataDiri?.tanggal_lahir;
 
     function padTo2Digits(num) {
       return num.toString().padStart(2, "0");
@@ -521,7 +521,7 @@ export const RegistProvider = (props) => {
     if (val) {
       var dates = dataDiri.tanggal_lahir || "mm/dd/yyyy";
     }
-    
+
     function padTo2Digits(num) {
       return num.toString().padStart(2, "0");
     }
