@@ -49,7 +49,7 @@ const DocumentReady = ({
         icon: "success",
       }).then(function () {
         // props._next();
-        getDokumenAjb();
+        getDokumenAjb(id);
       });
       setDisabled(!disabled);
     });
@@ -131,6 +131,9 @@ const DocumentReady = ({
 
     if (data !== "cancel") {
       canvas.add(imgSign);
+    } else if(data === 'reset') {
+      canvas.dispose();
+      setBtnConfirm(false);
     } else {
       canvas.dispose();
       setBtnConfirm(false);
@@ -194,6 +197,7 @@ const DocumentReady = ({
   const handlePembubuhan = () => {
     setLoadingFile(true);
     setDisabledImg(true);
+    addTtd('reset')
     addTandaTangan(pageNumber, id);
   };
 
