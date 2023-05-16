@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { UserContext } from "Context/UserContext";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-export default function RiwayatPemohon() {
+export default function TabelCollection() {
   const { transactionList, listTransaction } = useContext(UserContext);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function RiwayatPemohon() {
 
   const dataPpat = [
     {
-      nama: "Achmad Nurachman",
+      nama: "nan",
       email: "achmadnurachman142@gmail.com",
       sk: "389-XVII-2006 18/12/2006",
       alamat: "JL. MT HARYONO NO. 142",
@@ -78,7 +78,7 @@ export default function RiwayatPemohon() {
         <div className="relative font-bold font-manrope box-content px-3 py-2 card-shadow rounded-lg bg-blue-2">
           <div className="block overflow-x-auto">
             <div className="flex justify-between py-1">
-              <h4 className="text-white mb-1">TABLE OF TEAMS</h4>
+              <h4 className="text-white mb-1">TABLE OF COLLECTION</h4>
               <h4
                 className="text-white mb-1 cursor-pointer"
                 onClick={() => histori.push("/admin/borrower")}

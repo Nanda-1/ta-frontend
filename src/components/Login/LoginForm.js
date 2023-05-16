@@ -31,14 +31,13 @@ export default function LoginForm() {
     setLoading(true);
 
     var formdata = new FormData();
-    formdata.append("nra", input.nra);
+    formdata.append("username", input.username);
     formdata.append("password", input.password);
 
     var myHeaders = {
       'Content-Type': 'application/json',
       'API.KEY': 'KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoIlh'
     };
-    
 
     var requestOptions = {
       method: "POST",
@@ -57,10 +56,11 @@ export default function LoginForm() {
         if (!res.success) {
           swal("Error", res.error, "error");
         } else {
-          localStorage.setItem("token", res.data.token);
+          console.log("token", res.data.token)
+          localStorage.setItem("token", res.data.token.access_token);
           setTimeout(() => {
             history.push("/admin/dashboard");
-          }, 2000);
+          }, 1000);
         }
         setLoading(false);
       })
@@ -92,12 +92,12 @@ export default function LoginForm() {
 
                     <input
                       type="text"
-                      name="nra"
-                      value={input.nra}
+                      name="username"
+                      value={input.username}
                       onChange={handleChange}
                       className="px-3 py-3 text-sm mb-3 focus:outline-none w-full login-form"
                       required={true}
-                      placeholder="Enter your NRA"
+                      placeholder="Enter your username"
                     />
                   </div>
                   <div className="relative w-full mb-3">
