@@ -222,12 +222,14 @@ export default function RiwayatPemohon() {
                                   )
                                 }
                                 className={`font-bold text-white py-2 px-3 cursor-pointer rounded-md ${
-                                  item.doc_status === "sign_ttd"
+                                  item.doc_status === "sign_ttd" ||
+                                  item.doc_status === "stamp_emeterai"
                                     ? "bg-red-500"
                                     : "bg-blue"
                                 }`}
                               >
-                                {item.doc_status === "sign_ttd"
+                                {item.doc_status === "sign_ttd" ||
+                                item.doc_status === "stamp_emeterai"
                                   ? "Tanda Tangan"
                                   : "Detail"}
                               </button>

@@ -68,14 +68,14 @@ export default function Dokumen() {
   const currentDoc = (id, statusDoc, typeDoc) => {
     let url = "";
 
-    const socket = io("https://be-ppat-transaction.infinids.id");
-    // console.log(socket)
-
-    socket.on("connect", () => {
-      console.log(`Connected with ID: ${socket.id}`);
-    });
-
     if (object.role === "member") {
+      const socket = io("https://be-ppat-transaction.infinids.id");
+      // console.log(socket)
+
+      socket.on("connect", () => {
+        console.log(`Connected with ID: ${socket.id}`);
+      });
+
       socket.on(`room start ${id}`, (data) => {
         swal({
           title: "Berhasil",
@@ -109,8 +109,7 @@ export default function Dokumen() {
       Cookies.set("step", "stamping");
       history.push("/admin/" + url + "=" + id);
     } else if (statusDoc === "stamp_emeterai") {
-        history.push("/ruang_virtual=testing&&id=" + id);
-  
+      history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "sign_ttd") {
       getSocket(id);
       // history.push("/ruang_virtual=testing&&id=" + id);
