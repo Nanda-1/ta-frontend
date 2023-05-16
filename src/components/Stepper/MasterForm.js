@@ -82,7 +82,7 @@ class MasterForm extends Component {
     });
 
     //sbentar
-    if (currentStep === 6) {
+    if (currentStep === 7) {
       // this.context.cekKTP();
       // this.context.setLoading(true);
       this.context.sendLengkapiDiriUmum(); 

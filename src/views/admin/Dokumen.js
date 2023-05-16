@@ -290,10 +290,10 @@ export default function Dokumen() {
                                       item.doc_type
                                     )
                                   }
-                                  className={`font-bold text-white cursor-pointer rounded-md ${
+                                  className={`font-bold text-white py-2 px-3 cursor-pointer rounded-md ${
                                     item.doc_status === "sign_ttd"
                                       ? "bg-red-500"
-                                      : "bg-blue py-2 px-3"
+                                      : "bg-blue"
                                   }`}
                                 >
                                   {item.doc_status === "sign_ttd"

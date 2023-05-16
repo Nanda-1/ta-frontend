@@ -234,18 +234,14 @@ export default function RiwayatPemohon() {
                                     item.doc_type
                                   )
                                 }
-                                className={`font-bold text-white cursor-pointer ${
-                                  item.doc_status === "sign_ttd" ||
-                                  (item.doc_status === "stamp_emeterai" &&
-                                    object.role === "member")
-                                    ? ""
-                                    : "bg-blue py-2 px-3 rounded-md"
+                                className={`font-bold text-white py-2 px-3 cursor-pointer rounded-md ${
+                                  item.doc_status === "sign_ttd"
+                                    ? "bg-red-500"
+                                    : "bg-blue"
                                 }`}
                               >
-                                {item.doc_status === "sign_ttd" ||
-                                (item.doc_status === "stamp_emeterai" &&
-                                  object.role === "member")
-                                  ? "▶️"
+                                {item.doc_status === "sign_ttd"
+                                  ? "Tanda Tangan"
                                   : "Detail"}
                               </button>
                             )}
