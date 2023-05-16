@@ -113,7 +113,7 @@ class MasterForm extends Component {
   get nextButton() {
     let currentStep = this.state.currentStep;
     // If the current step is not 3, then render the "next" button
-    if (currentStep < 6) {
+    if (currentStep < 7) {
       return (
         <>
           <Button

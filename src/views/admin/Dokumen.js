@@ -271,7 +271,7 @@ export default function Dokumen() {
                           </td>
                           <td
                             className="px-1 text-center text-xs py-2 border border-solid border-l-0 border-r-0 border-t-0"
-                            width={"18%"}
+                            // width={"28%"}
                           >
                             {item.doc_status === "selesai" ? (
                               <Link
@@ -290,14 +290,14 @@ export default function Dokumen() {
                                       item.doc_type
                                     )
                                   }
-                                  className={`font-bold text-white cursor-pointer ${
+                                  className={`font-bold text-white cursor-pointer rounded-md ${
                                     item.doc_status === "sign_ttd"
-                                      ? ""
-                                      : "bg-blue py-2 px-3 rounded-md"
+                                      ? "bg-red-500"
+                                      : "bg-blue py-2 px-3"
                                   }`}
                                 >
                                   {item.doc_status === "sign_ttd"
-                                    ? "▶️"
+                                    ? "Tanda Tangan"
                                     : "Detail"}
                                 </button>
                               </>

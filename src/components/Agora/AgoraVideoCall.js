@@ -40,8 +40,8 @@ const VideoCall = (props) => {
     let init = async (name) => {
       client.on("user-published", async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-        const obj = [{ name: object.email }];
-        setUsers([...users, ...obj]);
+        // const obj = [{ name: object.email }];
+        // setUsers([...users, ...obj]);
         if (mediaType === "video") {
           setUsers((prevUsers) => {
             return [...prevUsers, user];
@@ -51,22 +51,22 @@ const VideoCall = (props) => {
           user.audioTrack?.play();
         }
       });
-      // client.on("user-unpublished", (user, type) => {
-      //   console.log("unpublished", user, type);
-      //   if (type === "audio") {
-      //     user.audioTrack?.stop();
-      //   }
-      //   if (type === "video") {
-      //     setUsers((prevUsers) => {
-      //       return prevUsers.filter((User) => User.uid !== user.uid);
-      //     });
-      //   }
-      // });
-      // client.on("user-left", (user) => {
-      //   setUsers((prevUsers) => {
-      //     return prevUsers.filter((User) => User.uid !== user.uid);
-      //   });
-      // });
+      client.on("user-unpublished", (user, type) => {
+        console.log("unpublished", user, type);
+        if (type === "audio") {
+          user.audioTrack?.stop();
+        }
+        if (type === "video") {
+          setUsers((prevUsers) => {
+            return prevUsers.filter((User) => User.uid !== user.uid);
+          });
+        }
+      });
+      client.on("user-left", (user) => {
+        setUsers((prevUsers) => {
+          return prevUsers.filter((User) => User.uid !== user.uid);
+        });
+      });
       await client.join(appId, name, token, null);
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
