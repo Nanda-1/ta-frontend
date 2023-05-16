@@ -36,11 +36,19 @@ const AgoraRtc = () => {
     });
 
     socket.on(`update document ${id}`, (data) => {
-      alert(data);
+      swal({
+        title: "Berhasil",
+        text: data.message,
+        icon: "success",
+      });
     });
 
     socket.on(`ttd ${id} ${object.email}`, (data) => {
-      alert(data);
+      swal({
+        // title: "Berhasil",
+        text:'Silahkan Melakukan Tanda Tangan',
+        icon: "warning",
+      });
     });
   }, []);
 
@@ -75,7 +83,11 @@ const AgoraRtc = () => {
           otpModal={otpModal}
           getDokumenAjb={getDokumenAjb}
         />
-        <AgoraVideoCall dataDetailAjb={dataDetailAjb} inviteTtd={inviteTtd} id={id} />
+        <AgoraVideoCall
+          dataDetailAjb={dataDetailAjb}
+          inviteTtd={inviteTtd}
+          id={id}
+        />
       </div>
     </div>
   );
