@@ -10,6 +10,7 @@ import ModalDokumen from "components/Modals/ModalDokumen";
 import RiwayatPemohon from "components/Cards/RiwayatPemohon";
 import { io } from "socket.io-client";
 import swal from "sweetalert";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Dashboard() {
   const { setLengkapidiri, loading } = useContext(UserContext);
@@ -43,6 +44,8 @@ export default function Dashboard() {
   if (!object.user_detail && userFiles === false) {
     setLengkapidiri(true);
   }
+
+  const history = useHistory();
 
   let id = cookies.get("roomId");
 
