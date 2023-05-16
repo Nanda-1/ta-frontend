@@ -59,6 +59,8 @@ export default function Dashboard() {
         title: "Berhasil",
         text: data.message,
         icon: "success",
+      }).then(() => {
+        history.push("/ruang_virtual=testing&&id=" + id);
       });
     });
   }, []);
