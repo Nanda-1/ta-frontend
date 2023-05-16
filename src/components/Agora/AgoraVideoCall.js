@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 
 const appId = "15ade710d3de457bbd2ddc96f487c621"; //ENTER APP ID HERE
 const token =
-  "007eJxTYAjzbPEo3FJWcLlb71Pvzuzm06W372881PjQOUjqWedVAzUFBkPTxJRUc0ODFOOUVBNT86SkFKOUlGRLszQTC/NkMyPDbRpJKQ2BjAxqxVtZGBkgEMRnZyhJLS7JzEtnYAAAQBkiRQ==";
+  "007eJxTYGBg/Vg6oTf1ZloLX2ioZuOqOawLMrvfeTQ9Fmta/Sq89YECg6FpYkqquaFBinFKqompeVJSilFKSrKlWZqJhXmymZHh2uNJKQ2BjAy7O5yYGBkgEMRnZyhJLS7JzEtnYAAArdQhRQ==";
 
 const AgoraVideoCall = () => {
   const setInCall = true;
