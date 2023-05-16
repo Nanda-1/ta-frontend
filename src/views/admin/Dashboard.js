@@ -44,7 +44,7 @@ export default function Dashboard() {
     ) {
       setUserFiles(true);
     }
-  }, [object]);
+  }, [userFiles]);
 
   cookies.remove("id_transaksi");
   cookies.remove("step");
