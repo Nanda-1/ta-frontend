@@ -12,6 +12,7 @@ export const UserProvider = (props) => {
   const [addCollectionModal, setAddCollectionModal] = useState(false);
   const [dataUser, setDataUser] = useState([]);
   const [listTransaction, setListTransaction] = useState([]);
+  const [listTeams, setListTeams] = useState([]);
   const [loading, setLoading] = useState(false);
 
   let history = useHistory();
@@ -20,10 +21,11 @@ export const UserProvider = (props) => {
   var object = JSON.parse(val);
 
   var login = localStorage.getItem("authentication");
+  var token = localStorage.getItem('token');
   var auth = JSON.parse(login);
 
   const refreshToken = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/refresh-token", {
+    fetch("http://localhost:8080/api/auth/refresh", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -41,7 +43,7 @@ export const UserProvider = (props) => {
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
-          localStorage.removeItem("dataPPAT");
+          // localStorage.removeItem("dataPPAT");
           localStorage.removeItem("authentication");
           setTimeout(() => {
             history.push("/login");
@@ -121,6 +123,41 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+
+  const GetAllTeams = () => {
+    var myHeaders = {
+      'Content-Type': 'application/json',
+      'API.KEY': 'KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoIlh',
+      'Authorization': "Bearer " + token
+    };
+  
+    let requestOptionsGet = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow"
+    };
+  
+    fetch(
+      "http://localhost:8080/api/get-all",
+      requestOptionsGet
+    ).then((response) => {
+      if (response.status === 401) {
+        refreshToken();
+      } else {
+        return response.json();
+      }
+    })
+    .then((result) => {
+      let data = result.data;
+      console.log(JSON.stringify(data));
+      // console.log(JSON.parse(data));
+      // console.log(data);
+      setListTeams(data);
+    })
+    .catch((error) => console.log("error", error));
+  };
+
+
   return (
     <UserContext.Provider
       value={{
@@ -140,6 +177,9 @@ export const UserProvider = (props) => {
         addCollectionModal,
         setAddCollectionModal,
         transactionList,
+        listTeams,
+        setListTeams,
+        GetAllTeams,
       }}
     >
       {props.children}
