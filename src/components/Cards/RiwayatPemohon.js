@@ -10,7 +10,7 @@ import swal from "sweetalert";
 export default function RiwayatPemohon() {
   const { functions, listTransaction } = useContext(UserContext);
 
-  const { transactionList } = functions;
+  const { transactionList, getSocket } = functions;
 
   let history = useHistory();
 
@@ -88,6 +88,7 @@ export default function RiwayatPemohon() {
     } else if (statusDoc === "stamp_emeterai") {
       history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "sign_ttd") {
+      getSocket(id);
       history.push("/ruang_virtual=testing&&id=" + id);
     } else if (statusDoc === "generate_document") {
       // Cookies.set("transaction_id", id);
