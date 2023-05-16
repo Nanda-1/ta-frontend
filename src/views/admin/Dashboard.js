@@ -22,6 +22,18 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (
+      object.role === "member" &&
+      object.user_files.bpjs &&
+      object.user_files.ktp &&
+      object.user_files.npwp &&
+      object.user_files.self_video &&
+      object.user_files.selfie_photo &&
+      // object.user_files.sk_pengangkatan &&
+      object.user_files.ttd
+    ) {
+      setUserFiles(true);
+    } else if (
+      object.role === "ppat" &&
       object.user_files.bpjs &&
       object.user_files.ktp &&
       object.user_files.npwp &&
