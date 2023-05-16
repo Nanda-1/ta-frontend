@@ -7,7 +7,10 @@ import LasttPage from "../../assets/img/icon/lastPage.png";
 import { fabric } from "fabric";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import OtpModal from "components/Modals/OTP";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  useHistory,
+  useParams,
+} from "react-router-dom/cjs/react-router-dom.min";
 import { io } from "socket.io-client";
 import swal from "sweetalert";
 
@@ -33,6 +36,8 @@ const DocumentReady = ({
 
   const val = localStorage.getItem("dataPPAT");
   const object = JSON.parse(val);
+
+  const history = useHistory();
 
   useEffect(() => {
     const socket = io("https://be-ppat-transaction.infinids.id");
