@@ -47,8 +47,10 @@ const DocumentReady = ({
         title: "Berhasil",
         text: data.message,
         icon: "success",
+      }).then(function () {
+        // props._next();
+        getDokumenAjb();
       });
-      getDokumenAjb();
       setDisabled(!disabled);
     });
 
