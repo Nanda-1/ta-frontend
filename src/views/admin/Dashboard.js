@@ -9,6 +9,7 @@ import cookies from "js-cookie";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import RiwayatPemohon from "components/Cards/RiwayatPemohon";
 import { io } from "socket.io-client";
+import swal from "sweetalert";
 
 export default function Dashboard() {
   const { setLengkapidiri, loading } = useContext(UserContext);

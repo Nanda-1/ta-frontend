@@ -8,6 +8,7 @@ import { Pagination } from "react-headless-pagination";
 import NextIcon from "../../assets/img/next-light.png";
 import PrevIcon from "../../assets/img/prev.png";
 import { io } from "socket.io-client";
+import swal from "sweetalert";
 
 export default function Dokumen() {
   const { functions, listTransaction } = useContext(UserContext);
