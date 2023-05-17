@@ -68,23 +68,6 @@ export default function Dokumen() {
   const currentDoc = (id, statusDoc, typeDoc) => {
     let url = "";
 
-    const socket = io("https://be-ppat-transaction.infinids.id");
-    // console.log(socket)
-
-    socket.on("connect", () => {
-      console.log(`Connected with ID: ${socket.id}`);
-    });
-
-    socket.on(`room start ${id}`, (data) => {
-      swal({
-        title: "Berhasil",
-        text: data.message,
-        icon: "success",
-      }).then(() => {
-        history.push("/ruang_virtual=testing&&id=" + id);
-      });
-    });
-
     if (typeDoc === "akta_jual_beli") {
       url = "AktaJualBeli";
     } else {

@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 
 const appId = "15ade710d3de457bbd2ddc96f487c621"; //ENTER APP ID HERE
 const token =
-  "007eJxTYGBg/Vg6oTf1ZloLX2ioZuOqOawLMrvfeTQ9Fmta/Sq89YECg6FpYkqquaFBinFKqompeVJSilFKSrKlWZqJhXmymZHh2uNJKQ2BjAy7O5yYGBkgEMRnZyhJLS7JzEtnYAAArdQhRQ==";
+  "007eJxTYBA8s46/6eujeRcdxbN/Lii+xVdlxNrX3B/K4iOgqp2ms0uBwdA0MSXV3NAgxTgl1cTUPCkpxSglJdnSLM3EwjzZzMhQoyAlpSGQkeF0+BwWRgYIBPHZGUpSi0sy89IZGAA1tx7s";
 
 const AgoraVideoCall = ({ dataDetailAjb, inviteTtd, id }) => {
   const setInCall = true;
@@ -40,6 +40,11 @@ const VideoCall = (props) => {
   const [start, setStart] = useState(false);
   const client = useClient();
   const { ready, tracks } = useMicrophoneAndCameraTracks();
+
+  const val = localStorage.getItem("dataPPAT");
+  const object = JSON.parse(val);
+
+  console.log(users)
 
   useEffect(() => {
     // function to initialise the SDK
@@ -73,7 +78,8 @@ const VideoCall = (props) => {
           return prevUsers.filter((User) => User.uid !== user.uid);
         });
       });
-      await client.join(appId, name, token, null);
+      await client.join(appId, name, token, object.user_id);
+      // await client.join(appId, name, token, null);
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
     };
@@ -110,16 +116,19 @@ const Videos = (props) => {
     setStart,
     dataDetailAjb,
     inviteTtd,
-    id
+    id,
   } = props;
 
   return (
     <div>
       <div>
-        <div id="videos" className="grid grid-cols-2">
-          {/* <div id="videos" className={users.length > 2 ? "grid grid-cols-2" : ""}> */}
-          <AgoraVideoPlayer className="vid pt-6" videoTrack={tracks[1]}>
-            <button className="bg-blue rounded-md text-white mb-1 py-1 px-2">
+        {/* <div id="videos" className="grid grid-cols-2"> */}
+        <div
+          id="videos"
+          className={users.length >= 1 ? "grid grid-cols-2" : ""}
+        >
+          <AgoraVideoPlayer className="vid" videoTrack={tracks[1]}>
+            <button className="bg-blue rounded-md text-white py-1 px-2 video-label">
               Tanda Tangan
             </button>
           </AgoraVideoPlayer>
@@ -129,10 +138,13 @@ const Videos = (props) => {
                 return (
                   <>
                     <AgoraVideoPlayer
-                      className="vid pt-8"
+                      className="vid"
                       videoTrack={user.videoTrack}
                       key={user.uid}
                     >
+                      <button className="bg-black text-white opacity-5 py-1 px-2 video-label">
+                        {dataDetailAjb.actors[index].user_name}
+                      </button>
                       {/* <button
                         onClick={inviteTtd(
                           id,

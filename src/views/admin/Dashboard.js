@@ -57,31 +57,6 @@ export default function Dashboard() {
     setLengkapidiri(true);
   }
 
-  const history = useHistory();
-
-  let id = cookies.get("roomId");
-
-  useEffect(() => {
-    if (object.role === "member") {
-      const socket = io("https://be-ppat-transaction.infinids.id");
-      // console.log(socket)
-
-      socket.on("connect", () => {
-        console.log(`Connected with ID: ${socket.id}`);
-      });
-
-      socket.on(`room start ${id}`, (data) => {
-        swal({
-          title: "Berhasil",
-          text: data.message,
-          icon: "success",
-        }).then(() => {
-          history.push("/ruang_virtual=testing&&id=" + id);
-        });
-      });
-    }
-  }, []);
-
   return (
     <>
       {loading && <ModalDokumen />}

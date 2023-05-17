@@ -39,47 +39,47 @@ const DocumentReady = ({
 
   const history = useHistory();
 
-  useEffect(() => {
-    const socket = io("https://be-ppat-transaction.infinids.id");
-    // console.log(socket)
+  // useEffect(() => {
+  //   const socket = io("https://be-ppat-transaction.infinids.id");
+  //   // console.log(socket)
 
-    socket.on("connect", () => {
-      console.log(`Connected with ID: ${socket.id}`);
-    });
+  //   socket.on("connect", () => {
+  //     console.log(`Connected with ID: ${socket.id}`);
+  //   });
 
-    socket.on(`update document ${id}`, (data) => {
-      swal({
-        title: "Berhasil",
-        text: data.message,
-        icon: "success",
-      }).then(function () {
-        // props._next();
-        getDokumenAjb(id);
-      });
-      setDisabled(!disabled);
-    });
+  //   socket.on(`update document ${id}`, (data) => {
+  //     swal({
+  //       title: "Berhasil",
+  //       text: data.message,
+  //       icon: "success",
+  //     }).then(function () {
+  //       // props._next();
+  //       getDokumenAjb(id);
+  //     });
+  //     setDisabled(!disabled);
+  //   });
 
-    if (object.role === "ppat") {
-      socket.on(`room start ${id}`, (data) => {
-        swal({
-          title: "Berhasil",
-          text: data.message,
-          icon: "success",
-        }).then(() => {
-          history.push("/ruang_virtual=testing&&id=" + id);
-        });
-      });
-    }
+  //   if (object.role === "ppat") {
+  //     socket.on(`room start ${id}`, (data) => {
+  //       swal({
+  //         title: "Berhasil",
+  //         text: data.message,
+  //         icon: "success",
+  //       }).then(() => {
+  //         history.push("/ruang_virtual=testing&&id=" + id);
+  //       });
+  //     });
+  //   }
 
-    socket.on(`ttd ${id} ${object.email}`, (data) => {
-      swal({
-        // title: "",
-        text: data.message,
-        icon: "warning",
-      });
-      setDisabled(!disabled);
-    });
-  }, []);
+  //   socket.on(`ttd ${id} ${object.email}`, (data) => {
+  //     swal({
+  //       // title: "",
+  //       text: data.message,
+  //       icon: "warning",
+  //     });
+  //     setDisabled(!disabled);
+  //   });
+  // }, []);
 
   var elements = [];
 
@@ -323,17 +323,16 @@ const DocumentReady = ({
       </div>
       <div
         ref={ref}
-        className="pb-6 doc-scroll mx-32"
+        className="pb-6 doc-scroll mx-2"
         style={{
           height: "100vh",
           overflow: "auto",
-          position: "fixed",
           padding: "0 10px",
         }}
       >
         <div className="Example__container_pdf">
           <div className="canvas-wrapper">
-            <canvas id="canvasTtd" className="z-2 border-black">
+            <canvas id="canvasTtd" className="z-2">
               {!disabledImg && (
                 <img
                   src={ttdImage}

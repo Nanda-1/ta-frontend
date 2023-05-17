@@ -35,25 +35,29 @@ export default function RiwayatPemohon() {
     }
   };
 
-  const socketRoom = (id) => {
-    const socket = io("https://be-ppat-transaction.infinids.id");
-    // console.log(socket)
+  // const socketRoom = (id) => {
+  //   const socket = io("https://be-ppat-transaction.infinids.id");
+  //   // console.log(socket)
 
-    socket.on("connect", () => {
-      console.log(`Connected with ID: ${socket.id}`);
-    });
+  //   socket.on("connect", () => {
+  //     console.log(`Connected with ID: ${socket.id}`);
+  //   });
 
-    socket.on(`room start ${id}`, (data) => {
-      swal({
-        text: data.message,
-        icon: "warning",
-        title: "Perhatian",
-        closeOnClickOutside: false,
-      }).then(function () {
-        history.push("/ruang_virtual=testing&&id=" + id);
-      });
-    });
-  };
+  //   socket.on(`room start ${id}`, (data) => {
+  //     swal({
+  //       text: data.message,
+  //       icon: "warning",
+  //       title: "Perhatian",
+  //       closeOnClickOutside: false,
+  //     }).then(function () {
+  //       history.push("/ruang_virtual=testing&&id=" + id);
+  //     });
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // };
 
   useEffect(() => {
     transactionList("dashboard");
@@ -168,7 +172,6 @@ export default function RiwayatPemohon() {
                 ) : (
                   <>
                     {listTransaction.slice(0, 5).map((item, index) => {
-                      socketRoom(item.transaction_id);
                       return (
                         <tr key={index}>
                           <td className="px-3 text-left text-xs py-3 border border-solid border-l-0 border-r-0 border-t-0 ">

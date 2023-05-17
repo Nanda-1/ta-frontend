@@ -1240,6 +1240,10 @@ body {
   width: 100%;
 }
 
+.vid div{
+  height: 50%;
+}
+
 .vid-2 {
   position: relative;
   height: 50%;
@@ -1744,6 +1748,7 @@ body {
 .form-scroll::-webkit-scrollbar,
 .doc-scroll::-webkit-scrollbar {
   width: 5px;
+  z-index: 50;
 }
 
 /* Track */
@@ -1803,8 +1808,14 @@ body {
   filter: brightness(0) saturate(100%);
 }
 
-.agora_video_player {
+/* .agora_video_player {
   border-radius: 10px;
+} */
+
+.video-label{
+  bottom: 0;
+  position: absolute;
+  z-index: 2;
 }
 
 .doc_sign .react-pdf__Page__canvas {
