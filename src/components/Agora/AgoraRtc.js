@@ -43,7 +43,7 @@ const AgoraRtc = () => {
   return (
     <div className="Example__container_pdf text-sm w-full h-screen">
       {/* {faceVerifikasi && <FaceVer />} */}
-      <Socketio id={id} email={object.email} />
+      {/* <Socketio id={id} email={object.email} /> */}
       <div className="flex w-full py-4" style={{ overflow: "hidden" }}>
         {/* <div className="grid grid-cols-3 p-4"> */}
         <DocumentReady
