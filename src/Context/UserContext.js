@@ -11,14 +11,18 @@ export const UserProvider = (props) => {
   const [addBorrowModal, setAddBorrowModal] = useState(false);
   const [addCollectionModal, setAddCollectionModal] = useState(false);
   const [dataUser, setDataUser] = useState([]);
-  const [listTransaction, setListTransaction] = useState([]);
+  const [listCollection, setListCollection] = useState([]);
   const [listTeams, setListTeams] = useState([]);
+  const [totalCollectionList, setTotalCollectionList] = useState([]);
+  const [gunung, setgunung] = useState(0);
+  const [tebing, setTebing] = useState([]);
+  const [selam, setSelam] = useState([]);
   const [loading, setLoading] = useState(false);
 
   let history = useHistory();
 
-  var val = localStorage.getItem("dataPPAT");
-  var object = JSON.parse(val);
+  // var val = localStorage.getItem("dataPPAT");
+  // var object = JSON.parse(val);
 
   var login = localStorage.getItem("authentication");
   var token = localStorage.getItem('token');
@@ -80,11 +84,14 @@ export const UserProvider = (props) => {
       .catch((error) => console.log(error));
   };
 
-  const transactionList = () => {
-    fetch(process.env.REACT_APP_BACKEND_HOST + "api/ppat", {
+  const CollectionList = () => {
+    fetch(
+      "http://localhost:8090/api/pendataan/get-all", {
       method: "GET",
       redirect: "follow",
-      // headers: { Authorization: "Bearer " + auth.access_token },
+      headers: { 'Content-Type': 'application/json',
+      'API.KEY': 'KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD',
+      'Authorization': "Bearer " + token },
     })
       .then((response) => {
         if (response.status === 401) {
@@ -95,33 +102,43 @@ export const UserProvider = (props) => {
       })
       .then((result) => {
         let data = result.data;
-        setListTransaction(data);
+        console.log(data);
+        setListCollection(data);
       })
       .catch((error) => console.log("error", error));
   };
 
-  const otpExpired = () => {
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    let raw = JSON.stringify({
-      user_id: Number(cookies.get("uid")),
-    });
-
-    let requestOptionsGet = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
+  const TotalCollectionList = (divisi_id) => {
     fetch(
-      process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/login/resend-otp",
-      requestOptionsGet
-    )
-      .then((res) => res.json())
+      "http://localhost:8090/api/pendataan/get-total?divisi_id="+divisi_id, {
+      method: "GET",
+      redirect: "follow",
+      headers: { 'Content-Type': 'application/json',
+      'API.KEY': 'KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD',
+      'Authorization': "Bearer " + token },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        let data = result.data;
+        if(divisi_id === 1 ){
+          setgunung(data);
+          TotalCollectionList(2);
+        }else if(divisi_id === 2 ){
+          setTebing(data);
+          TotalCollectionList(3);
+        } else {
+          setSelam(data);
+        }
+      })
       .catch((error) => console.log("error", error));
   };
+
 
 
   const GetAllTeams = () => {
@@ -156,6 +173,7 @@ export const UserProvider = (props) => {
     })
     .catch((error) => console.log("error", error));
   };
+  
 
 
   return (
@@ -167,8 +185,11 @@ export const UserProvider = (props) => {
         setAddDocumentModal,
         loading,
         setLoading,
-        listTransaction,
-        setListTransaction,
+        listCollection,
+        setListCollection,
+        totalCollectionList,
+        setTotalCollectionList,
+        TotalCollectionList,
         dataUser,
         setDataUser,
         fetchDataUser,
@@ -176,10 +197,16 @@ export const UserProvider = (props) => {
         setAddBorrowModal,
         addCollectionModal,
         setAddCollectionModal,
-        transactionList,
+        CollectionList,
         listTeams,
         setListTeams,
         GetAllTeams,
+        gunung,
+        tebing,
+        selam,
+        setgunung,
+        setTebing,
+        setSelam,
       }}
     >
       {props.children}

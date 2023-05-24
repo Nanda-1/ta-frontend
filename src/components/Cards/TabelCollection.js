@@ -4,11 +4,14 @@ import { UserContext } from "Context/UserContext";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function TabelCollection() {
-  const { transactionList, listTransaction } = useContext(UserContext);
+  const { CollectionList, listCollection } = useContext(UserContext);
+  const [limitExceeded, setLimitExceeded] = useState(false);
 
   useEffect(() => {
-    transactionList();
-  }, [listTransaction]);
+    if(!limitExceeded)
+      CollectionList();
+      setLimitExceeded(true)
+  }, [listCollection,limitExceeded]);
 
   const histori = useHistory();
 
@@ -123,7 +126,7 @@ export default function TabelCollection() {
                     </tr>
                   ) : (
                     <>
-                      {dataPpat.map((item, index) => {
+                      {listCollection.map((item, index) => {
                         return (
                           <tr
                             key={index}
@@ -137,13 +140,13 @@ export default function TabelCollection() {
                               {item.nama}
                             </td>
                             <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.email}
+                              {item.divisi.name}
                             </td>
                             <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.sk}
+                              {item.jumlah}
                             </td>
                             <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.alamat}
+                              {item.keterangan}
                             </td>
                           </tr>
                         );
