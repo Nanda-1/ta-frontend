@@ -18,6 +18,7 @@ export const UserProvider = (props) => {
   const [tebing, setTebing] = useState([]);
   const [selam, setSelam] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [totalTeams, SetTotalTeams] = useState([]);
 
   let history = useHistory();
 
@@ -25,7 +26,7 @@ export const UserProvider = (props) => {
   // var object = JSON.parse(val);
 
   var login = localStorage.getItem("authentication");
-  var token = localStorage.getItem('token');
+  var token = localStorage.getItem("token");
   var auth = JSON.parse(login);
 
   const refreshToken = () => {
@@ -57,11 +58,15 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-  const fetchDataUser = (token) => {
-    fetch(process.env.REACT_APP_BACKEND_HOST_AUTH + "api/auth/match-token", {
+  const GetTotalTeams = () => {
+    fetch("http://localhost:8080/api/total", {
       method: "GET",
       redirect: "follow",
-      headers: { Authorization: "Bearer " + token },
+      headers: {
+        "Content-Type": "application/json",
+        "API.KEY": "KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+        Authorization: "Bearer " + token,
+      },
     })
       .then((response) => {
         if (response.status === 401) {
@@ -71,27 +76,22 @@ export const UserProvider = (props) => {
         }
       })
       .then((result) => {
-        setDataUser(result.data);
-        localStorage.setItem("dataPPAT", JSON.stringify(result.data));
-        setTimeout(() => {
-          if (localStorage.getItem("dataPPAT")) {
-            history.push("/admin/dashboard");
-            // window.location.reload();
-          }
-          setLoading(false);
-        }, 5000);
+        let data = result.data;
+        console.log(data);
+        SetTotalTeams(data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log("error", error));
   };
 
   const CollectionList = () => {
-    fetch(
-      "http://localhost:8090/api/pendataan/get-all", {
+    fetch("http://localhost:8090/api/pendataan/get-all", {
       method: "GET",
       redirect: "follow",
-      headers: { 'Content-Type': 'application/json',
-      'API.KEY': 'KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD',
-      'Authorization': "Bearer " + token },
+      headers: {
+        "Content-Type": "application/json",
+        "API.KEY": "KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD",
+        Authorization: "Bearer " + token,
+      },
     })
       .then((response) => {
         if (response.status === 401) {
@@ -110,13 +110,17 @@ export const UserProvider = (props) => {
 
   const TotalCollectionList = (divisi_id) => {
     fetch(
-      "http://localhost:8090/api/pendataan/get-total?divisi_id="+divisi_id, {
-      method: "GET",
-      redirect: "follow",
-      headers: { 'Content-Type': 'application/json',
-      'API.KEY': 'KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD',
-      'Authorization': "Bearer " + token },
-    })
+      "http://localhost:8090/api/pendataan/get-total?divisi_id=" + divisi_id,
+      {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          "Content-Type": "application/json",
+          "API.KEY": "KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD",
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -126,10 +130,10 @@ export const UserProvider = (props) => {
       })
       .then((result) => {
         let data = result.data;
-        if(divisi_id === 1 ){
+        if (divisi_id === 1) {
           setgunung(data);
           TotalCollectionList(2);
-        }else if(divisi_id === 2 ){
+        } else if (divisi_id === 2) {
           setTebing(data);
           TotalCollectionList(3);
         } else {
@@ -139,42 +143,36 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
-
-
   const GetAllTeams = () => {
     var myHeaders = {
-      'Content-Type': 'application/json',
-      'API.KEY': 'KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoIlh',
-      'Authorization': "Bearer " + token
+      "Content-Type": "application/json",
+      "API.KEY": "KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+      Authorization: "Bearer " + token,
     };
-  
+
     let requestOptionsGet = {
       method: "GET",
       headers: myHeaders,
-      redirect: "follow"
+      redirect: "follow",
     };
-  
-    fetch(
-      "http://localhost:8080/api/get-all",
-      requestOptionsGet
-    ).then((response) => {
-      if (response.status === 401) {
-        refreshToken();
-      } else {
-        return response.json();
-      }
-    })
-    .then((result) => {
-      let data = result.data;
-      console.log(JSON.stringify(data));
-      // console.log(JSON.parse(data));
-      // console.log(data);
-      setListTeams(data);
-    })
-    .catch((error) => console.log("error", error));
-  };
-  
 
+    fetch("http://localhost:8080/api/get-all", requestOptionsGet)
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        let data = result.data;
+        console.log(JSON.stringify(data));
+        // console.log(JSON.parse(data));
+        // console.log(data);
+        setListTeams(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
 
   return (
     <UserContext.Provider
@@ -192,7 +190,6 @@ export const UserProvider = (props) => {
         TotalCollectionList,
         dataUser,
         setDataUser,
-        fetchDataUser,
         addBorrowModal,
         setAddBorrowModal,
         addCollectionModal,
@@ -207,6 +204,9 @@ export const UserProvider = (props) => {
         setgunung,
         setTebing,
         setSelam,
+        totalTeams,
+        SetTotalTeams,
+        GetTotalTeams,
       }}
     >
       {props.children}

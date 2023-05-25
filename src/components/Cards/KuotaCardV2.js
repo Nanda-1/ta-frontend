@@ -4,15 +4,16 @@ import Browwer from "../../assets/img/total_borrower.png";
 import Member from "../../assets/img/total_members.png";
 
 export default function KuotaCardV2() {
-  const { TotalCollectionList, gunung,tebing,selam } = useContext(UserContext);
+  const { TotalCollectionList, gunung,tebing,selam ,GetTotalTeams, totalTeams} = useContext(UserContext);
   // const [loading, setLoading] = useState(true);
   const [limitExceeded, setLimitExceeded] = useState(false);
 
   useEffect(() => {
     TotalCollectionList(1);
+    GetTotalTeams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // console.log(totalCollectionList)
+  console.log(totalTeams)
 
   return (
     <div className="w-full text-black-2 shadow-sm">
@@ -33,7 +34,7 @@ export default function KuotaCardV2() {
               <img className="card-icon p-2" width={60} src={Member} />
             </div>
             <h3 className="text-blue-2 text-5xl font-bold">
-              {} 1000
+              {totalTeams}
             </h3>
           </div>
         </div>

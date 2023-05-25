@@ -4,20 +4,17 @@ import { UserContext } from "Context/UserContext";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function TabelTeams() {
-  const {GetAllTeams , listTeams } = useContext(UserContext);
+  const { GetAllTeams, listTeams } = useContext(UserContext);
   // const [loading, setLoading] = useState(true);
   const [limitExceeded, setLimitExceeded] = useState(false);
 
   useEffect(() => {
-    if(!limitExceeded)
-        GetAllTeams();
-        setLimitExceeded(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!limitExceeded) GetAllTeams();
+    setLimitExceeded(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listTeams, limitExceeded]);
 
-
   const histori = useHistory();
-
 
   return (
     <div className="w-full text-black-2 shadow-sm">
@@ -25,7 +22,12 @@ export default function TabelTeams() {
         <div className="block overflow-x-auto">
           <div className="flex justify-between font-manrope py-1">
             <h4 className="text-white mb-1">TABLE OF TEAMS</h4>
-            <h4 className="text-white mb-1 cursor-pointer" onClick={() => histori.push('/admin/team')}>Show all {">"}</h4>
+            <h4
+              className="text-white mb-1 cursor-pointer"
+              onClick={() => histori.push("/admin/team")}
+            >
+              Show all {">"}
+            </h4>
           </div>
           <table className="items-center w-full border-black bg-white overflow-x-auto bg-transparent border-collapse">
             <thead>

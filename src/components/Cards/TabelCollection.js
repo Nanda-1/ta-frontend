@@ -8,10 +8,9 @@ export default function TabelCollection() {
   const [limitExceeded, setLimitExceeded] = useState(false);
 
   useEffect(() => {
-    if(!limitExceeded)
-      CollectionList();
-      setLimitExceeded(true)
-  }, [listCollection,limitExceeded]);
+    if (!limitExceeded) CollectionList();
+    setLimitExceeded(true);
+  }, [listCollection, limitExceeded]);
 
   const histori = useHistory();
 
@@ -24,57 +23,6 @@ export default function TabelCollection() {
   const indexOfLastTodo = (page + 1) * 5;
   const indexOfFirstTodo = indexOfLastTodo - 5;
 
-  const dataPpat = [
-    {
-      nama: "nan",
-      email: "achmadnurachman142@gmail.com",
-      sk: "389-XVII-2006 18/12/2006",
-      alamat: "JL. MT HARYONO NO. 142",
-      kab: "Semarang",
-      status: "PPAT | Berhenti",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-  ];
-
   return (
     <>
       <div className="relative break-words font-sans mb-8 ">
@@ -84,7 +32,7 @@ export default function TabelCollection() {
               <h4 className="text-white mb-1">TABLE OF COLLECTION</h4>
               <h4
                 className="text-white mb-1 cursor-pointer"
-                onClick={() => histori.push("/admin/borrower")}
+                onClick={() => histori.push("/admin/collection")}
               >
                 Show all {">"}
               </h4>
@@ -115,7 +63,7 @@ export default function TabelCollection() {
                   </tr>
                 </thead>
                 <tbody>
-                  {!dataPpat ? (
+                  {!listCollection ? (
                     <tr>
                       <td
                         className="px-3 text-center text-grey border-l-0 border-r-0 text-xxs p-6"

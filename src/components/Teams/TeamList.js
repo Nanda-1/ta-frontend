@@ -13,8 +13,7 @@ export default function TeamList() {
   const [limitExceeded, setLimitExceeded] = useState(false);
 
   useEffect(() => {
-    if (!limitExceeded)
-      GetAllTeams();
+    if (!limitExceeded) GetAllTeams();
     setLimitExceeded(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listTeams, limitExceeded]);
@@ -25,153 +24,6 @@ export default function TeamList() {
 
   const indexOfLastTodo = (page + 1) * 15;
   const indexOfFirstTodo = indexOfLastTodo - 15;
-
-  const dataPpat = [
-    {
-      nama: "Achmad Nurachman",
-      email: "achmadnurachman142@gmail.com",
-      sk: "389-XVII-2006 18/12/2006",
-      alamat: "JL. MT HARYONO NO. 142",
-      kab: "Semarang",
-      status: "PPAT | Berhenti",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-  ];
 
   return (
     <>
@@ -258,11 +110,11 @@ export default function TeamList() {
             </button>
           </div>
         </div>
-        {dataPpat.length !== 0 && (
+        {listTeams.length !== 0 && (
           <Pagination
             currentPage={page}
             setCurrentPage={handlePageChange}
-            totalPages={Math.ceil(dataPpat.length / 15)}
+            totalPages={Math.ceil(listTeams.length / 15)}
             edgePageCount={2}
             middlePagesSiblingCount={1}
             className="pagination mt-2"
