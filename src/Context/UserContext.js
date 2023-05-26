@@ -19,13 +19,14 @@ export const UserProvider = (props) => {
   const [selam, setSelam] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalTeams, SetTotalTeams] = useState([]);
+  const [CreateCollection, SetCreateCollection] = useState([]);
 
   let history = useHistory();
 
   // var val = localStorage.getItem("dataPPAT");
   // var object = JSON.parse(val);
 
-  var login = localStorage.getItem("authentication");
+  var login = localStorage.getItem("Authorization");
   var token = localStorage.getItem("token");
   var auth = JSON.parse(login);
 
@@ -42,14 +43,14 @@ export const UserProvider = (props) => {
         console.log(result);
         if (result.success === true) {
           auth.access_token = result.data.access_token;
-          localStorage.setItem("authentication", JSON.stringify(auth));
+          localStorage.setItem("Authorization", JSON.stringify(auth));
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
           // localStorage.removeItem("dataPPAT");
-          localStorage.removeItem("authentication");
+          localStorage.removeItem("Authorization");
           setTimeout(() => {
             history.push("/login");
           }, 1000);
@@ -84,7 +85,7 @@ export const UserProvider = (props) => {
   };
 
   const CollectionList = () => {
-    fetch("http://localhost:8090/api/pendataan/get-all", {
+    fetch("http://localhost:8060/api/pendataan/get-all", {
       method: "GET",
       redirect: "follow",
       headers: {
@@ -110,7 +111,7 @@ export const UserProvider = (props) => {
 
   const TotalCollectionList = (divisi_id) => {
     fetch(
-      "http://localhost:8090/api/pendataan/get-total?divisi_id=" + divisi_id,
+      "http://localhost:8060/api/pendataan/get-total?divisi_id=" + divisi_id,
       {
         method: "GET",
         redirect: "follow",
@@ -174,6 +175,38 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+  const createCollection = () => {
+    fetch("http://localhost:8060/api/pendataan/create", {
+      method: "POST",
+      redirect: "follow",
+      headers: {
+        "Content-Type": "application/json",
+        "API.KEY": "KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        nama: addCollectionModal.name,
+        jumlah: parseInt(addCollectionModal.jumlah),
+        keterangan: addCollectionModal.keterangan,
+        divisiId: parseInt(addCollectionModal.divisi_id),
+      }),
+    })
+    console.log(addCollectionModal)
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        let data = result.data;
+        console.log(JSON.stringify(data));
+        setAddCollectionModal(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -207,6 +240,7 @@ export const UserProvider = (props) => {
         totalTeams,
         SetTotalTeams,
         GetTotalTeams,
+        createCollection,
       }}
     >
       {props.children}

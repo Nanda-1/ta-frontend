@@ -14,7 +14,8 @@ export default function CollectionList() {
   useEffect(() => {
     if (!limitExceeded) CollectionList();
     setLimitExceeded(true);
-  }, [listCollection, limitExceeded]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const handlePageChange = (page) => {
     setPage(page);
   };

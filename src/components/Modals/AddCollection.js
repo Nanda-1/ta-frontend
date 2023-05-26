@@ -4,8 +4,19 @@ import React, { useContext } from "react";
 import { UserContext } from "Context/UserContext";
 
 export default function AddCollection() {
-  const { addCollectionModal, setAddCollectionModal } = useContext(UserContext);
+  const { addCollectionModal, setAddCollectionModal, createCollection } =
+    useContext(UserContext);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setAddCollectionModal((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
+  const create = () => {
+    createCollection();
+  };
   return (
     <>
       {addCollectionModal ? (
@@ -27,39 +38,48 @@ export default function AddCollection() {
                   <input
                     type="text"
                     name="name"
-                    // value={input.tlp || input.email}
-                    // onChange={handleChange}
+                    value={addCollectionModal.name}
+                    onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
                   />
                   <label className="text-xs font-bold">Division</label>
-                  <input
-                    type="text"
-                    name="division"
-                    // value={input.tlp || input.email}
-                    // onChange={handleChange}
+                  <select
+                    name="divisiId"
+                    value={addCollectionModal.divisiId}
+                    onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
-                  />
-                  <label className="text-xs font-bold">Total</label>
+                  >
+                    <option selected>Select Division</option>
+                    <option value="1">Panjang Tebing</option>
+                    <option value="2">Gunung Hutan</option>
+                    <option value="3">Selam</option>
+                  </select>
+                  <label className="text-xs font-bold">Jumlah</label>
                   <input
                     type="number"
-                    name="total"
-                    // value={input.tlp || input.email}
-                    // onChange={handleChange}
+                    name="jumlah"
+                    value={addCollectionModal.jumlah}
+                    onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
                   />
                   <label className="text-xs font-bold">Information</label>
                   <textarea
-                    name="information"
+                    name="keterangan"
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
+                    value={addCollectionModal.keterangan}
+                    onChange={handleChange}
                   ></textarea>
                 </div>
               </div>
               <div className="w-full text-center">
-                <button className="bg-blue text-white rounded-md my-3 py-1 px-10 text-sm focus:outline-none">
+                <button
+                  onClick={() => create()}
+                  className="bg-blue text-white rounded-md my-3 py-1 px-10 text-sm focus:outline-none"
+                >
                   Save
                 </button>
               </div>

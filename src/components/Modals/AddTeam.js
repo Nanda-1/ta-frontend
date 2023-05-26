@@ -4,7 +4,17 @@ import React, { useContext } from "react";
 import { UserContext } from "Context/UserContext";
 
 export default function AddTeam() {
-  const { addDocumentModal, setAddDocumentModal } = useContext(UserContext);
+  const { addDocumentModal, setAddDocumentModal, addCollectionModal, setAddCollectionModal,createCollection} = useContext(UserContext);
+  const handleChange = (event) => {
+    let typeOfInput = event.target.value;
+    let name = event.target.name;
+
+    setAddCollectionModal({ ...addCollectionModal, [name]: typeOfInput });
+  };
+  
+  const create = () => {
+    createCollection();
+  }
 
   return (
     <>
@@ -27,8 +37,8 @@ export default function AddTeam() {
                   <input
                     type="text"
                     name="name"
-                    // value={input.tlp || input.email}
-                    // onChange={handleChange}
+                    value={addCollectionModal.name}
+                    onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
                   />
@@ -36,8 +46,8 @@ export default function AddTeam() {
                   <input
                     type="text"
                     name="nra"
-                    // value={input.tlp || input.email}
-                    // onChange={handleChange}
+                    value={addCollectionModal.nra}
+                    onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
                   />
@@ -45,8 +55,8 @@ export default function AddTeam() {
                   <input
                     type="text"
                     name="division"
-                    // value={input.tlp || input.email}
-                    // onChange={handleChange}
+                    value={addCollectionModal.division}
+                    onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
                   />
@@ -54,8 +64,8 @@ export default function AddTeam() {
                   <input
                     type="text"
                     name="phone_number"
-                    // value={input.tlp || input.email}
-                    // onChange={handleChange}
+                    value={addCollectionModal.phone_number}
+                    onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
                   />
@@ -63,15 +73,15 @@ export default function AddTeam() {
                   <input
                     type="email"
                     name="email"
-                    // value={input.tlp || input.email}
-                    // onChange={handleChange}
+                    value={addCollectionModal.email}
+                    onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
                   />
                 </div>
               </div>
               <div className="w-full text-center">
-                <button className="bg-blue text-white rounded-md my-3 py-1 px-10 text-sm focus:outline-none">
+                <button onClick={() => create() } className="bg-blue text-white rounded-md my-3 py-1 px-10 text-sm focus:outline-none">
                   Save
                 </button>
               </div>
