@@ -4,16 +4,15 @@ import React, { useContext } from "react";
 import { UserContext } from "Context/UserContext";
 
 export default function AddTeam() {
-  const { addDocumentModal, setAddDocumentModal, addCollectionModal, setAddCollectionModal,createCollection} = useContext(UserContext);
+  const { addDocumentModal, setAddDocumentModal,createTeams } = useContext(UserContext);
   const handleChange = (event) => {
-    let typeOfInput = event.target.value;
-    let name = event.target.name;
-
-    setAddCollectionModal({ ...addCollectionModal, [name]: typeOfInput });
+    const { value, name } = event.target;
+    setAddDocumentModal({ ...addDocumentModal, [name]: value });
   };
   
+  console.log(addDocumentModal)
   const create = () => {
-    createCollection();
+    createTeams();
   }
 
   return (
@@ -32,12 +31,43 @@ export default function AddTeam() {
               </button>
               <div className="relative flex flex-col w-full outline-none focus:outline-none">
                 {/*body*/}
+                
                 <div className="relative flex-col px-10 text-blue font-inter">
+                <label className="text-xs font-bold">Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={addDocumentModal.username}
+                    onChange={handleChange}
+                    className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
+                    required={true}
+                  />
+                  <label className="text-xs font-bold">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={addDocumentModal.password}
+                    onChange={handleChange}
+                    className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
+                    required={true}
+                  />
+                  <label className="text-xs font-bold">Role</label>
+                  <select
+                    name="role_id"
+                    value={addDocumentModal.role_id}
+                    onChange={handleChange}
+                    className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
+                    required={true}
+                  >
+                    <option selected>Select Role</option>
+                    <option value="1">Admin</option>
+                    <option value="2">Anggota</option>
+                  </select>
                   <label className="text-xs font-bold">Name</label>
                   <input
                     type="text"
                     name="name"
-                    value={addCollectionModal.name}
+                    value={addDocumentModal.name}
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
@@ -46,7 +76,7 @@ export default function AddTeam() {
                   <input
                     type="text"
                     name="nra"
-                    value={addCollectionModal.nra}
+                    value={addDocumentModal.nra}
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
@@ -54,8 +84,8 @@ export default function AddTeam() {
                   <label className="text-xs font-bold">Division</label>
                   <input
                     type="text"
-                    name="division"
-                    value={addCollectionModal.division}
+                    name="divisi"
+                    value={addDocumentModal.divisi}
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
@@ -64,7 +94,7 @@ export default function AddTeam() {
                   <input
                     type="text"
                     name="phone_number"
-                    value={addCollectionModal.phone_number}
+                    value={addDocumentModal.phone_number}
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
@@ -73,7 +103,16 @@ export default function AddTeam() {
                   <input
                     type="email"
                     name="email"
-                    value={addCollectionModal.email}
+                    value={addDocumentModal.email}
+                    onChange={handleChange}
+                    className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
+                    required={true}
+                  />
+                  <label className="text-xs font-bold">Address</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={addDocumentModal.address}
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}

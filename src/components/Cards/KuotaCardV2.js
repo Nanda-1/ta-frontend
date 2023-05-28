@@ -4,17 +4,17 @@ import Browwer from "../../assets/img/total_borrower.png";
 import Member from "../../assets/img/total_members.png";
 
 export default function KuotaCardV2() {
-  const { TotalCollectionList, gunung,tebing,selam ,GetTotalTeams, totalTeams} = useContext(UserContext);
+  const { TotalCollectionList, gunung,tebing,selam ,GetTotalTeams, totalTeams, TotalBorrwerList,totalBorrower} = useContext(UserContext);
   // const [loading, setLoading] = useState(true);
   const [limitExceeded, setLimitExceeded] = useState(false);
 
   useEffect(() => {
+    TotalBorrwerList();
     TotalCollectionList(1);
     GetTotalTeams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(totalTeams)
-
+console.log(TotalBorrwerList)
   return (
     <div className="w-full text-black-2 shadow-sm">
       <div className="flex justify-between mt-4">
@@ -55,7 +55,7 @@ export default function KuotaCardV2() {
               <img className="card-icon p-2" width={60} src={Browwer} />
             </div>
             <h3 className="text-blue-2 text-5xl font-bold">
-              {/* {item.name.includes("Teams") ? 2035 : 6} */} 1000
+              {totalBorrower} 
             </h3>
           </div>
         </div>

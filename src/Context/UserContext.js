@@ -19,7 +19,7 @@ export const UserProvider = (props) => {
   const [selam, setSelam] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalTeams, SetTotalTeams] = useState([]);
-  const [CreateCollection, SetCreateCollection] = useState([]);
+  const [totalBorrower, SetTotalBorrower] = useState([]);
 
   let history = useHistory();
 
@@ -59,6 +59,44 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+  const createTeams = () => {
+    fetch("http://localhost:8080/api/register", {
+      method: "POST",
+      redirect: "follow",
+      headers: {
+        "Content-Type": "application/json",
+        "API.KEY": "KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        username: addDocumentModal.username,
+        password: addDocumentModal.password,
+        role_id: parseInt(addDocumentModal.role_id),
+        detail: {
+          nra: addDocumentModal.nra,
+          name: addDocumentModal.name,
+          email: addDocumentModal.email,
+          phone_number: addDocumentModal.phone_number,
+          address: addDocumentModal.address,
+          divisi: addDocumentModal.divisi,
+        },
+      }),
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        let data = result.data;
+        console.log(data);
+        setAddDocumentModal(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   const GetTotalTeams = () => {
     fetch("http://localhost:8080/api/total", {
       method: "GET",
@@ -80,6 +118,31 @@ export const UserProvider = (props) => {
         let data = result.data;
         console.log(data);
         SetTotalTeams(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+  // API Peminjaman
+  const TotalBorrwerList = () => {
+    fetch("http://localhost:8070/api/peminjaman/count", {
+      method: "GET",
+      redirect: "follow",
+      headers: {
+        "API.KEY":
+          "KkNEUgWfFlkQTPKqwFOnsdaPOsdnopdnwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        let data = result.data;
+        console.log(data);
+        SetTotalBorrower(data);
       })
       .catch((error) => console.log("error", error));
   };
@@ -190,8 +253,9 @@ export const UserProvider = (props) => {
         keterangan: addCollectionModal.keterangan,
         divisiId: parseInt(addCollectionModal.divisi_id),
       }),
-    })
-    console.log(addCollectionModal)
+    });
+    console
+      .log(addCollectionModal)
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -241,6 +305,10 @@ export const UserProvider = (props) => {
         SetTotalTeams,
         GetTotalTeams,
         createCollection,
+        totalBorrower,
+        SetTotalBorrower,
+        TotalBorrwerList,
+        createTeams,
       }}
     >
       {props.children}
