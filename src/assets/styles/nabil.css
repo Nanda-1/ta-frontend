@@ -40,6 +40,10 @@ body {
   background-color: #84b6ff;
 }
 
+.bg-blue-4 {
+  background-color: #003FA0;
+}
+
 .border-black {
   --tw-border-opacity: 80;
   border: 1px solid rgba(0, 0, 0, var(--tw-border-opacity));
@@ -495,6 +499,11 @@ input[type="checkbox"] {
   margin-right: 8rem;
 }
 
+.mx-31 {
+  margin-left: 7rem;
+  margin-right: 7rem;
+}
+
 .pb-14 {
   padding-bottom: 3.5rem;
 }
@@ -792,7 +801,7 @@ input[type="checkbox"] {
 .login-form {
   background: #d9e7fd !important;
   border-radius: 10px !important;
-  border: 0.7px solid #0057DC;
+  border: 0.7px solid #0057dc;
 }
 
 .login-form2 {
@@ -999,6 +1008,10 @@ video {
   padding: 4rem;
 }
 
+.p-14 {
+  padding: 7rem;
+}
+
 .informasi-btn {
   -webkit-filter: invert(22%) sepia(74%) saturate(3460%) hue-rotate(187deg)
     brightness(93%) contrast(89%);
@@ -1115,4 +1128,27 @@ video {
   border: 1px solid #0f61de;
   box-shadow: 0px 6px 4px rgba(0, 87, 220, 0.53);
   border-radius: 25px;
+}
+
+.landing-bg {
+  background: linear-gradient(
+    180deg,
+    #0057dc 0%,
+    rgba(77, 143, 243, 0.708333) 67.71%,
+    rgba(64, 139, 255, 0) 100%
+  );
+}
+
+.landing-btn {
+  background: #0d6af6;
+}
+
+.historiCard {
+  background: #ffffff;
+  box-shadow: 4px 2px 4px #84b6ff;
+  border-radius: 20px;
+}
+
+.light-blue{
+  color: #B0C9EE;
 }

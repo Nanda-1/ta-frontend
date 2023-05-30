@@ -13,6 +13,7 @@ import Auth from "layouts/Auth.js";
 
 import { UserProvider } from "Context/UserContext";
 import swal from "sweetalert";
+import LandingPage from "views/landingPage/LandingPage";
 
 var val = localStorage.getItem("token");
 
@@ -35,6 +36,7 @@ ReactDOM.render(
   <BrowserRouter>
     <UserProvider>
       <Switch>
+        <Route path="/landingPage" component={LandingPage} />
         <Route path="/admin" component={Admin} />
         <Route path="/" component={Auth} />
       </Switch>
