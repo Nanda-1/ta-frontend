@@ -3,12 +3,14 @@ import { useContext } from "react";
 import { UserContext } from "Context/UserContext";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-export default function RiwayatPemohon() {
-  const { transactionList, listTransaction } = useContext(UserContext);
+export default function TabelCollection() {
+  const { CollectionList, listCollection } = useContext(UserContext);
+  const [limitExceeded, setLimitExceeded] = useState(false);
 
   useEffect(() => {
-    transactionList();
-  }, [listTransaction]);
+    if (!limitExceeded) CollectionList();
+    setLimitExceeded(true);
+  }, [listCollection, limitExceeded]);
 
   const histori = useHistory();
 
@@ -21,67 +23,16 @@ export default function RiwayatPemohon() {
   const indexOfLastTodo = (page + 1) * 5;
   const indexOfFirstTodo = indexOfLastTodo - 5;
 
-  const dataPpat = [
-    {
-      nama: "Achmad Nurachman",
-      email: "achmadnurachman142@gmail.com",
-      sk: "389-XVII-2006 18/12/2006",
-      alamat: "JL. MT HARYONO NO. 142",
-      kab: "Semarang",
-      status: "PPAT | Berhenti",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-  ];
-
   return (
     <>
       <div className="relative break-words font-sans mb-8 ">
         <div className="relative font-bold font-manrope box-content px-3 py-2 card-shadow rounded-lg bg-blue-2">
           <div className="block overflow-x-auto">
             <div className="flex justify-between py-1">
-              <h4 className="text-white mb-1">TABLE OF TEAMS</h4>
+              <h4 className="text-white mb-1">TABLE OF COLLECTION</h4>
               <h4
                 className="text-white mb-1 cursor-pointer"
-                onClick={() => histori.push("/admin/borrower")}
+                onClick={() => histori.push("/admin/collection")}
               >
                 Show all {">"}
               </h4>
@@ -112,7 +63,7 @@ export default function RiwayatPemohon() {
                   </tr>
                 </thead>
                 <tbody>
-                  {!dataPpat ? (
+                  {!listCollection ? (
                     <tr>
                       <td
                         className="px-3 text-center text-grey border-l-0 border-r-0 text-xxs p-6"
@@ -123,7 +74,7 @@ export default function RiwayatPemohon() {
                     </tr>
                   ) : (
                     <>
-                      {dataPpat.map((item, index) => {
+                      {listCollection.map((item, index) => {
                         return (
                           <tr
                             key={index}
@@ -137,13 +88,13 @@ export default function RiwayatPemohon() {
                               {item.nama}
                             </td>
                             <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.email}
+                              {item.divisi.name}
                             </td>
                             <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.sk}
+                              {item.jumlah}
                             </td>
                             <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.alamat}
+                              {item.keterangan}
                             </td>
                           </tr>
                         );

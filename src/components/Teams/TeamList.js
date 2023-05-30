@@ -1,7 +1,6 @@
 import { UserContext } from "Context/UserContext";
 import AddTeam from "components/Modals/AddTeam";
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Pagination } from "react-headless-pagination";
 // import PrevIcon from "../../assets/img/prev.png";
 // import NextIcon from "../../assets/img/next-light.png";
@@ -9,6 +8,15 @@ import { Pagination } from "react-headless-pagination";
 export default function TeamList() {
   const { setAddDocumentModal, addDocumentModal } = useContext(UserContext);
   const [page, setPage] = useState(0);
+  const { GetAllTeams, listTeams } = useContext(UserContext);
+  // const [loading, setLoading] = useState(true);
+  const [limitExceeded, setLimitExceeded] = useState(false);
+
+  useEffect(() => {
+    if (!limitExceeded) GetAllTeams();
+    setLimitExceeded(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listTeams, limitExceeded]);
 
   const handlePageChange = (page) => {
     setPage(page);
@@ -16,153 +24,6 @@ export default function TeamList() {
 
   const indexOfLastTodo = (page + 1) * 15;
   const indexOfFirstTodo = indexOfLastTodo - 15;
-
-  const dataPpat = [
-    {
-      nama: "Achmad Nurachman",
-      email: "achmadnurachman142@gmail.com",
-      sk: "389-XVII-2006 18/12/2006",
-      alamat: "JL. MT HARYONO NO. 142",
-      kab: "Semarang",
-      status: "PPAT | Berhenti",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-  ];
 
   return (
     <>
@@ -200,7 +61,7 @@ export default function TeamList() {
                 </tr>
               </thead>
               <tbody>
-                {!dataPpat ? (
+                {!listTeams ? (
                   <tr>
                     <td
                       className="px-3 text-center text-grey text-xxs p-6"
@@ -211,7 +72,7 @@ export default function TeamList() {
                   </tr>
                 ) : (
                   <>
-                    {dataPpat
+                    {listTeams
                       .slice(indexOfFirstTodo, indexOfLastTodo)
                       .map((item, index) => {
                         return (
@@ -220,19 +81,19 @@ export default function TeamList() {
                               {index + 1 + indexOfFirstTodo}
                             </td>
                             <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.nama}
+                              {item.name}
+                            </td>
+                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
+                              {item.nra}
+                            </td>
+                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
+                              {item.divisi}
+                            </td>
+                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
+                              {item.phone_number}
                             </td>
                             <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
                               {item.email}
-                            </td>
-                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.sk}
-                            </td>
-                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.alamat}
-                            </td>
-                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.kab}
                             </td>
                           </tr>
                         );
@@ -249,11 +110,11 @@ export default function TeamList() {
             </button>
           </div>
         </div>
-        {dataPpat.length !== 0 && (
+        {listTeams.length !== 0 && (
           <Pagination
             currentPage={page}
             setCurrentPage={handlePageChange}
-            totalPages={Math.ceil(dataPpat.length / 15)}
+            totalPages={Math.ceil(listTeams.length / 15)}
             edgePageCount={2}
             middlePagesSiblingCount={1}
             className="pagination mt-2"

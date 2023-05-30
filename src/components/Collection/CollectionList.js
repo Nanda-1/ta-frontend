@@ -1,7 +1,6 @@
 import { UserContext } from "Context/UserContext";
 import AddCollection from "components/Modals/AddCollection";
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Pagination } from "react-headless-pagination";
 // import PrevIcon from "../../assets/img/prev.png";
 // import NextIcon from "../../assets/img/next-light.png";
@@ -9,160 +8,20 @@ import { Pagination } from "react-headless-pagination";
 export default function CollectionList() {
   const { setAddCollectionModal, addCollectionModal } = useContext(UserContext);
   const [page, setPage] = useState(0);
+  const { CollectionList, listCollection } = useContext(UserContext);
+  const [limitExceeded, setLimitExceeded] = useState(false);
 
+  useEffect(() => {
+    if (!limitExceeded) CollectionList();
+    setLimitExceeded(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const handlePageChange = (page) => {
     setPage(page);
   };
 
   const indexOfLastTodo = (page + 1) * 15;
   const indexOfFirstTodo = indexOfLastTodo - 15;
-
-  const dataPpat = [
-    {
-      nama: "Achmad Nurachman",
-      email: "achmadnurachman142@gmail.com",
-      sk: "389-XVII-2006 18/12/2006",
-      alamat: "JL. MT HARYONO NO. 142",
-      kab: "Semarang",
-      status: "PPAT | Berhenti",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "PPAT | Aktif",
-    },
-  ];
 
   return (
     <>
@@ -197,7 +56,7 @@ export default function CollectionList() {
                 </tr>
               </thead>
               <tbody>
-                {!dataPpat ? (
+                {!listCollection ? (
                   <tr>
                     <td
                       className="px-3 text-center text-grey text-xxs p-6"
@@ -208,25 +67,29 @@ export default function CollectionList() {
                   </tr>
                 ) : (
                   <>
-                    {dataPpat
+                    {listCollection
                       .slice(indexOfFirstTodo, indexOfLastTodo)
                       .map((item, index) => {
                         return (
-                          <tr key={index} style={{ fontSize: "12px" }}>
+                          <tr
+                            key={index}
+                            // className=" border-2 border-solid border-l-0 border-r-0 border-t-0 text-inter"
+                            style={{ fontSize: "12px" }}
+                          >
                             <td className="px-3 py-1 text-center border-1 border-solid border-black border-b-0 border-t-0">
-                              {index + 1 + indexOfFirstTodo}
+                              {index + 1}
                             </td>
-                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
+                            <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
                               {item.nama}
                             </td>
-                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.email}
+                            <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
+                              {item.divisi.name}
                             </td>
-                            <td className="text-center border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              10
+                            <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
+                              {item.jumlah}
                             </td>
-                            <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
-                              {item.alamat}
+                            <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
+                              {item.keterangan}
                             </td>
                           </tr>
                         );
@@ -243,11 +106,11 @@ export default function CollectionList() {
             </button>
           </div>
         </div>
-        {dataPpat.length !== 0 && (
+        {listCollection.length !== 0 && (
           <Pagination
             currentPage={page}
             setCurrentPage={handlePageChange}
-            totalPages={Math.ceil(dataPpat.length / 15)}
+            totalPages={Math.ceil(listCollection.length / 15)}
             edgePageCount={2}
             middlePagesSiblingCount={1}
             className="pagination mt-2"

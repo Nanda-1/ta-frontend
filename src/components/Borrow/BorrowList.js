@@ -17,7 +17,7 @@ export default function BorrowList() {
   const indexOfLastTodo = (page + 1) * 15;
   const indexOfFirstTodo = indexOfLastTodo - 15;
 
-  const dataPpat = [
+  const dataPeminjam = [
     {
       nama: "Achmad Nurachman",
       email: "achmadnurachman142@gmail.com",
@@ -200,7 +200,7 @@ export default function BorrowList() {
                 </tr>
               </thead>
               <tbody>
-                {!dataPpat ? (
+                {!dataPeminjam ? (
                   <tr>
                     <td
                       className="px-3 text-center text-grey text-xxs p-6"
@@ -211,7 +211,7 @@ export default function BorrowList() {
                   </tr>
                 ) : (
                   <>
-                    {dataPpat
+                    {dataPeminjam
                       .slice(indexOfFirstTodo, indexOfLastTodo)
                       .map((item, index) => {
                         return (
@@ -254,11 +254,11 @@ export default function BorrowList() {
             </table>
           </div>
         </div>
-        {dataPpat.length !== 0 && (
+        {dataPeminjam.length !== 0 && (
           <Pagination
             currentPage={page}
             setCurrentPage={handlePageChange}
-            totalPages={Math.ceil(dataPpat.length / 15)}
+            totalPages={Math.ceil(dataPeminjam.length / 15)}
             edgePageCount={2}
             middlePagesSiblingCount={1}
             className="pagination mt-2"
