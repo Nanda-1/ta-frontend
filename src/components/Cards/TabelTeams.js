@@ -16,6 +16,8 @@ export default function TabelTeams() {
 
   const histori = useHistory();
 
+  console.log(listTeams);
+
   return (
     <div className="w-full text-black-2 shadow-sm">
       <div className="relative font-bold box-content px-3 py-2 card-shadow rounded-lg bg-blue-2">
@@ -56,13 +58,13 @@ export default function TabelTeams() {
               </tr>
             </thead>
             <tbody>
-              {!listTeams ? (
+              {!listTeams || listTeams.length === 0 ? (
                 <tr>
                   <td
                     className="px-3 text-center text-grey text-xxs p-6"
                     colSpan={7}
                   >
-                    Tidak Ada Dokumen
+                    Tidak Ada Data
                   </td>
                 </tr>
               ) : (

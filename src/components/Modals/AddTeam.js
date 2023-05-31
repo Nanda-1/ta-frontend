@@ -4,16 +4,16 @@ import React, { useContext } from "react";
 import { UserContext } from "Context/UserContext";
 
 export default function AddTeam() {
-  const { addDocumentModal, setAddDocumentModal,createTeams } = useContext(UserContext);
+  const { addDocumentModal, setAddDocumentModal, createTeams } =
+    useContext(UserContext);
   const handleChange = (event) => {
     const { value, name } = event.target;
     setAddDocumentModal({ ...addDocumentModal, [name]: value });
   };
-  
-  console.log(addDocumentModal)
+
   const create = () => {
     createTeams();
-  }
+  };
 
   return (
     <>
@@ -31,9 +31,9 @@ export default function AddTeam() {
               </button>
               <div className="relative flex flex-col w-full outline-none focus:outline-none">
                 {/*body*/}
-                
+
                 <div className="relative flex-col px-10 text-blue font-inter">
-                <label className="text-xs font-bold">Username</label>
+                  <label className="text-xs font-bold">Username</label>
                   <input
                     type="text"
                     name="username"
@@ -120,7 +120,10 @@ export default function AddTeam() {
                 </div>
               </div>
               <div className="w-full text-center">
-                <button onClick={() => create() } className="bg-blue text-white rounded-md my-3 py-1 px-10 text-sm focus:outline-none">
+                <button
+                  onClick={() => create()}
+                  className="bg-blue text-white rounded-md my-3 py-1 px-10 text-sm focus:outline-none"
+                >
                   Save
                 </button>
               </div>

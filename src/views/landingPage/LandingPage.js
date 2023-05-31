@@ -1,14 +1,9 @@
 import React from "react";
-import NavbarLanding from "./IndexNavbar";
 import Splash from "../../assets/img/splash.png";
-import Footer from "components/Footers/Footer";
-import FooterSmall from "components/Footers/FooterSmall";
-import FooterAdmin from "components/Footers/FooterAdmin";
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen sidebar-transition landing-bg">
-      <NavbarLanding />
+    <>
       <div className="flex text-white">
         <div className="lg:w-7/12 p-14">
           <label>
@@ -38,7 +33,6 @@ export default function LandingPage() {
           dari UKM Impeesa eks. STIE Perbanas yang berdiri di Sukamantri, ...
         </label>
       </div>
-      <FooterAdmin />
-    </div>
+    </>
   );
 }

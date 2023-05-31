@@ -14,6 +14,11 @@ import Auth from "layouts/Auth.js";
 import { UserProvider } from "Context/UserContext";
 import swal from "sweetalert";
 import LandingPage from "views/landingPage/LandingPage";
+import FooterAdmin from "components/Footers/FooterAdmin";
+import NavbarLanding from "views/landingPage/IndexNavbar";
+import Form from "views/landingPage/Form";
+import ForestMountain from "views/landingPage/ForestMountain";
+import Login from "views/auth/Login";
 
 var val = localStorage.getItem("token");
 
@@ -36,9 +41,19 @@ ReactDOM.render(
   <BrowserRouter>
     <UserProvider>
       <Switch>
-        <Route path="/landingPage" component={LandingPage} />
+        <div className="relative min-h-screen sidebar-transition landing-bg">
+          <NavbarLanding />
+          {/* <Route path="/" component={LandingPage} /> */}
+          <Route path="/landing_page" exact component={LandingPage} />
+          <Route path="/form" exact component={Form} />
+          <Route path="/forest_mountain" exact component={ForestMountain} />
+          <Route path="/rock_climbing" exact component={Form} />
+          <Route path="/diving" exact component={Form} />
+          <FooterAdmin />
+        </div>
+        {/* <Route path="/form" component={LandingPage} /> */}
         <Route path="/admin" component={Admin} />
-        <Route path="/" component={Auth} />
+        <Route path="/login" exact component={Login} />
       </Switch>
     </UserProvider>
   </BrowserRouter>,

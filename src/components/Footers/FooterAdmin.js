@@ -12,12 +12,12 @@ export default function FooterAdmin() {
             <div className="w-full lg:w-4/12 px-4">
               <div className="text-sm light-blue font-semibold py-1 text-center md:text-left"  style={{alignItems: 'center'}}>
                 © 2023 IMPEESA Perbanas Institute
-                <a
+                {/* <a
                   href="https://www.creative-tim.com?ref=nr-footer-admin"
                   className="light-blue hover:text-blueGray-700 text-sm font-semibold py-1"
                 >
                   Creative Tim
-                </a>
+                </a> */}
               </div>
             </div>
             <div className="w-full lg:w-8/12 px-4">
@@ -40,9 +40,9 @@ export default function FooterAdmin() {
                   </span>
                 </li>
                 <li className="flex" style={{alignItems: 'end'}}>
-                 <img width={60} className="mr-4" src={Youtube} style={{height: 'fit-content'}} />
-                 <img width={25} className="mr-4" src={Instagram} style={{height: 'fit-content'}} />
-                 <img width={25} src={Twitter} style={{height: 'fit-content'}} />
+                 <img width={60} className="mr-4 mb-3" src={Youtube} style={{height: 'fit-content'}} />
+                 <img width={25} className="mr-4 mb-3" src={Instagram} style={{height: 'fit-content'}} />
+                 <img width={25} className="mb-3" src={Twitter} style={{height: 'fit-content'}} />
                 </li>
               </ul>
             </div>

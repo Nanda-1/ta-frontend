@@ -63,7 +63,7 @@ export default function TabelCollection() {
                   </tr>
                 </thead>
                 <tbody>
-                  {!listCollection ? (
+                  {!listCollection || listCollection.length === 0? (
                     <tr>
                       <td
                         className="px-3 text-center text-grey border-l-0 border-r-0 text-xxs p-6"

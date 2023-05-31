@@ -4,7 +4,16 @@ import Browwer from "../../assets/img/total_borrower.png";
 import Member from "../../assets/img/total_members.png";
 
 export default function KuotaCardV2() {
-  const { TotalCollectionList, gunung,tebing,selam ,GetTotalTeams, totalTeams, TotalBorrwerList,totalBorrower} = useContext(UserContext);
+  const {
+    TotalCollectionList,
+    gunung,
+    tebing,
+    selam,
+    GetTotalTeams,
+    totalTeams,
+    TotalBorrwerList,
+    totalBorrower,
+  } = useContext(UserContext);
   // const [loading, setLoading] = useState(true);
   const [limitExceeded, setLimitExceeded] = useState(false);
 
@@ -14,7 +23,7 @@ export default function KuotaCardV2() {
     GetTotalTeams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-console.log(TotalBorrwerList)
+
   return (
     <div className="w-full text-black-2 shadow-sm">
       <div className="flex justify-between mt-4">
@@ -33,9 +42,7 @@ console.log(TotalBorrwerList)
               </label>
               <img className="card-icon p-2" width={60} src={Member} />
             </div>
-            <h3 className="text-blue-2 text-5xl font-bold">
-              {totalTeams}
-            </h3>
+            <h3 className="text-blue-2 text-5xl font-bold">{totalTeams}</h3>
           </div>
         </div>
         {/*  */}
@@ -55,72 +62,72 @@ console.log(TotalBorrwerList)
               <img className="card-icon p-2" width={60} src={Browwer} />
             </div>
             <h3 className="text-blue-2 text-5xl font-bold">
-              {totalBorrower} 
+              {totalBorrower || 0}
             </h3>
           </div>
         </div>
         {/*  */}
         <div className="flex-col">
-        <div
-          className={`w-full flex  mt-4`}
-          // key={index}
-        >
-          <div className="bg-blue-2 flex w-full rounded-lg">
-            <label
-              className="text-white w-full py-1 px-4 "
-              style={{ fontSize: "18px", lineHeight: "20px" }}
-            >
-              Forest mountain <br /> collections
-            </label>
-            <label
-              className="text-blue-2 text-5xl px-3"
-              style={{ alignSelf: "center", marginTop: "-6px" }}
-            >
-              {gunung}
-            </label>
-          </div>
-        </div>
-        {/*  */}
-            
-        <div
-          className={`w-full flex  mt-4`}
-          // key={index}
+          <div
+            className={`w-full flex  mt-4`}
+            // key={index}
           >
-          <div className="bg-blue-2 flex w-full rounded-lg">
-            <label
-              className="text-white w-full py-1 px-4 "
-              style={{ fontSize: "18px", lineHeight: "20px" }}
-            >
-              Rock Climbing  <br /> collections
-            </label>
-            <label
-              className="text-blue-2 text-5xl px-3"
-              style={{ alignSelf: "center", marginTop: "-6px" }}
-            >
-               {tebing}
-            </label>
+            <div className="bg-blue-2 flex w-full rounded-lg">
+              <label
+                className="text-white w-full py-1 px-4 "
+                style={{ fontSize: "18px", lineHeight: "20px" }}
+              >
+                Forest mountain <br /> collections
+              </label>
+              <label
+                className="text-blue-2 text-5xl px-3"
+                style={{ alignSelf: "center", marginTop: "-6px" }}
+              >
+                {gunung}
+              </label>
+            </div>
           </div>
-        </div>
-        {/*  */}
-        <div
-          className={`w-full flex  mt-4`}
-          // key={index}
-        >
-          <div className="bg-blue-2 flex w-full rounded-lg">
-            <label
-              className="text-white w-full py-1 px-4 "
-              style={{ fontSize: "18px", lineHeight: "20px" }}
-            >
-            Diving  <br /> collections
-            </label>
-            <label
-              className="text-blue-2 text-5xl px-3"
-              style={{ alignSelf: "center", marginTop: "-6px" }}
-            >
-              {selam}
-            </label>
+          {/*  */}
+
+          <div
+            className={`w-full flex  mt-4`}
+            // key={index}
+          >
+            <div className="bg-blue-2 flex w-full rounded-lg">
+              <label
+                className="text-white w-full py-1 px-4 "
+                style={{ fontSize: "18px", lineHeight: "20px" }}
+              >
+                Rock Climbing <br /> collections
+              </label>
+              <label
+                className="text-blue-2 text-5xl px-3"
+                style={{ alignSelf: "center", marginTop: "-6px" }}
+              >
+                {tebing}
+              </label>
+            </div>
           </div>
-        </div>
+          {/*  */}
+          <div
+            className={`w-full flex  mt-4`}
+            // key={index}
+          >
+            <div className="bg-blue-2 flex w-full rounded-lg">
+              <label
+                className="text-white w-full py-1 px-4 "
+                style={{ fontSize: "18px", lineHeight: "20px" }}
+              >
+                Diving <br /> collections
+              </label>
+              <label
+                className="text-blue-2 text-5xl px-3"
+                style={{ alignSelf: "center", marginTop: "-6px" }}
+              >
+                {selam}
+              </label>
+            </div>
+          </div>
         </div>
         {/* {kuotaList.map((item, index) => {
           return (

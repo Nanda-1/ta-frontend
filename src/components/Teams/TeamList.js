@@ -21,7 +21,7 @@ export default function TeamList() {
   const handlePageChange = (page) => {
     setPage(page);
   };
-
+  
   const indexOfLastTodo = (page + 1) * 15;
   const indexOfFirstTodo = indexOfLastTodo - 15;
 
