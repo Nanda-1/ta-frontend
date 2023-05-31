@@ -41,19 +41,25 @@ ReactDOM.render(
   <BrowserRouter>
     <UserProvider>
       <Switch>
+        <Route path="/admin" component={Admin} />
+        <Route path="/login" exact component={Login} />
         <div className="relative min-h-screen sidebar-transition landing-bg">
-          <NavbarLanding />
+          {window.location.pathname.includes("/admin") ||
+          window.location.pathname.includes("/login") ? null : (
+            <NavbarLanding />
+          )}
           {/* <Route path="/" component={LandingPage} /> */}
           <Route path="/landing_page" exact component={LandingPage} />
           <Route path="/form" exact component={Form} />
           <Route path="/forest_mountain" exact component={ForestMountain} />
           <Route path="/rock_climbing" exact component={Form} />
           <Route path="/diving" exact component={Form} />
-          <FooterAdmin />
+          {window.location.pathname.includes("/admin") ||
+          window.location.pathname.includes("/login") ? null : (
+            <FooterAdmin />
+          )}
         </div>
         {/* <Route path="/form" component={LandingPage} /> */}
-        <Route path="/admin" component={Admin} />
-        <Route path="/login" exact component={Login} />
       </Switch>
     </UserProvider>
   </BrowserRouter>,
