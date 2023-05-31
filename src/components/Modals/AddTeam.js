@@ -20,7 +20,7 @@ export default function AddTeam() {
       {addDocumentModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-960-d my-2 mx-auto mb-6 add-team-modal p-6">
+            <div className=" w-960-d mt-6 mx-auto mb-6 add-team-modal p-6 absolute top-0">
               {/*content*/}
               <button
                 className="text-white bg-blue rounded-full float-right focus:outline-none"

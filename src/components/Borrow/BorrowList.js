@@ -200,13 +200,13 @@ export default function BorrowList() {
                 </tr>
               </thead>
               <tbody>
-                {!dataPeminjam ? (
+                {!dataPeminjam || dataPeminjam.length === 0 ? (
                   <tr>
                     <td
                       className="px-3 text-center text-grey text-xxs p-6"
                       colSpan={7}
                     >
-                      Tidak Ada Dokumen
+                      Tidak Ada Data
                     </td>
                   </tr>
                 ) : (
