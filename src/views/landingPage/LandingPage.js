@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import Splash from "../../assets/img/splash.png";
 
 export default function LandingPage() {
   return (
     <>
-      <div className="flex text-white">
+      <div className="flex flex-col lg:flex-row text-white">
         <div className="lg:w-7/12 p-14">
           <label>
             All IMPEESA collections have a service that you can use to borrow
@@ -14,16 +15,16 @@ export default function LandingPage() {
             loan.
           </label>
           <div className="w-full mt-3">
-            <button className="landing-btn py-1 px-6 rounded-lg ">
-              Borrow Collection ➜
+            <button className="landing-btn py-1 px-6 rounded-lg">
+              <Link to="/form">Borrow Collection ➜</Link>
             </button>
           </div>
         </div>
         <div className="lg:w-5/12">
-          <img src={Splash} />
+          <img src={Splash} alt="Splash" />
         </div>
       </div>
-      <div className="text-blue font-semibold mx-31 p-4 historiCard">
+      <div className="text-blue font-semibold mx-3 lg:mx-31 p-4 historiCard">
         <h4 className="mb-4">HISTORY</h4>
         <label>
           IMPEESA Perbanas merupakan salah satu UKM yang bertujuan membina

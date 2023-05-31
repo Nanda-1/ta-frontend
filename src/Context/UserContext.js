@@ -31,7 +31,7 @@ export const UserProvider = (props) => {
   var auth = JSON.parse(login);
 
   const refreshToken = () => {
-    fetch("http://localhost:8080/api/auth/refresh", {
+    fetch(process.env.REACT_APP_BACKEND_HOST + "/api/auth/refresh", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -60,7 +60,7 @@ export const UserProvider = (props) => {
   };
 
   const createTeams = () => {
-    fetch("http://localhost:8080/api/register", {
+    fetch( process.env.REACT_APP_BACKEND_HOST + "/api/register", {
       method: "POST",
       redirect: "follow",
       headers: {
@@ -98,7 +98,7 @@ export const UserProvider = (props) => {
   };
 
   const GetTotalTeams = () => {
-    fetch("http://localhost:8080/api/total", {
+    fetch(process.env.REACT_APP_BACKEND_HOST + "/api/total", {
       method: "GET",
       redirect: "follow",
       headers: {
@@ -220,7 +220,7 @@ export const UserProvider = (props) => {
       redirect: "follow",
     };
 
-    fetch("http://localhost:8080/api/get-all", requestOptionsGet)
+    fetch(process.env.REACT_APP_BACKEND_HOST + "/api/get-all", requestOptionsGet)
       .then((response) => {
         if (response.status === 401) {
           refreshToken();

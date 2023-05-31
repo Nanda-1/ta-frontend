@@ -47,8 +47,8 @@ export default function LoginForm() {
     };
 
     await fetch(
-      // process.env.REACT_APP_BACKEND_HOST + "api/auth/login",
-      "http://localhost:8080/api/auth/login",
+      process.env.REACT_APP_BACKEND_HOST + "/api/auth/login",
+      // "http://localhost:8080/api/auth/login",
       requestOptions
     )
       .then((res) => res.json())
