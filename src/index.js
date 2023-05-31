@@ -50,6 +50,7 @@ ReactDOM.render(
           window.location.pathname.includes("/login") ? null : (
             <NavbarLanding />
           )}
+          <Route path="/" exact component={LandingPage} />
           <Route path="/landing_page" exact component={LandingPage} />
           <Route path="/form" exact component={Form} />
           <Route path="/forest_mountain" exact component={ForestMountain} />
