@@ -1,13 +1,13 @@
 import React from "react";
 import Gambar from "../../assets/img/example.png";
 
-export default function ForestMountain() {
+export default function Diving() {
   return (
     <>
       <div className="flex text-blue">
         <div className="bg-white lg:w-10/12 mx-auto mt-6 flex rounded-lg shadow-form w-full">
           <div className="py-6 px-16 w-full text-center">
-            <h2 className="font-bold mb-4 text-xl">FOREST MOUNTAIN</h2>
+            <h2 className="font-bold mb-4 text-xl">DIVING</h2>
             <p className="text-left">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy text

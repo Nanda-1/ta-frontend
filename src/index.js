@@ -19,6 +19,8 @@ import NavbarLanding from "views/landingPage/IndexNavbar";
 import Form from "views/landingPage/Form";
 import ForestMountain from "views/landingPage/ForestMountain";
 import Login from "views/auth/Login";
+import RockClimb from "views/landingPage/RockClimb";
+import Diving from "views/landingPage/Diving";
 
 var val = localStorage.getItem("token");
 
@@ -48,18 +50,16 @@ ReactDOM.render(
           window.location.pathname.includes("/login") ? null : (
             <NavbarLanding />
           )}
-          {/* <Route path="/" component={LandingPage} /> */}
           <Route path="/landing_page" exact component={LandingPage} />
           <Route path="/form" exact component={Form} />
           <Route path="/forest_mountain" exact component={ForestMountain} />
-          <Route path="/rock_climbing" exact component={Form} />
-          <Route path="/diving" exact component={Form} />
+          <Route path="/rock_climbing" exact component={RockClimb} />
+          <Route path="/diving" exact component={Diving} />
           {window.location.pathname.includes("/admin") ||
           window.location.pathname.includes("/login") ? null : (
             <FooterAdmin />
           )}
         </div>
-        {/* <Route path="/form" component={LandingPage} /> */}
       </Switch>
     </UserProvider>
   </BrowserRouter>,
