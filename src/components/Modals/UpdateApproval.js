@@ -4,8 +4,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "Context/UserContext";
 
 export default function UpdateApproval({id}) {
-  const { addBorrowModal, setAddBorrowModal, GetAllBorrow, Borrowlist } = useContext(UserContext);
+  const { addBorrowModal, setAddBorrowModal, GetAllBorrow, Borrowlist,GetFiles , SendStatuMail} = useContext(UserContext);
   const [limitExceeded, setLimitExceeded] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!limitExceeded) {
@@ -14,7 +15,17 @@ export default function UpdateApproval({id}) {
     }
   }, []);
 
-  console.log(id);
+  const handleApprove = (id) => {
+    setLoading(true);
+    SendStatuMail(id, "approve")
+
+  };
+
+  const handleReject = (id) => {
+    setLoading(true);
+    SendStatuMail(id, "reject")
+  };
+
 
   return (
     <>
@@ -97,13 +108,25 @@ export default function UpdateApproval({id}) {
                           <span>{item.email}</span>
                         </div>
                       </div>
-                      <button className="w-full rounded-lg bg-blue text-white shadow-sm py-1 my-3">Download File Document ↓</button>
-                      <div className="flex justify-evenly py-6">
-                        <button className="py-2 px-10 rounded-xl bg-red text-white text-sm">
-                          REJECT
+                      <button
+                        onClick={() => GetFiles(item.id)}
+                        className="w-full rounded-lg bg-blue text-white shadow-sm py-1 my-3"
+                      >
+                        Download File Document ↓
+                      </button><div className="flex justify-evenly py-6">
+                      <button
+                          onClick={() => handleReject(item.id)}
+                          className="py-2 px-10 rounded-xl bg-red text-white text-sm"
+                          disabled={loading}
+                        >
+                          {loading ? "Loading..." : "REJECT"}
                         </button>
-                        <button className="bg-green text-white rounded-xl py-2 px-8 text-sm">
-                          APPROVE
+                        <button
+                          onClick={() => handleApprove(item.id)}
+                          className="bg-green text-white rounded-xl py-2 px-8 text-sm"
+                          disabled={loading}
+                        >
+                          {loading ? "Loading..." : "APPROVE"}
                         </button>
                       </div>
                     </div>

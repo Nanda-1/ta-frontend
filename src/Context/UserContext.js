@@ -21,6 +21,7 @@ export const UserProvider = (props) => {
   const [totalTeams, SetTotalTeams] = useState([]);
   const [totalBorrower, SetTotalBorrower] = useState([]);
   const [Borrowlist, setBorrowList] = useState([]);
+  const [SendStatus, SetSendStatus] = useState([]);
 
   let history = useHistory();
 
@@ -266,6 +267,60 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+  const GetFiles = (id) => {
+    fetch(`http://localhost:8070/api/peminjaman/get-file?peminjaman_detail_id=${id}`, {
+      method: "GET",
+      redirect: "follow",
+      headers: {
+        "API.KEY": "KkNEUgWfFlkQTPKqwFOnsdaPOsdnopdnwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then(response => {
+        const filenameHeader = response.headers.get("content-disposition");
+        const filenameMatch = filenameHeader && filenameHeader.match(/filename="(.+)"/);
+        const filename = filenameMatch ? filenameMatch[1] : "file.pdf"; // Set a default filename if not provided
+  
+        return response.blob().then(blob => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        });
+      })
+      .catch(error => {
+        console.error('Error downloading the document:', error);
+      });
+  };
+  
+  const SendStatuMail = (id, status) => {
+    return fetch(`http://localhost:8070/api/peminjaman/email?id=${id}&status=${status}`, {
+      method: "POST",
+      redirect: "follow",
+      headers: {
+        "API.KEY": "KkNEUgWfFlkQTPKqwFOnsdaPOsdnopdnwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        let data = result.data;
+        console.log(JSON.stringify(data));
+        SetSendStatus(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+  
+
   const createCollection = () => {
     fetch("http://localhost:8060/api/pendataan/create", {
       method: "POST",
@@ -339,7 +394,11 @@ export const UserProvider = (props) => {
         TotalBorrwerList,
         createTeams,
         setBorrowList,
-        Borrowlist
+        Borrowlist,
+        GetFiles,
+        SendStatuMail,
+        SendStatus,
+        SetSendStatus,
       }}
     >
       {props.children}

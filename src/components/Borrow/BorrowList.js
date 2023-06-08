@@ -10,6 +10,7 @@ export default function BorrowList() {
   const [page, setPage] = useState(0);
   const [limitExceeded, setLimitExceeded] = useState(false);
   const [id, setId] = useState("");
+  // const [peminjamanid, SetPeminjamanid] = useState("");
 
   useEffect(() => {
     if (!limitExceeded) GetAllBorrow();
