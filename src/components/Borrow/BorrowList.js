@@ -1,172 +1,35 @@
 import { UserContext } from "Context/UserContext";
 import UpdateApproval from "components/Modals/UpdateApproval";
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Pagination } from "react-headless-pagination";
 // import PrevIcon from "../../assets/img/prev.png";
 // import NextIcon from "../../assets/img/next-light.png";
 
 export default function BorrowList() {
-  const { setAddBorrowModal, addBorrowModal } = useContext(UserContext);
+  const { setAddBorrowModal, addBorrowModal , GetAllBorrow, Borrowlist} = useContext(UserContext);
   const [page, setPage] = useState(0);
+  const [limitExceeded, setLimitExceeded] = useState(false);
+  const [id, setId] = useState("");
 
+  useEffect(() => {
+    if (!limitExceeded) GetAllBorrow();
+    setLimitExceeded(true);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const handlePageChange = (page) => {
     setPage(page);
   };
 
   const indexOfLastTodo = (page + 1) * 15;
   const indexOfFirstTodo = indexOfLastTodo - 15;
-
-  const dataPeminjam = [
-    {
-      nama: "Achmad Nurachman",
-      email: "achmadnurachman142@gmail.com",
-      sk: "389-XVII-2006 18/12/2006",
-      alamat: "JL. MT HARYONO NO. 142",
-      kab: "Semarang",
-      status: "Pending",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Pending",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Pending",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Reject",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Reject",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Reject",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-    {
-      nama: "Agnes Maria Lanny Widjaja",
-      email: "lannynotaris@gmail.com",
-      sk: "15-XI-1998 24/09/1998",
-      alamat: "Jl. Tentara Pelajar no 29",
-      kab: "Semarang",
-      status: "Approved",
-    },
-  ];
-
+  const showModal = (id) => {
+    setAddBorrowModal(true)
+    setId(id)
+  }
+  
   return (
     <>
-      {addBorrowModal ? <UpdateApproval /> : null}
+      {addBorrowModal ? <UpdateApproval id = {id} /> : null}
       <div className="w-full text-black-2 shadow-sm">
         <div className="relative font-bold box-content px-3 py-2 card-shadow rounded-lg bg-blue-3">
           <div className="block overflow-x-auto">
@@ -200,7 +63,7 @@ export default function BorrowList() {
                 </tr>
               </thead>
               <tbody>
-                {!dataPeminjam || dataPeminjam.length === 0 ? (
+                {!Borrowlist || Borrowlist.length === 0 ? (
                   <tr>
                     <td
                       className="px-3 text-center text-grey text-xxs p-6"
@@ -211,7 +74,7 @@ export default function BorrowList() {
                   </tr>
                 ) : (
                   <>
-                    {dataPeminjam
+                    {Borrowlist
                       .slice(indexOfFirstTodo, indexOfLastTodo)
                       .map((item, index) => {
                         return (
@@ -220,13 +83,13 @@ export default function BorrowList() {
                               {index + 1 + indexOfFirstTodo}
                             </td>
                             <td className="px-2 border-1 border-solid border-black border-b-0 border-t-0">
-                              {item.nama}
+                              {item.name}
                             </td>
                             <td className="px-2 border-1 border-solid border-black border-b-0 border-t-0">
-                              {item.kab}
+                              {item.asal_organisai}
                             </td>
                             <td className="px-2 border-1 border-solid border-black border-b-0 border-t-0">
-                              {item.sk}
+                              {item.phone_number}
                             </td>
                             <td className="px-2 border-1 border-solid border-black border-b-0 border-t-0">
                               {item.email}
@@ -234,13 +97,13 @@ export default function BorrowList() {
                             <td className="px-2 border-1 mb-2 border-solid text-center text-white border-black border-b-0 border-t-0">
                               <div
                                 className={`cursor-pointer ${
-                                  item.status === "Approved"
+                                  item.status === "approve"
                                     ? "success-label"
-                                    : item.status === "Reject"
+                                    : item.status === "reject"
                                     ? "failed-label"
                                     : "pending-label"
                                 }`}
-                                onClick={() => setAddBorrowModal(true)}
+                                onClick={()=>showModal(item.id)}
                               >
                                 {item.status}
                               </div>
@@ -254,11 +117,11 @@ export default function BorrowList() {
             </table>
           </div>
         </div>
-        {dataPeminjam.length !== 0 && (
+        {Borrowlist.length !== 0 && (
           <Pagination
             currentPage={page}
             setCurrentPage={handlePageChange}
-            totalPages={Math.ceil(dataPeminjam.length / 15)}
+            totalPages={Math.ceil(Borrowlist.length / 15)}
             edgePageCount={2}
             middlePagesSiblingCount={1}
             className="pagination mt-2"

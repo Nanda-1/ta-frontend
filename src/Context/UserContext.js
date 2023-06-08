@@ -20,6 +20,7 @@ export const UserProvider = (props) => {
   const [loading, setLoading] = useState(false);
   const [totalTeams, SetTotalTeams] = useState([]);
   const [totalBorrower, SetTotalBorrower] = useState([]);
+  const [Borrowlist, setBorrowList] = useState([]);
 
   let history = useHistory();
 
@@ -91,7 +92,7 @@ export const UserProvider = (props) => {
       })
       .then((result) => {
         let data = result.data;
-        console.log(data);
+        // console.log(data);
         setAddDocumentModal(data);
       })
       .catch((error) => console.log("error", error));
@@ -116,7 +117,7 @@ export const UserProvider = (props) => {
       })
       .then((result) => {
         let data = result.data;
-        console.log(data);
+        // console.log(data);
         SetTotalTeams(data);
       })
       .catch((error) => console.log("error", error));
@@ -166,7 +167,7 @@ export const UserProvider = (props) => {
       })
       .then((result) => {
         let data = result.data;
-        console.log(data);
+        // console.log(data);
         setListCollection(data);
       })
       .catch((error) => console.log("error", error));
@@ -238,6 +239,33 @@ export const UserProvider = (props) => {
       .catch((error) => console.log("error", error));
   };
 
+  const GetAllBorrow = () => {
+    fetch("http://localhost:8070/api/peminjaman/get-borrow", {
+      method: "GET",
+      redirect: "follow",
+      headers: {
+        "API.KEY":
+          "KkNEUgWfFlkQTPKqwFOnsdaPOsdnopdnwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else {
+          return response.json();
+        }
+      })
+      .then((result) => {
+        let data = result.data;
+        // console.log(JSON.stringify(data));
+        // console.log(JSON.parse(data));
+        console.log(data);
+        setBorrowList(data);
+      })
+      .catch((error) => console.log("error", error));
+  };
+
   const createCollection = () => {
     fetch("http://localhost:8060/api/pendataan/create", {
       method: "POST",
@@ -289,6 +317,7 @@ export const UserProvider = (props) => {
         setDataUser,
         addBorrowModal,
         setAddBorrowModal,
+        GetAllBorrow,
         addCollectionModal,
         setAddCollectionModal,
         CollectionList,
@@ -309,6 +338,8 @@ export const UserProvider = (props) => {
         SetTotalBorrower,
         TotalBorrwerList,
         createTeams,
+        setBorrowList,
+        Borrowlist
       }}
     >
       {props.children}
