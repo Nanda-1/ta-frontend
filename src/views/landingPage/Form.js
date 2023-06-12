@@ -1,15 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import Climb from "../../assets/img/photo.png";
 import swal from "sweetalert";
 
 export default function Form() {
   const [file, setFile] = useState(null);
+  const [filename, setFilename] = useState("");
 
   const uploadKTPPreview = (e) => {
     console.log(e.target.files);
     if (e.target.files && e.target.files.length) {
       onUpload(e.target.files);
     }
+  };
+
+  const removeFile = () => {
+    setFilename(null);
+    // Lakukan operasi lain yang diperlukan untuk menghapus file
   };
 
   const drop = useRef(null);
@@ -22,6 +29,7 @@ export default function Form() {
       drop.current?.removeEventListener("dragover", handleDragOver);
       drop.current?.removeEventListener("drop", handleDrop);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDragOver = (e) => {
@@ -43,6 +51,7 @@ export default function Form() {
   const onUpload = (files) => {
     const data = files[0];
     setFile(data);
+    setFilename(data.name);
   };
 
   console.log(file);
@@ -65,7 +74,7 @@ export default function Form() {
   });
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     console.log(input);
     // Validate date fields
     if (!input.start_date || !input.end_date) {
@@ -233,17 +242,24 @@ export default function Form() {
               <div className="upload-file text-center text-xs mt-2" ref={drop}>
                 <input
                   type="file"
-                  // value={input.file}
-                  // id="upload-button2"
-                  // className="upload-file"
                   style={{ display: "none" }}
                   onChange={uploadKTPPreview}
                   name="file"
-                  // required={true}
                 />
-                <p className="text-center text-sm mt-7 font-600">
-                  <b>Click to upload</b> or drag and drop
-                </p>
+                {filename ? (
+                  <div>
+                    <p className="text-center text-sm mt-7 font-600">
+                      {filename}
+                    </p>
+                    <button onClick={removeFile}>Remove</button>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-center text-sm mt-7 font-600">
+                      <b>Click to upload</b> or drag and drop
+                    </p>
+                  </div>
+                )}
                 <span className="keterangan">PDF (max. 5mb)</span>
               </div>
               <div className="text-center my-2">
