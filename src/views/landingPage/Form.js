@@ -6,6 +6,7 @@ import swal from "sweetalert";
 export default function Form() {
   const [file, setFile] = useState(null);
   const [filename, setFilename] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const uploadKTPPreview = (e) => {
     console.log(e.target.files);
@@ -75,6 +76,8 @@ export default function Form() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    setLoading(true);
+
     console.log(input);
     // Validate date fields
     if (!input.start_date || !input.end_date) {
@@ -104,7 +107,6 @@ export default function Form() {
     console.log(requestOptions);
     await fetch(
       "http://localhost:8070/api/peminjaman/create",
-      // process.env.REACT_APP_BACKEND_HOST + "/api/auth/login",
       requestOptions
     )
       .then((res) => res.json())
@@ -115,13 +117,25 @@ export default function Form() {
           console.log("token", res.data.token);
           // localStorage.setItem("token", res.data.token.access_token);
         }
-        // setLoading(false);
+        // Clear form fields after successful submission
+        setInput({
+          name: "",
+          email: "",
+          asal_organisasi: "",
+          phone_number: "",
+          start_date: "",
+          end_date: "",
+          initial_day: "",
+        });
+        setFile(null);
       })
       .catch((err) => {
         if (err.message === "Failed to fetch") {
           swal("Error", "Internal Server Error", "error");
         }
-        // setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false); // Set isLoading back to false
       });
   };
 

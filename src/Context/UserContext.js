@@ -334,7 +334,7 @@ export const UserProvider = (props) => {
         nama: addCollectionModal.name,
         jumlah: parseInt(addCollectionModal.jumlah),
         keterangan: addCollectionModal.keterangan,
-        divisiId: parseInt(addCollectionModal.divisi_id),
+        divisiId: parseInt(addCollectionModal.divisiId),
       }),
     });
     console

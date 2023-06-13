@@ -34,7 +34,7 @@ export default function AddCollection() {
               <div className="relative flex flex-col w-full outline-none focus:outline-none">
                 {/*body*/}
                 <div className="relative flex-col px-10 text-blue font-inter">
-                  <label className="text-xs font-bold">Name</label>
+                  <label className="text-xs font-bold">Nama Barang</label>
                   <input
                     type="text"
                     name="name"
