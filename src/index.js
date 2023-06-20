@@ -34,7 +34,7 @@ const PrivateRoute = ({ ...props }) => {
         "Silahkan Login Terlebih Dahulu",
         "error"
       ),
-      (<Redirect to="/" />)
+      (<Redirect to="/login" />)
     );
   }
 };
@@ -43,7 +43,7 @@ ReactDOM.render(
   <BrowserRouter>
     <UserProvider>
       <Switch>
-        <Route path="/admin" component={Admin} />
+        <PrivateRoute path="/admin" component={Admin} />
         <Route path="/login" exact component={Login} />
         <div className="relative min-h-screen sidebar-transition landing-bg">
           {window.location.pathname.includes("/admin") ||
@@ -56,9 +56,6 @@ ReactDOM.render(
           <Route path="/forest_mountain" exact component={ForestMountain} />
           <Route path="/rock_climbing" exact component={RockClimb} />
           <Route path="/diving" exact component={Diving} />
-          <PrivateRoute
-            path="/admin/dashboard" component={Admin}
-          />
           {window.location.pathname.includes("/admin") ||
           window.location.pathname.includes("/login") ? null : (
             <FooterAdmin />
