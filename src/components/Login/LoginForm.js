@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+/* eslint-disable jsx-a11y/alt-text */
+import React, {  useState } from "react";
 import { useHistory } from "react-router";
 import ModalDokumen from "components/Modals/ModalDokumen";
 import swal from "sweetalert";
@@ -8,7 +9,6 @@ import Icon from "../../assets/img/impeesa_icon.png";
 export default function LoginForm() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
   const [input, setInput] = useState({
     nra: null,

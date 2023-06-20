@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "Context/UserContext";
 import Browwer from "../../assets/img/total_borrower.png";
@@ -15,6 +16,7 @@ export default function KuotaCardV2() {
     totalBorrower,
   } = useContext(UserContext);
   // const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [limitExceeded, setLimitExceeded] = useState(false);
 
   useEffect(() => {

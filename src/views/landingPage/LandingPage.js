@@ -4,7 +4,7 @@ import Splash from "../../assets/img/splash.png";
 
 export default function LandingPage() {
   return (
-    <>
+    <> 
       <div className="flex flex-col lg:flex-row text-white">
         <div className="lg:w-7/12 p-14">
           <label>
@@ -31,7 +31,10 @@ export default function LandingPage() {
           mental, pikiran, serta kepribadian yang sesuai dengan jiwa Pancasila
           serta menyalurkan minat dan bakat mahasiswa/i yang mempunyai rasa
           kecintaan terhadap kegiatan alam terbuka. Impeesa merupakan gabungan
-          dari UKM Impeesa eks. STIE Perbanas yang berdiri di Sukamantri, ...
+          dari UKM Impeesa eks. STIE Perbanas yang berdiri di Sukamantri, Bogor
+          pada 10 Oktober 1987, nama IMPEESA berasal dari gelar yang diberikan
+          kepada Lord Badem Powell oleh suku ASHANTI di Afrika Selatan yang
+          mempunyai arti “Serigala yang Tidak Pernah Tidur”.
         </label>
       </div>
     </>

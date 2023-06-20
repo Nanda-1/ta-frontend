@@ -1,15 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { createPopper } from "@popperjs/core";
-
-import { UserContext } from "Context/UserContext";
-import cookies from "js-cookie";
-import { useHistory } from "react-router";
-import noImage from "assets/img/no-avatar.jpg";
-
 const LandingDropDown = () => {
-  let history = useHistory();
 
-  const { setLoginStatus } = useContext(UserContext);
 
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
@@ -25,12 +17,6 @@ const LandingDropDown = () => {
     setDropdownPopoverShow(false);
   };
 
-  const handleLogout = () => {
-    setLoginStatus(false);
-    localStorage.removeItem("dataPPAT");
-    cookies.remove("token");
-    history.push("/login");
-  };
 
   return (
     <>

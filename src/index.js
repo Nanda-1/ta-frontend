@@ -8,7 +8,7 @@ import "assets/styles/tailwind.css";
 // layouts
 
 import Admin from "layouts/Admin.js";
-import Auth from "layouts/Auth.js";
+// import Auth from "layouts/Auth.js";
 // import NotFound from "layouts/NotFound";
 
 import { UserProvider } from "Context/UserContext";
@@ -56,6 +56,9 @@ ReactDOM.render(
           <Route path="/forest_mountain" exact component={ForestMountain} />
           <Route path="/rock_climbing" exact component={RockClimb} />
           <Route path="/diving" exact component={Diving} />
+          <PrivateRoute
+            path="/admin/dashboard" component={Admin}
+          />
           {window.location.pathname.includes("/admin") ||
           window.location.pathname.includes("/login") ? null : (
             <FooterAdmin />

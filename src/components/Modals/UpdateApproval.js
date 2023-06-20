@@ -3,35 +3,48 @@ import React, { useState, useEffect, useContext } from "react";
 // Context
 import { UserContext } from "Context/UserContext";
 
-export default function UpdateApproval({id}) {
-  const { addBorrowModal, setAddBorrowModal, GetAllBorrow, Borrowlist,GetFiles , SendStatuMail} = useContext(UserContext);
+export default function UpdateApproval({ id }) {
+  const {
+    addBorrowModal,
+    setAddBorrowModal,
+    GetAllBorrow,
+    Borrowlist,
+    GetFiles,
+    SendStatuMail,
+  } = useContext(UserContext);
   const [limitExceeded, setLimitExceeded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [updateComplete, setUpdateComplete] = useState(false);
 
   useEffect(() => {
     if (!limitExceeded) {
       GetAllBorrow();
       setLimitExceeded(true);
     }
-  }, []);
+  }, [limitExceeded, GetAllBorrow]);
 
   const handleApprove = (id) => {
     setLoading(true);
-    SendStatuMail(id, "approve")
-
+    SendStatuMail(id, "approve");
+    setUpdateComplete(true);
   };
 
   const handleReject = (id) => {
     setLoading(true);
-    SendStatuMail(id, "reject")
+    SendStatuMail(id, "reject");
+    setUpdateComplete(true);
   };
-
 
   return (
     <>
-      {addBorrowModal ? (
+      {addBorrowModal && (
         <>
-          {Borrowlist.filter(items => items.id === id).map((item, index) => (
+          {updateComplete && (
+            <p className="text-green-500 text-sm mt-2">
+              Process completed. Page updated.
+            </p>
+          )}
+          {Borrowlist.filter((items) => items.id === id).map((item, index) => (
             <div key={index} style={{ fontSize: "12px" }}>
               <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
                 <div className="relative lg:w-5/12  my-2 mx-auto mb-6">
@@ -70,7 +83,11 @@ export default function UpdateApproval({id}) {
                             Initial Term
                           </label>
                           <br />
-                          <span>{item.peminjamans && item.peminjamans.length > 0 ? item.peminjamans[0].initial_day : ""}</span>
+                          <span>
+                            {item.peminjamans && item.peminjamans.length > 0
+                              ? item.peminjamans[0].initial_day
+                              : ""}
+                          </span>
                         </div>
                         <div>
                           <label className="text-md text-blue-2 font-bold">
@@ -84,7 +101,11 @@ export default function UpdateApproval({id}) {
                             Start Date
                           </label>
                           <br />
-                          <span>{item.peminjamans && item.peminjamans.length > 0 ? item.peminjamans[0].start_date : ""}</span>
+                          <span>
+                            {item.peminjamans && item.peminjamans.length > 0
+                              ? item.peminjamans[0].start_date
+                              : ""}
+                          </span>
                         </div>
                         <div>
                           <label className="text-md text-blue-2 font-bold">
@@ -98,7 +119,11 @@ export default function UpdateApproval({id}) {
                             End Date
                           </label>
                           <br />
-                          <span>{item.peminjamans && item.peminjamans.length > 0 ? item.peminjamans[0].end_date : ""}</span>
+                          <span>
+                            {item.peminjamans && item.peminjamans.length > 0
+                              ? item.peminjamans[0].end_date
+                              : ""}
+                          </span>
                         </div>
                         <div>
                           <label className="text-md text-blue-2 font-bold">
@@ -113,8 +138,9 @@ export default function UpdateApproval({id}) {
                         className="w-full rounded-lg bg-blue text-white shadow-sm py-1 my-3"
                       >
                         Download File Document ↓
-                      </button><div className="flex justify-evenly py-6">
-                      <button
+                      </button>
+                      <div className="flex justify-evenly py-6">
+                        <button
                           onClick={() => handleReject(item.id)}
                           className="py-2 px-10 rounded-xl bg-red text-white text-sm"
                           disabled={loading}
@@ -137,7 +163,7 @@ export default function UpdateApproval({id}) {
             </div>
           ))}
         </>
-      ) : null}
+      )}
     </>
   );
 }

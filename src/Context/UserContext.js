@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 import { useHistory } from "react-router";
-import cookies from "js-cookie";
+// import cookies from "js-cookie";
 import swal from "sweetalert";
 
 export const UserContext = createContext();
