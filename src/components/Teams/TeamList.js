@@ -16,7 +16,7 @@ export default function TeamList() {
     if (!limitExceeded) GetAllTeams();
     setLimitExceeded(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listTeams, limitExceeded]);
+  }, []);
 
   const handlePageChange = (page) => {
     setPage(page);

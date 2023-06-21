@@ -28,9 +28,9 @@ export const UserProvider = (props) => {
   // var val = localStorage.getItem("dataPPAT");
   // var object = JSON.parse(val);
 
-  var login = localStorage.getItem("Authorization");
+  // var login = localStorage.getItem("Authorization");
   var token = localStorage.getItem("token");
-  var auth = JSON.parse(login);
+  var auth = token;
 
   const refreshToken = () => {
     fetch(process.env.REACT_APP_BACKEND_HOST + "/api/auth/refresh", {
@@ -45,14 +45,14 @@ export const UserProvider = (props) => {
         console.log(result);
         if (result.success === true) {
           auth.access_token = result.data.access_token;
-          localStorage.setItem("Authorization", JSON.stringify(auth));
+          localStorage.setItem("token", JSON.stringify(auth));
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         } else {
           swal("Gagal", "Silahkan login kembali", "error");
           // localStorage.removeItem("dataPPAT");
-          localStorage.removeItem("Authorization");
+          localStorage.removeItem("token");
           setTimeout(() => {
             history.push("/login");
           }, 1000);
@@ -62,7 +62,7 @@ export const UserProvider = (props) => {
   };
 
   const createTeams = () => {
-    fetch( process.env.REACT_APP_BACKEND_HOST + "/api/register", {
+    fetch(process.env.REACT_APP_BACKEND_HOST + "/api/register", {
       method: "POST",
       redirect: "follow",
       headers: {
@@ -85,18 +85,24 @@ export const UserProvider = (props) => {
       }),
     })
       .then((response) => {
-        if (response.status === 401) {
-          refreshToken();
-        } else {
-          return response.json();
+        if (!response.ok) {
+          throw new Error(response.statusText);
         }
+        return response.json();
       })
       .then((result) => {
         let data = result.data;
-        // console.log(data);
+        console.log(result);
         setAddDocumentModal(data);
+        swal("Data berhasil diinput", "Success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        console.log("error", error);
+        swal("Terdapat kesalahan saat mengirim data", error.message, "error");
+      });
   };
 
   const GetTotalTeams = () => {
@@ -222,7 +228,10 @@ export const UserProvider = (props) => {
       redirect: "follow",
     };
 
-    fetch(process.env.REACT_APP_BACKEND_HOST + "/api/get-all", requestOptionsGet)
+    fetch(
+      process.env.REACT_APP_BACKEND_HOST + "/api/get-all",
+      requestOptionsGet
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -268,43 +277,52 @@ export const UserProvider = (props) => {
   };
 
   const GetFiles = (id) => {
-    fetch(`http://localhost:8070/api/peminjaman/get-file?peminjaman_detail_id=${id}`, {
-      method: "GET",
-      redirect: "follow",
-      headers: {
-        "API.KEY": "KkNEUgWfFlkQTPKqwFOnsdaPOsdnopdnwqOoIyjUKKcjCiMnQZRZBfJoIlh",
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then(response => {
+    fetch(
+      `http://localhost:8070/api/peminjaman/get-file?peminjaman_detail_id=${id}`,
+      {
+        method: "GET",
+        redirect: "follow",
+        headers: {
+          "API.KEY":
+            "KkNEUgWfFlkQTPKqwFOnsdaPOsdnopdnwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+      .then((response) => {
         const filenameHeader = response.headers.get("content-disposition");
-        const filenameMatch = filenameHeader && filenameHeader.match(/filename="(.+)"/);
+        const filenameMatch =
+          filenameHeader && filenameHeader.match(/filename="(.+)"/);
         const filename = filenameMatch ? filenameMatch[1] : "file.pdf"; // Set a default filename if not provided
-  
-        return response.blob().then(blob => {
+
+        return response.blob().then((blob) => {
           const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
+          const link = document.createElement("a");
           link.href = url;
-          link.setAttribute('download', filename);
+          link.setAttribute("download", filename);
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
         });
       })
-      .catch(error => {
-        console.error('Error downloading the document:', error);
+      .catch((error) => {
+        console.error("Error downloading the document:", error);
       });
   };
-  
+
   const SendStatuMail = (id, status) => {
-    return fetch(`http://localhost:8070/api/peminjaman/email?id=${id}&status=${status}`, {
-      method: "POST",
-      redirect: "follow",
-      headers: {
-        "API.KEY": "KkNEUgWfFlkQTPKqwFOnsdaPOsdnopdnwqOoIyjUKKcjCiMnQZRZBfJoIlh",
-        Authorization: "Bearer " + token,
-      },
-    })
+    return fetch(
+      `http://localhost:8070/api/peminjaman/email?id=${id}&status=${status}`,
+      {
+        method: "POST",
+        redirect: "follow",
+        headers: {
+          "API.KEY":
+            "KkNEUgWfFlkQTPKqwFOnsdaPOsdnopdnwqOoIyjUKKcjCiMnQZRZBfJoIlh",
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -316,10 +334,15 @@ export const UserProvider = (props) => {
         let data = result.data;
         console.log(JSON.stringify(data));
         SetSendStatus(data);
+        swal("Email Berhasil Dikirim", "Success", "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        swal("Terdapat kesalahan saat mengirim data", error.message, "error");
+      });
   };
-  
 
   const createCollection = () => {
     fetch("http://localhost:8060/api/pendataan/create", {
@@ -336,9 +359,7 @@ export const UserProvider = (props) => {
         keterangan: addCollectionModal.keterangan,
         divisiId: parseInt(addCollectionModal.divisiId),
       }),
-    });
-    console
-      .log(addCollectionModal)
+    })
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
@@ -350,9 +371,17 @@ export const UserProvider = (props) => {
         let data = result.data;
         console.log(JSON.stringify(data));
         setAddCollectionModal(data);
+        swal("Barang berhasil di Input", "Success", "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        console.log("error", error);
+        swal("Terdapat kesalahan saat mengirim data", "error");
+      });
   };
+  
 
   return (
     <UserContext.Provider

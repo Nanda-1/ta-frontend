@@ -6,27 +6,25 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/styles/tailwind.css";
 
 // layouts
-
-import Admin from "layouts/Admin.js";
-// import Auth from "layouts/Auth.js";
-// import NotFound from "layouts/NotFound";
-
+import Admin from "layouts/Admin";
 import { UserProvider } from "Context/UserContext";
 import swal from "sweetalert";
+
+// views
 import LandingPage from "views/landingPage/LandingPage";
-import FooterAdmin from "components/Footers/FooterAdmin";
 import NavbarLanding from "views/landingPage/IndexNavbar";
 import Form from "views/landingPage/Form";
 import ForestMountain from "views/landingPage/ForestMountain";
 import Login from "views/auth/Login";
 import RockClimb from "views/landingPage/RockClimb";
 import Diving from "views/landingPage/Diving";
+import FooterAdmin from "components/Footers/FooterAdmin";
 
 var val = localStorage.getItem("token");
 
-const PrivateRoute = ({ ...props }) => {
+const PrivateRoute = ({ component: Component, ...props }) => {
   if (val) {
-    return <Route {...props} />;
+    return <Component {...props} />
   } else {
     return (
       swal(
@@ -43,7 +41,8 @@ ReactDOM.render(
   <BrowserRouter>
     <UserProvider>
       <Switch>
-        <PrivateRoute path="/admin" component={Admin} />
+        {/* <Route path="/admin" component={Admin} /> */}
+        <PrivateRoute path="/admin" component={Admin}/>
         <Route path="/login" exact component={Login} />
         <div className="relative min-h-screen sidebar-transition landing-bg">
           {window.location.pathname.includes("/admin") ||

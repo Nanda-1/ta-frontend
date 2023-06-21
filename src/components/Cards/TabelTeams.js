@@ -12,11 +12,10 @@ export default function TabelTeams() {
     if (!limitExceeded) GetAllTeams();
     setLimitExceeded(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [listTeams, limitExceeded]);
+  }, []);
 
   const histori = useHistory();
 
-  console.log(listTeams);
 
   return (
     <div className="w-full text-black-2 shadow-sm">

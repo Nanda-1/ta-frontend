@@ -128,10 +128,12 @@ export default function Form() {
           initial_day: "",
         });
         setFile(null);
+        swal("Success", "Pemintaan Permohonan Berhasil Dikirim", "Success");  
       })
       .catch((err) => {
-        if (err.message === "Failed to fetch") {
-          swal("Error", "Internal Server Error", "error");
+        console.log(err)
+        if (err.response === 400) {
+          swal("Error", "File tidak boleh kosong", "error");
         }
       })
       .finally(() => {
