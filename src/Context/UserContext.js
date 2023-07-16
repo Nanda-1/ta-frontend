@@ -50,7 +50,7 @@ export const UserProvider = (props) => {
             window.location.reload();
           }, 1000);
         } else {
-          swal("Gagal", "Silahkan login kembali", "error");
+          swal("Waktu Sudah Habis", "Silahkan login kembali", "error");
           // localStorage.removeItem("dataPPAT");
           localStorage.removeItem("token");
           setTimeout(() => {
@@ -293,7 +293,7 @@ export const UserProvider = (props) => {
         const filenameHeader = response.headers.get("content-disposition");
         const filenameMatch =
           filenameHeader && filenameHeader.match(/filename="(.+)"/);
-        const filename = filenameMatch ? filenameMatch[1] : "file.pdf"; // Set a default filename if not provided
+        const filename = filenameMatch ? filenameMatch[1] : "Peminjaman.pdf"; // Set a default filename if not provided
 
         return response.blob().then((blob) => {
           const url = URL.createObjectURL(blob);
@@ -363,8 +363,15 @@ export const UserProvider = (props) => {
       .then((response) => {
         if (response.status === 401) {
           refreshToken();
-        } else {
+        } else if (response.ok) {
           return response.json();
+        } else if (response.status === 400) {
+          // Handle the 400 error response here
+          return response.json().then((data) => {
+            throw data; // Throw the error data to be caught in the next .then()
+          });
+        } else {
+          throw new Error("Network response was not ok.");
         }
       })
       .then((result) => {
@@ -378,7 +385,11 @@ export const UserProvider = (props) => {
       })
       .catch((error) => {
         console.log("error", error);
-        swal("Terdapat kesalahan saat mengirim data", "error");
+        if (error && error.error) {
+          swal(error.error, "error", "error");
+        } else {
+          swal("Terjadi Kesalahan Mengirim Data", "error", "error");
+        }
       });
   };
   

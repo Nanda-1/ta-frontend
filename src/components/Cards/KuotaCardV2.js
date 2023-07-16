@@ -39,8 +39,7 @@ export default function KuotaCardV2() {
                 className="text-white w-full"
                 style={{ fontSize: "18px", alignSelf: "center" }}
               >
-                Total <br />
-                {/* {item.name} */} Teams
+                Total Teams <br />
               </label>
               <img className="card-icon p-2" width={60} src={Member} />
             </div>
@@ -58,8 +57,7 @@ export default function KuotaCardV2() {
                 className="text-white w-full"
                 style={{ fontSize: "18px", alignSelf: "center" }}
               >
-                Total <br />
-                {/* {item.name} */} Borrower
+                Total Borrower <br />
               </label>
               <img className="card-icon p-2" width={60} src={Browwer} />
             </div>

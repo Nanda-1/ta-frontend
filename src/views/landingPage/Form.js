@@ -117,6 +117,7 @@ export default function Form() {
           console.log("token", res.data.token);
           // localStorage.setItem("token", res.data.token.access_token);
         }
+        swal("Success", "Pemintaan Permohonan Berhasil Dikirim", "Success");  
         // Clear form fields after successful submission
         setInput({
           name: "",
@@ -128,7 +129,6 @@ export default function Form() {
           initial_day: "",
         });
         setFile(null);
-        swal("Success", "Pemintaan Permohonan Berhasil Dikirim", "Success");  
       })
       .catch((err) => {
         console.log(err)
