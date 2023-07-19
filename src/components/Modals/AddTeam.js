@@ -71,6 +71,7 @@ export default function AddTeam() {
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
+                    placeholder="Nama Panjang"
                   />
                   <label className="text-xs font-bold">NRA</label>
                   <input
@@ -80,6 +81,7 @@ export default function AddTeam() {
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
+                    placeholder="I288IP"
                   />
                   <label className="text-xs font-bold">Division</label>
                   <input
@@ -89,6 +91,7 @@ export default function AddTeam() {
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
+                    placeholder="Divisi"
                   />
                   <label className="text-xs font-bold">Phone Number</label>
                   <input
@@ -98,6 +101,7 @@ export default function AddTeam() {
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
+                    placeholder="Phone Number"
                   />
                   <label className="text-xs font-bold">Email</label>
                   <input
@@ -107,6 +111,7 @@ export default function AddTeam() {
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
+                    placeholder="example@gmail.com"
                   />
                   <label className="text-xs font-bold">Address</label>
                   <input
@@ -116,6 +121,7 @@ export default function AddTeam() {
                     onChange={handleChange}
                     className="px-3 py-3 text-xs mb-2 focus:outline-none w-full login-form"
                     required={true}
+                    placeholder="address"
                   />
                 </div>
               </div>

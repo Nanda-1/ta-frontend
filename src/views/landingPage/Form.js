@@ -6,7 +6,7 @@ import swal from "sweetalert";
 export default function Form() {
   const [file, setFile] = useState(null);
   const [filename, setFilename] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
 
   const uploadKTPPreview = (e) => {
     console.log(e.target.files);
@@ -30,7 +30,7 @@ export default function Form() {
       drop.current?.removeEventListener("dragover", handleDragOver);
       drop.current?.removeEventListener("drop", handleDrop);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDragOver = (e) => {
@@ -105,10 +105,7 @@ export default function Form() {
       redirect: "follow",
     };
     console.log(requestOptions);
-    await fetch(
-      "http://localhost:8070/api/peminjaman/create",
-      requestOptions
-    )
+    await fetch("http://localhost:8070/api/peminjaman/create", requestOptions)
       .then((res) => res.json())
       .then((res) => {
         if (!res.success) {
@@ -117,7 +114,7 @@ export default function Form() {
           console.log("token", res.data.token);
           // localStorage.setItem("token", res.data.token.access_token);
         }
-        swal("Success", "Pemintaan Permohonan Berhasil Dikirim", "Success");  
+        swal("Success", "Pemintaan Permohonan Berhasil Dikirim", "Success");
         // Clear form fields after successful submission
         setInput({
           name: "",
@@ -131,7 +128,7 @@ export default function Form() {
         setFile(null);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         if (err.response === 400) {
           swal("Error", "File tidak boleh kosong", "error");
         }

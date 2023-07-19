@@ -10,6 +10,7 @@ export const UserProvider = (props) => {
   const [addDocumentModal, setAddDocumentModal] = useState(false);
   const [addBorrowModal, setAddBorrowModal] = useState(false);
   const [addCollectionModal, setAddCollectionModal] = useState(false);
+  const [editCollectionModal, SetEditCollectionModal] = useState(false);
   const [dataUser, setDataUser] = useState([]);
   const [listCollection, setListCollection] = useState([]);
   const [listTeams, setListTeams] = useState([]);
@@ -22,6 +23,8 @@ export const UserProvider = (props) => {
   const [totalBorrower, SetTotalBorrower] = useState([]);
   const [Borrowlist, setBorrowList] = useState([]);
   const [SendStatus, SetSendStatus] = useState([]);
+  const [DeleteCollection, SetDeleteCollection] = useState([]);
+  
 
   let history = useHistory();
 
@@ -392,7 +395,105 @@ export const UserProvider = (props) => {
         }
       });
   };
-  
+
+  const DeleteCollectionByID = (id) => {
+    fetch("http://localhost:8060/api/pendataan/delete?id=" + id, {
+      method: "POST",
+      redirect: "follow",
+      headers: {
+        "Content-Type": "application/json",
+        "API.KEY": "KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD",
+        Authorization: "Bearer " + token, // Assuming 'token' is defined and holds the access token
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else if (response.ok) {
+          return response.json();
+        } else if (response.status === 400) {
+          return response.json().then((data) => {
+            throw data; // Throw the error data to be caught in the next .catch()
+          });
+        } else {
+          throw new Error("Network response was not ok.");
+        }
+      })
+      .then((result) => {
+        if (result.success) {
+          // If the server returns success as true
+          let data = result.data;
+          SetDeleteCollection(data);
+          swal("Data Berhasil DiHapus", "Success", "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } else {
+          // If the server returns success as false
+          swal(
+            "Terdapat kesalahan saat menghapus data",
+            result.error || "Unknown error",
+            "error"
+          );
+        }
+      })
+      .catch((error) => {
+        swal(
+          "Terdapat kesalahan saat menghapus data",
+          error.message || "Unknown error",
+          "error"
+        );
+      });
+  };
+
+   const EditCollection = () => {
+    fetch("http://localhost:8060/api/pendataan/update", {
+      method: "POST",
+      redirect: "follow",
+      headers: {
+        "Content-Type": "application/json",
+        "API.KEY": "KkNEUgWfFlkQTPKqwFOnednwqOoIyjUKKcjCiMnQZRZBfJoOPOPOPSAD",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        nama: addCollectionModal.name,
+        jumlah: parseInt(addCollectionModal.jumlah),
+        keterangan: addCollectionModal.keterangan,
+        divisiId: parseInt(addCollectionModal.divisiId),
+      }),
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          refreshToken();
+        } else if (response.ok) {
+          return response.json();
+        } else if (response.status === 400) {
+          // Handle the 400 error response here
+          return response.json().then((data) => {
+            throw data; // Throw the error data to be caught in the next .then()
+          });
+        } else {
+          throw new Error("Network response was not ok.");
+        }
+      })
+      .then((result) => {
+        let data = result.data;
+        console.log(JSON.stringify(data));
+        SetEditCollectionModal(data);
+        swal("Data Berhasil diperbarui", "Success", "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      })
+      .catch((error) => {
+        console.log("error", error);
+        if (error && error.error) {
+          swal(error.error, "error", "error");
+        } else {
+          swal("Terjadi Kesalahan Mengirim Data", "error", "error");
+        }
+      });
+  };
 
   return (
     <UserContext.Provider
@@ -439,6 +540,12 @@ export const UserProvider = (props) => {
         SendStatuMail,
         SendStatus,
         SetSendStatus,
+        DeleteCollectionByID,
+        DeleteCollection,
+        SetDeleteCollection,
+        EditCollection,
+        editCollectionModal,
+        SetEditCollectionModal
       }}
     >
       {props.children}

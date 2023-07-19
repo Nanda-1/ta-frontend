@@ -2,6 +2,7 @@ import { UserContext } from "Context/UserContext";
 import AddTeam from "components/Modals/AddTeam";
 import React, { useState, useEffect, useContext } from "react";
 import { Pagination } from "react-headless-pagination";
+import { FaTrash, FaEdit } from "react-icons/fa";
 // import PrevIcon from "../../assets/img/prev.png";
 // import NextIcon from "../../assets/img/next-light.png";
 
@@ -11,13 +12,25 @@ export default function TeamList() {
   const { GetAllTeams, listTeams } = useContext(UserContext);
   // const [loading, setLoading] = useState(true);
   const [limitExceeded, setLimitExceeded] = useState(false);
-
+  const [DeleteTeamId, setDeleteTeamId] = useState(null);
+  const [editTeamId, seteditTeamId] = useState(null);
   useEffect(() => {
     if (!limitExceeded) GetAllTeams();
     setLimitExceeded(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
+  const handleDeleteButtonClick = (id) => {
+    setDeleteTeamId(id);
+    // Lakukan aksi yang Anda inginkan ketika tombol Delete diklik
+    // Contoh: Munculkan modal untuk mengDelete data tim berdasarkan id
+  };
+  const handleEditButtonClick = (id) => {
+    seteditTeamId(id);
+    // Lakukan aksi yang Anda inginkan ketika tombol Delete diklik
+    // Contoh: Munculkan modal untuk mengDelete data tim berdasarkan id
+  };
+  
   const handlePageChange = (page) => {
     setPage(page);
   };
@@ -58,6 +71,9 @@ export default function TeamList() {
                   <th className="align-middle border-1 border-solid py-3 border-black">
                     Email
                   </th>
+                  <th className="align-middle border-1 border-solid py-3 border-black">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -95,6 +111,20 @@ export default function TeamList() {
                             <td className=" border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
                               {item.email}
                             </td>
+                            <td className="px-3 py-1 text-center border-1 border-solid border-black border-b-0 border-t-0">
+                            <button
+                              className="text-white bg-blue my-3 ml-3 px-4 py-1 rounded-lg float-left focus:outline-none"
+                              onClick={() => handleEditButtonClick(item.id)}
+                            >
+                              <FaEdit /> 
+                            </button>
+                            <button
+                              className="text-white bg-red my-3 px-4 py-1 rounded-lg float-left focus:outline-none"
+                              onClick={() => handleDeleteButtonClick(item.id)}
+                            >
+                              <FaTrash /> 
+                            </button>
+                          </td>
                           </tr>
                         );
                       })}

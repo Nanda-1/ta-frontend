@@ -1,21 +1,33 @@
 import { UserContext } from "Context/UserContext";
 import AddCollection from "components/Modals/AddCollection";
+import DeleteConfirmationModal from "components/Modals/DeleteConfirmationModal";
 import React, { useState, useEffect, useContext } from "react";
 import { Pagination } from "react-headless-pagination";
-// import PrevIcon from "../../assets/img/prev.png";
-// import NextIcon from "../../assets/img/next-light.png";
+import { FaTrash } from "react-icons/fa";
 
 export default function CollectionList() {
   const { setAddCollectionModal, addCollectionModal } = useContext(UserContext);
   const [page, setPage] = useState(0);
-  const { CollectionList, listCollection } = useContext(UserContext);
+  const { CollectionList, listCollection, DeleteCollectionByID } =
+    useContext(UserContext);
   const [limitExceeded, setLimitExceeded] = useState(false);
+  // Add this line at the beginning of the CollectionList component
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     if (!limitExceeded) CollectionList();
     setLimitExceeded(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleDeleteButtonClick = (id) => {
+    // Show the delete confirmation modal
+    setShowDeleteConfirmation(true);
+    // Set the item ID to be deleted
+    setItemToDelete(id);
+  };
+
   const handlePageChange = (page) => {
     setPage(page);
   };
@@ -52,6 +64,9 @@ export default function CollectionList() {
                   </th>
                   <th className="align-middle border-1 border-solid py-3 border-black">
                     Information
+                  </th>
+                  <th className="align-middle border-1 border-solid py-3 border-black">
+                    Action
                   </th>
                 </tr>
               </thead>
@@ -90,6 +105,14 @@ export default function CollectionList() {
                             </td>
                             <td className="border-1 border-solid px-3 py-1 border-black border-b-0 border-t-0">
                               {item.keterangan}
+                            </td>
+                            <td>
+                              <button
+                                className="text-white bg-red px-4 py-1 rounded-lg focus:outline-none"
+                                onClick={() => handleDeleteButtonClick(item.id)}
+                              >
+                                <FaTrash />
+                              </button>
                             </td>
                           </tr>
                         );
@@ -135,6 +158,16 @@ export default function CollectionList() {
           </Pagination>
         )}
       </div>
+      <DeleteConfirmationModal
+        show={showDeleteConfirmation}
+        onCancel={() => setShowDeleteConfirmation(false)}
+        onConfirm={() => {
+          // Call the delete function and pass the item ID to delete
+          DeleteCollectionByID(itemToDelete);
+          // Close the delete confirmation modal
+          setShowDeleteConfirmation(false);
+        }}
+      />
     </>
   );
 }
