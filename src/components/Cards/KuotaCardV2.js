@@ -25,7 +25,8 @@ export default function KuotaCardV2() {
     GetTotalTeams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  
+  // console.log(TotalCollectionList)
   return (
     <div className="w-full text-black-2 shadow-sm">
       <div className="flex justify-between mt-4">

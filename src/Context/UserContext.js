@@ -206,10 +206,10 @@ export const UserProvider = (props) => {
       .then((result) => {
         let data = result.data;
         if (divisi_id === 1) {
-          setgunung(data);
+          setTebing(data);
           TotalCollectionList(2);
         } else if (divisi_id === 2) {
-          setTebing(data);
+          setgunung(data);
           TotalCollectionList(3);
         } else {
           setSelam(data);

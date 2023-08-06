@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from "react";
 import Instagram from "../../assets/img/instagram.png";
 import Twitter from "../../assets/img/Twitter.png";
@@ -10,7 +11,10 @@ export default function FooterAdmin() {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center md:justify-between justify-center">
             <div className="w-full lg:w-4/12 px-4">
-              <div className="text-sm light-blue font-semibold py-1 text-center md:text-left"  style={{alignItems: 'center'}}>
+              <div
+                className="text-sm light-blue font-semibold py-1 text-center md:text-left"
+                style={{ alignItems: "center" }}
+              >
                 © 2023 IMPEESA Perbanas Institute
                 {/* <a
                   href="https://www.creative-tim.com?ref=nr-footer-admin"
@@ -39,10 +43,43 @@ export default function FooterAdmin() {
                     081382683943 (Rinanda)
                   </span>
                 </li>
-                <li className="flex" style={{alignItems: 'end'}}>
-                 <img width={60} className="mr-4 mb-3" src={Youtube} style={{height: 'fit-content'}} />
-                 <img width={25} className="mr-4 mb-3" src={Instagram} style={{height: 'fit-content'}} />
-                 <img width={25} className="mb-3" src={Twitter} style={{height: 'fit-content'}} />
+                <li className="flex" style={{ alignItems: "end" }}>
+                  <a
+                    href="https://www.youtube.com/@impeesaperbanas6306"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      width={60}
+                      className="mr-4 mb-3"
+                      src={Youtube}
+                      style={{ height: "fit-content" }}
+                    />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/impeesaperbanas/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      width={25}
+                      className="mr-4 mb-3"
+                      src={Instagram}
+                      style={{ height: "fit-content" }}
+                    />
+                  </a>
+                  <a
+                    href="https://twitter.com/IMPEESAperbanas"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      width={25}
+                      className="mb-3"
+                      src={Twitter}
+                      style={{ height: "fit-content" }}
+                    />
+                  </a>
                 </li>
               </ul>
             </div>

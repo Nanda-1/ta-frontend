@@ -7,6 +7,20 @@ export default function Form() {
   const [file, setFile] = useState(null);
   const [filename, setFilename] = useState("");
   const [, setLoading] = useState(false);
+  const uploadFileInputRef = useRef(null);
+
+  const handleFileSelect = () => {
+    // Check if a file input element is available and trigger click only if it exists
+    if (uploadFileInputRef.current) {
+      uploadFileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    onUpload([file]);
+  };
+
 
   const uploadKTPPreview = (e) => {
     console.log(e.target.files);
@@ -256,8 +270,10 @@ export default function Form() {
                 <input
                   type="file"
                   style={{ display: "none" }}
-                  onChange={uploadKTPPreview}
+                  onChange={handleFileChange}
+                  ref={uploadFileInputRef}
                   name="file"
+                  accept=".pdf"
                 />
                 {filename ? (
                   <div>
@@ -269,7 +285,9 @@ export default function Form() {
                 ) : (
                   <div>
                     <p className="text-center text-sm mt-7 font-600">
-                      <b>Click to upload</b> or drag and drop
+                      <button onClick={handleFileSelect}>
+                        <b>Click to upload</b> or drag and drop
+                      </button>
                     </p>
                   </div>
                 )}

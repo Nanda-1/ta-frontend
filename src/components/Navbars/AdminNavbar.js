@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { UserContext } from "Context/UserContext";
 import cookies from "js-cookie";
 import { useHistory } from "react-router";
+import Profil from "components/Modals/Profil.js"
 
 import noImage from "../../assets/img/no-avatar.jpg";
 import LogoutIcon from "../../assets/img/logout_icon.png";
@@ -32,7 +33,7 @@ export default function Navbar() {
                   src={noImage}
                 />
               </span>
-              <div className="px-1 text-blue font-semibold">Admin</div>
+              <div onClick={Profil} className="px-1 text-blue font-semibold">Admin</div>
               <span className="h-8 ml-6 text-sm inline-flex items-center justify-center">
                 <img
                   alt="..."

@@ -107,12 +107,16 @@ export default function CollectionList() {
                               {item.keterangan}
                             </td>
                             <td>
-                              <button
-                                className="text-white bg-red px-4 py-1 rounded-lg focus:outline-none"
-                                onClick={() => handleDeleteButtonClick(item.id)}
-                              >
-                                <FaTrash />
-                              </button>
+                              <div className="flex justify-center">
+                                <button
+                                  className="text-white bg-red px-4 py-1 rounded-lg focus:outline-none"
+                                  onClick={() =>
+                                    handleDeleteButtonClick(item.id)
+                                  }
+                                >
+                                  <FaTrash />
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         );
